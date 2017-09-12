@@ -5,17 +5,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class SingUpController {
 
 
     @RequestMapping(value = "/singup", method = RequestMethod.GET)
     public String singUp(Model model) {
-//        model.addAttribute("userForm", new User());
+        model.addAttribute("userForm", new User());
 
 //        return "registration";
-        return "index";
+        return "sdfgdf";
     }
 
 }
