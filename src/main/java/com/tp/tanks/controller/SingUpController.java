@@ -1,6 +1,8 @@
-package com.tp.tanks.controllers;
+package com.tp.tanks.controller;
 
-import com.tp.tanks.models.User;
+import com.tp.tanks.model.User;
+import com.tp.tanks.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class SingUpController {
+
+    @Autowired
+    private UserService userServise;
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signupGet(Model model) {
@@ -20,9 +25,8 @@ public class SingUpController {
                     consumes = "application/json", produces = "application/json")
     public String signupPost(@RequestBody User user) {
 
-        System.out.println("input username: " + user.getUsername() +
-                           "; password: " + user.getPassword() +
-                           "; id = " + user.getId());
+        userServise.save(user);
+
         return "index";
     }
 }

@@ -1,4 +1,4 @@
-package com.tp.tanks.models;
+package com.tp.tanks.model;
 
 import javax.persistence.*;
 
