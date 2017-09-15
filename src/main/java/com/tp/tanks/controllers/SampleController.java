@@ -1,5 +1,6 @@
 package com.tp.tanks.controllers;
 
+import com.tp.tanks.models.User;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.stereotype.*;
@@ -14,5 +15,4 @@ public class SampleController {
 
         return "index";
     }
-
 }
