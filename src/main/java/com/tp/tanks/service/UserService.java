@@ -28,6 +28,9 @@ public class UserService {
     public void save(User user) {
         System.out.println("[UserService] username: " + user.getUsername() + "; password: " + user.getPassword());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        User saving_user = userRepository.save(user);
+        System.out.println("[UserService] saving user: username: " + saving_user.getUsername() + "; " +
+                "password: " + saving_user.getPassword() +
+                "; id = " + saving_user.getId());
     }
 }
