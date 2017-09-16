@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
 
 
 @Service
@@ -25,12 +26,15 @@ public class UserService {
     }
 
     @Transactional
-    public void save(User user) {
-        System.out.println("[UserService] username: " + user.getUsername() + "; password: " + user.getPassword());
+    public HashMap<String, String> save(User user) {
+
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         User saving_user = userRepository.save(user);
-        System.out.println("[UserService] saving user: username: " + saving_user.getUsername() + "; " +
-                "password: " + saving_user.getPassword() +
-                "; id = " + saving_user.getId());
+
+        HashMap<String, String> body = new HashMap<>();
+        body.put("id", saving_user.getId().toString());
+        body.put("username", saving_user.getUsername());
+
+        return body;
     }
 }

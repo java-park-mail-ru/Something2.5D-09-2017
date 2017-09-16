@@ -12,13 +12,17 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.logging.Logger;
 
 @Controller
 public class SingUpController {
 
     @Autowired
     private UserService userServise;
+
+    private final static Logger logger = Logger.getLogger(SingUpController.class.getName());
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signupGet(Model model) {
@@ -28,18 +32,18 @@ public class SingUpController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST,
                     consumes = "application/json", produces = "application/json")
-    public ResponseEntity<MultiValueMap<String, String>> signupPost(@RequestBody User user) {
+    public ResponseEntity<HashMap<String, String>> signupPost(@RequestBody User user) {
 
-        userServise.save(user);
+        // TODO ConstraintViolationException
+        logger.info("Start Sign Up");
 
-        MultiValueMap<String, String> responseBody = new LinkedMultiValueMap<String, String>();
-        responseBody.set("id", "id");
-        responseBody.set("username", "username");
+        HashMap<String, String> body = userServise.save(user);
 
         MultiValueMap<String, String> responseHeaders = new LinkedMultiValueMap<String, String>();
         responseHeaders.set("Content-Type", "application/json");
         responseHeaders.set("Accept", "application/json");
 
-        return new ResponseEntity<MultiValueMap<String, String>>(responseBody, responseHeaders, HttpStatus.OK);
+
+        return new ResponseEntity<>(body, responseHeaders, HttpStatus.OK);
     }
 }
