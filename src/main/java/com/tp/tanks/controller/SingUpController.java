@@ -1,8 +1,10 @@
 package com.tp.tanks.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.tp.tanks.model.User;
 import com.tp.tanks.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.WebMvcProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +42,7 @@ public class SingUpController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/profile", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> getProfile(HttpSession session)
     {
         Object userID = session.getAttribute("userId");
@@ -49,7 +51,16 @@ public class SingUpController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Long id = (Long) userID;
-        return new ResponseEntity<>(userServise.getById(id), HttpStatus.OK);
+        User user = userServise.getById((Long) userID);
+        User serializableSUser = new User();
+
+        serializableSUser.setId(user.getId());
+        serializableSUser.setUsername(user.getUsername());
+        serializableSUser.setPassword(user.getPassword());
+
+
+        System.out.println("username = " + serializableSUser.getUsername() + "; password = " + serializableSUser.getPassword());
+
+        return new ResponseEntity<>(serializableSUser, HttpStatus.OK);
     }
 }

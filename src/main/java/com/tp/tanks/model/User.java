@@ -14,7 +14,7 @@ public class User {
     private Long id;
     private String username;
 
-    @JsonIgnore
+//    @JsonIgnore
     private String password;
 
     public Long getId() {
@@ -31,8 +31,8 @@ public class User {
         this.username = username;
     }
 
-    @JsonIgnore
+//    @JsonIgnore
     public String getPassword() { return password; }
-    @JsonProperty
+//    @JsonProperty
     public void setPassword(String password) { this.password = password; }
 }
