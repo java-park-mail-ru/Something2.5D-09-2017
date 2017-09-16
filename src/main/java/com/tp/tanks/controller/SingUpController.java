@@ -10,30 +10,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-@Controller
+@RestController
 public class SingUpController {
 
     @Autowired
     private UserService userServise;
-//    privite Integer idSession;
 
     private final static Logger logger = Logger.getLogger(SingUpController.class.getName());
 
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public String signupGet(Model model) {
-
-        return "signupGet";
-    }
-
-    @RequestMapping(value = "/signup", method = RequestMethod.POST,
+    @RequestMapping(value = "/signUp", method = RequestMethod.POST,
                     consumes = "application/json", produces = "application/json")
     public ResponseEntity<HashMap<String, String>> signupPost(@RequestBody User user, HttpSession sessioin) {
 
@@ -47,24 +38,23 @@ public class SingUpController {
         return new ResponseEntity<>(body, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/signin", method = RequestMethod.POST,
+    @RequestMapping(value = "/signIn", method = RequestMethod.POST,
                     consumes = "application/json", produces = "application/json")
-    public ResponseEntity<HashMap<String, String>> signIn(@RequestBody User user, HttpSession sessioin)
+    public ResponseEntity<HashMap<String, String>> signIn(@RequestBody User user, HttpSession session)
     {
 
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-//
-//
-//
-//    public void hit(String userId, HttpSession session){
-//
-//        Object userID = session.getAttribute("userId");
-//        if(userID == null){
-//            throw new RuntimeException("Not logined");
-//        }
-//
-//    }
 
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String getProfile(HttpSession session)
+    {
+        Object userID = session.getAttribute("userId");
+        if (userID == null){
+            return "no login";
+        }
+
+        return userID.toString();
+    }
 }
