@@ -1,5 +1,8 @@
 package com.tp.tanks.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,6 +13,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String username;
+
+    @JsonIgnore
     private String password;
 
     public Integer getId() {
@@ -26,6 +31,8 @@ public class User {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() { return password; }
+    @JsonProperty
     public void setPassword(String password) { this.password = password; }
 }

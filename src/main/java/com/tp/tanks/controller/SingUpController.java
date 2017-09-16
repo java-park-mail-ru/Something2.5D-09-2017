@@ -26,7 +26,7 @@ public class SingUpController {
 
     @RequestMapping(value = "/signUp", method = RequestMethod.POST,
                     consumes = "application/json", produces = "application/json")
-    public ResponseEntity<HashMap<String, String>> signupPost(@RequestBody User user, HttpSession sessioin) {
+    public ResponseEntity<User> signupPost(@RequestBody User user, HttpSession sessioin) {
 
         // TODO ConstraintViolationException
         logger.info("Start Sign Up");
@@ -35,7 +35,7 @@ public class SingUpController {
 
         sessioin.setAttribute("userId", user.getId());
 
-        return new ResponseEntity<>(body, HttpStatus.CREATED);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/signIn", method = RequestMethod.POST,
