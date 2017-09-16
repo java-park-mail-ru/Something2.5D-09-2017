@@ -31,10 +31,8 @@ public class SingUpController {
         // TODO ConstraintViolationException
         logger.info("Start Sign Up");
 
-        HashMap<String, String> body = userServise.save(user);
-
+        userServise.save(user);
         sessioin.setAttribute("userId", user.getId());
-
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 

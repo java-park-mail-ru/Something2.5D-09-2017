@@ -26,15 +26,9 @@ public class UserService {
     }
 
     @Transactional
-    public HashMap<String, String> save(User user) {
+    public void save(User user) {
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        User saving_user = userRepository.save(user);
-
-        HashMap<String, String> body = new HashMap<>();
-        body.put("id", saving_user.getId().toString());
-        body.put("username", saving_user.getUsername());
-
-        return body;
+        userRepository.save(user);
     }
 }
