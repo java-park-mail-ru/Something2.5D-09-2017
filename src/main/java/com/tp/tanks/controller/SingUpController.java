@@ -4,12 +4,7 @@ import com.tp.tanks.model.User;
 import com.tp.tanks.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -45,14 +40,16 @@ public class SingUpController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public String getProfile(HttpSession session)
+    @RequestMapping(value = "/profile", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<User> getProfile(HttpSession session)
     {
         Object userID = session.getAttribute("userId");
         if (userID == null){
-            return "no login";
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return userID.toString();
+        Long id = (Long) userID;
+        return new ResponseEntity<>(userServise.getById(id), HttpStatus.OK);
     }
 }
