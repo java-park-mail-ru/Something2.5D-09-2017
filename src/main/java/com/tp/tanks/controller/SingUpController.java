@@ -52,15 +52,15 @@ public class SingUpController {
         }
 
         User user = userServise.getById((Long) userID);
-        User serializableSUser = new User();
+        User serializableUser = new User();
 
-        serializableSUser.setId(user.getId());
-        serializableSUser.setUsername(user.getUsername());
-        serializableSUser.setPassword(user.getPassword());
+        serializableUser.setId(user.getId());
+        serializableUser.setUsername(user.getUsername());
+        serializableUser.setPassword(user.getPassword());
 
 
-        System.out.println("username = " + serializableSUser.getUsername() + "; password = " + serializableSUser.getPassword());
+        System.out.println("username = " + serializableUser.getUsername() + "; password = " + serializableUser.getPassword());
 
-        return new ResponseEntity<>(serializableSUser, HttpStatus.OK);
+        return new ResponseEntity<>(serializableUser, HttpStatus.OK);
     }
 }
