@@ -39,6 +39,6 @@ public class SingUpController {
 
         HashMap<String, String> body = userServise.save(user);
 
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        return new ResponseEntity<>(body, HttpStatus.CREATED);
     }
 }
