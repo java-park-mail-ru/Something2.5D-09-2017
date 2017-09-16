@@ -39,11 +39,6 @@ public class SingUpController {
 
         HashMap<String, String> body = userServise.save(user);
 
-        MultiValueMap<String, String> responseHeaders = new LinkedMultiValueMap<String, String>();
-        responseHeaders.set("Content-Type", "application/json");
-        responseHeaders.set("Accept", "application/json");
-
-
-        return new ResponseEntity<>(body, responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 }
