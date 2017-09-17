@@ -18,16 +18,11 @@ public class NewUserRepository {
     }
 
 
-    public void save(User user) {
+    public void save(User user) throws java.sql.SQLIntegrityConstraintViolationException{
         String sql = "INSERT INTO user_tbl (username, email, password) VALUES (?, ?, ?)";
 
         jdbcTemplate.update(sql, user.getUsername(), user.getEmail(), user.getPassword());
         System.out.println("Created User = " + user.getUsername() + " email = " + user.getEmail());
-    }
-
-
-    public void isRegistered(User user) throws java.sql.SQLIntegrityConstraintViolationException{
-        String sql = "INSERT INTO user_tbl (username, email, password) VALUES (?, ?, ?)";
     }
 
 

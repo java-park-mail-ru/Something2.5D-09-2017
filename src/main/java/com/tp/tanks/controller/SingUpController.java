@@ -36,18 +36,17 @@ public class SingUpController {
         logger.info("Start Sign Up");
 
         try {
-            newUserRepository.isRegistered(user);
+            newUserRepository.save(user);
         } catch(java.sql.SQLIntegrityConstraintViolationException e) {
             System.out.println("This email already exists!!" + e);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+
         } catch(Exception a) {
             System.out.println("EXCEPTION@@@!!" + a);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
-
-        newUserRepository.save(user);
 //        userServise.save(user);
-        System.out.println("IDDDD:::    " + user.getId());
+
         sessioin.setAttribute("userId", user.getId());
         System.out.println("Registration complete!");
         return new ResponseEntity<>(user, HttpStatus.CREATED);
