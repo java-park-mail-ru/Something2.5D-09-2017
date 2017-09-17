@@ -2,6 +2,7 @@ package com.tp.tanks.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tp.tanks.model.User;
+import com.tp.tanks.repository.NewUserRepository;
 import com.tp.tanks.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.WebMvcProperties;
@@ -19,48 +20,60 @@ public class SingUpController {
     @Autowired
     private UserService userServise;
 
+
+    @Autowired
+    private NewUserRepository newUserRepository;
+
     private final static Logger logger = Logger.getLogger(SingUpController.class.getName());
+
 
     @RequestMapping(value = "/signUp", method = RequestMethod.POST,
                     consumes = "application/json", produces = "application/json")
-    public ResponseEntity<User> signupPost(@RequestBody User user, HttpSession sessioin) {
+    public ResponseEntity<User> signUp(@RequestBody User user, HttpSession sessioin) {
 
         // TODO ConstraintViolationException
         logger.info("Start Sign Up");
 
-        userServise.save(user);
+//        if( !newUserRepository.checkRegistration(user) ) {
+//            System.out.println("This email already exists!!");
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+
+        newUserRepository.saveUser(user);
+//        userServise.save(user);
         sessioin.setAttribute("userId", user.getId());
+        System.out.println("Registration complete!");
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
+
 
     @RequestMapping(value = "/signIn", method = RequestMethod.POST,
                     consumes = "application/json", produces = "application/json")
     public ResponseEntity<HashMap<String, String>> signIn(@RequestBody User user, HttpSession session)
     {
-
-
+//        if( !newUserRepository.checkSignIn(user) ) {
+//            System.out.println("Wrong signing in!");
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
+
+    @RequestMapping(value = "/profile", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<User> getProfile(HttpSession session)
     {
-        Object userID = session.getAttribute("userId");
-        if (userID == null){
-
+        Object userId = session.getAttribute("userId");
+        if (userId == null){
+            System.out.println("Not logged in!");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        User user = userServise.getById((Long) userID);
-        User serializableUser = new User();
+//        User user = userServise.getById((Long) userId);
 
-        serializableUser.setId(user.getId());
-        serializableUser.setUsername(user.getUsername());
-        serializableUser.setPassword(user.getPassword());
+        User user = newUserRepository.getUserById((Long)userId);
 
+        System.out.println("id = " + user.getId() + "username = " + user.getUsername() + "; email = " + user.getPassword());
 
-        System.out.println("username = " + serializableUser.getUsername() + "; password = " + serializableUser.getPassword());
-
-        return new ResponseEntity<>(serializableUser, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

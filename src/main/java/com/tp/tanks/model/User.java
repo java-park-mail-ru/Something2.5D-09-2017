@@ -13,13 +13,32 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
+    @Column(unique = true)
+    private String email;
 
     @JsonIgnore
     private String password;
 
-    public Long getId() {
-        return id;
+    public User()
+    {}
+
+    public User(Long id, String username, String email, String password)
+    {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
+
+    public User(User other)
+    {
+        this.id = other.id;
+        this.username = other.username;
+        this.email = other.email;
+        this.password = other.password;
+    }
+
+    public Long getId() { return id; }
     public void setId(Long id) {
         this.id = id;
     }
@@ -31,8 +50,18 @@ public class User {
         this.username = username;
     }
 
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
     @JsonIgnore
     public String getPassword() { return password; }
     @JsonProperty
     public void setPassword(String password) { this.password = password; }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "User[id=%d, username='%s', email='%s']",
+                id, username, email);
+    }
 }
