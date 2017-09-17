@@ -18,7 +18,7 @@ public class NewUserRepository {
     }
 
 
-    public void saveUser(User user) {
+    public void save(User user) {
         String sql = "INSERT INTO user_tbl (username, email, password) VALUES (?, ?, ?)";
 
         jdbcTemplate.update(sql, user.getUsername(), user.getEmail(), user.getPassword());
@@ -26,21 +26,12 @@ public class NewUserRepository {
     }
 
 
-    public boolean checkRegistration(User user) {
-        //Проверка уникальности email
-        String sql = "SELECT id, username, email FROM user_tbl WHERE email = '111@yandex.ru'";
-
-        User anotherUser = jdbcTemplate.queryForObject(sql, new Object[] { }, new UserMapper());
-
-
-        if(anotherUser == null) {
-            return false;
-        }
-        return true;
+    public void isRegistered(User user) throws java.sql.SQLIntegrityConstraintViolationException{
+        String sql = "INSERT INTO user_tbl (username, email, password) VALUES (?, ?, ?)";
     }
 
 
-    public boolean checkSignIn(User user) {
+    public boolean isSignedIn(User user) {
         String sql = "SELECT id, username, email FROM user_tbl WHERE email = ?";
 
         User anotherUser = jdbcTemplate.queryForObject(sql, new Object[] { user.getEmail() }, new UserMapper());
@@ -56,7 +47,7 @@ public class NewUserRepository {
     }
 
 
-    public User getUserById(long userId) {
+    public User getById(long userId) {
         String sql = "SELECT id, username, email FROM user_tbl WHERE id = ?";
 
         User user = jdbcTemplate.queryForObject(sql, new Object[] { userId }, new UserMapper());

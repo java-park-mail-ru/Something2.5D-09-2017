@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -34,12 +35,17 @@ public class SingUpController {
         // TODO ConstraintViolationException
         logger.info("Start Sign Up");
 
-        if( !newUserRepository.checkRegistration(user) ) {
-            System.out.println("This email already exists!!");
+        try {
+            newUserRepository.isRegistered(user);
+        } catch(java.sql.SQLIntegrityConstraintViolationException e) {
+            System.out.println("This email already exists!!" + e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch(Exception a) {
+            System.out.println("EXCEPTION@@@!!" + a);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        newUserRepository.saveUser(user);
+        newUserRepository.save(user);
 //        userServise.save(user);
         System.out.println("IDDDD:::    " + user.getId());
         sessioin.setAttribute("userId", user.getId());
@@ -52,10 +58,10 @@ public class SingUpController {
                     consumes = "application/json", produces = "application/json")
     public ResponseEntity<HashMap<String, String>> signIn(@RequestBody User user, HttpSession session)
     {
-//        if( !newUserRepository.checkSignIn(user) ) {
-//            System.out.println("Wrong signing in!");
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
+        if( !newUserRepository.isSignedIn(user) ) {
+            System.out.println("Wrong signing in!");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -71,7 +77,7 @@ public class SingUpController {
 
 //        User user = userServise.getById((Long) userId);
 
-        User user = newUserRepository.getUserById((Long)userId);
+        User user = newUserRepository.getById((Long)userId);
 
         System.out.println("id = " + user.getId() + "username = " + user.getUsername() + "; email = " + user.getPassword());
 
