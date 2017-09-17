@@ -18,7 +18,7 @@ public class NewUserRepository {
     }
 
 
-    public void save(User user) throws java.sql.SQLIntegrityConstraintViolationException, org.springframework.dao.DuplicateKeyException{
+    public void save(User user) throws java.sql.SQLIntegrityConstraintViolationException, org.springframework.dao.DuplicateKeyException {
         String sql = "INSERT INTO user_tbl (username, email, password) VALUES (?, ?, ?)";
 
         jdbcTemplate.update(sql, user.getUsername(), user.getEmail(), user.getPassword());
@@ -26,19 +26,19 @@ public class NewUserRepository {
     }
 
 
-    public boolean isSignedIn(User user) {
-        String sql = "SELECT id, username, email FROM user_tbl WHERE email = ?";
+    public User isSignedIn(User user) throws org.springframework.dao.EmptyResultDataAccessException {
+        String sql = "SELECT id, username, email FROM user_tbl WHERE email = '123@yandex.ru'";
 
-        User anotherUser = jdbcTemplate.queryForObject(sql, new Object[] { user.getEmail() }, new UserMapper());
+        User anotherUser = jdbcTemplate.queryForObject(sql, new UserMapper());
 
         if(anotherUser == null) {
-            return false;
+            return null;
         }
 
 //        if( !anotherUser.getPassword().equals( user.getPassword() ) ) {
 //            return false;
 //        }
-        return true;
+        return anotherUser;
     }
 
 

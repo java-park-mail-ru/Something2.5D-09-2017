@@ -55,13 +55,17 @@ public class SingUpController {
 
     @RequestMapping(value = "/signIn", method = RequestMethod.POST,
                     consumes = "application/json", produces = "application/json")
-    public ResponseEntity<HashMap<String, String>> signIn(@RequestBody User user, HttpSession session)
+    public ResponseEntity<User> signIn(@RequestBody User user, HttpSession session)
     {
-        if( !newUserRepository.isSignedIn(user) ) {
-            System.out.println("Wrong signing in!");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        User result = null;
+        try {
+            result = newUserRepository.isSignedIn(user);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        catch(org.springframework.dao.EmptyResultDataAccessException e) {
+            System.out.println("SignedIn exceprion@@ = " + e);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
