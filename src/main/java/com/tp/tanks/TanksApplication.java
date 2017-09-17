@@ -13,27 +13,27 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 
 @SpringBootApplication
-public class TanksApplication implements CommandLineRunner {
+public class TanksApplication {
 	private static final Logger log = LoggerFactory.getLogger(TanksApplication.class);
 
-	@Autowired
-	JdbcTemplate jdbcTemplate;
+//	@Autowired
+//	JdbcTemplate jdbcTemplate;
 
 	public static void main(String[] args) {
 		SpringApplication.run(TanksApplication.class, args);
 	}
 
-	@Override
-	public void run(String... strings) throws Exception {
-
-		System.out.println("Creating tables");
-
-//		jdbcTemplate.execute("DROP TABLE customers IF EXISTS");
-		jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS users(" +
-				"id SERIAL, username VARCHAR(255), email VARCHAR(255), password VARCHAR(255))");
-
-		System.out.println("table created");
-	}
+//	@Override
+//	public void run(String... strings) throws Exception {
+//
+//		System.out.println("Creating tables");
+//
+////		jdbcTemplate.execute("DROP TABLE customers IF EXISTS");
+//		jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS users(" +
+//				"id SERIAL, username VARCHAR(255), email VARCHAR(255), password VARCHAR(255))");
+//
+//		System.out.println("table created");
+//	}
 }
 
 //	@Bean

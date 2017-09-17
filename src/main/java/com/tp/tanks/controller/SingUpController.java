@@ -34,13 +34,14 @@ public class SingUpController {
         // TODO ConstraintViolationException
         logger.info("Start Sign Up");
 
-//        if( !newUserRepository.checkRegistration(user) ) {
-//            System.out.println("This email already exists!!");
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
+        if( !newUserRepository.checkRegistration(user) ) {
+            System.out.println("This email already exists!!");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         newUserRepository.saveUser(user);
 //        userServise.save(user);
+        System.out.println("IDDDD:::    " + user.getId());
         sessioin.setAttribute("userId", user.getId());
         System.out.println("Registration complete!");
         return new ResponseEntity<>(user, HttpStatus.CREATED);

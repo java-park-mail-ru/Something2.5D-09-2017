@@ -19,19 +19,19 @@ public class NewUserRepository {
 
 
     public void saveUser(User user) {
-        String sql = "INSERT INTO users (id, username, email, password) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO user_tbl (username, email, password) VALUES (?, ?, ?)";
 
-        jdbcTemplate.update(sql, user.getId(), user.getUsername(), user.getEmail(), user.getPassword());
-
+        jdbcTemplate.update(sql, user.getUsername(), user.getEmail(), user.getPassword());
         System.out.println("Created User = " + user.getUsername() + " email = " + user.getEmail());
     }
 
 
     public boolean checkRegistration(User user) {
         //Проверка уникальности email
-        String sql = "SELECT id, username, email FROM users WHERE email = ?";
+        String sql = "SELECT id, username, email FROM user_tbl WHERE email = '111@yandex.ru'";
 
-        User anotherUser = jdbcTemplate.queryForObject(sql, new Object[] { user.getEmail() }, new UserMapper());
+        User anotherUser = jdbcTemplate.queryForObject(sql, new Object[] { }, new UserMapper());
+
 
         if(anotherUser == null) {
             return false;
@@ -41,7 +41,7 @@ public class NewUserRepository {
 
 
     public boolean checkSignIn(User user) {
-        String sql = "SELECT id, username, email FROM users WHERE email = ?";
+        String sql = "SELECT id, username, email FROM user_tbl WHERE email = ?";
 
         User anotherUser = jdbcTemplate.queryForObject(sql, new Object[] { user.getEmail() }, new UserMapper());
 
@@ -57,7 +57,7 @@ public class NewUserRepository {
 
 
     public User getUserById(long userId) {
-        String sql = "SELECT id, username, email FROM users WHERE id = ?";
+        String sql = "SELECT id, username, email FROM user_tbl WHERE id = ?";
 
         User user = jdbcTemplate.queryForObject(sql, new Object[] { userId }, new UserMapper());
 
