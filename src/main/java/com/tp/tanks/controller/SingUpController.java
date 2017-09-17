@@ -41,7 +41,7 @@ public class SingUpController {
             System.out.println("This email already exists!!" + e);
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 
-        } catch(Exception a) {
+        } catch(org.springframework.dao.DuplicateKeyException a) {
             System.out.println("EXCEPTION@@@!!" + a);
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }

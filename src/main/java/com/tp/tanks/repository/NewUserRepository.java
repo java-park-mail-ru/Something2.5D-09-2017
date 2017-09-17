@@ -18,7 +18,7 @@ public class NewUserRepository {
     }
 
 
-    public void save(User user) throws java.sql.SQLIntegrityConstraintViolationException{
+    public void save(User user) throws java.sql.SQLIntegrityConstraintViolationException, org.springframework.dao.DuplicateKeyException{
         String sql = "INSERT INTO user_tbl (username, email, password) VALUES (?, ?, ?)";
 
         jdbcTemplate.update(sql, user.getUsername(), user.getEmail(), user.getPassword());
