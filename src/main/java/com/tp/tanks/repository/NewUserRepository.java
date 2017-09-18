@@ -3,8 +3,13 @@ package com.tp.tanks.repository;
 import com.tp.tanks.model.User;
 import com.tp.tanks.service.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
 
 @Repository
 public class NewUserRepository {
@@ -16,12 +21,38 @@ public class NewUserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public void save(User user) throws java.sql.SQLIntegrityConstraintViolationException, org.springframework.dao.DuplicateKeyException {
+    @Bean
+    public BCryptPasswordEncoder bcryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    private User create(String username, String email, String password)
+            throws org.springframework.dao.DuplicateKeyException, org.mariadb.jdbc.internal.util.dao.QueryException
+    {
+
         String sql = "INSERT INTO user_tbl (username, email, password) VALUES (?, ?, ?)";
 
-        jdbcTemplate.update(sql, user.getUsername(), user.getEmail(), user.getPassword());
-        System.out.println("Created User = " + user.getUsername() + " email = " + user.getEmail() + " password = " + user.getPassword());
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement pst = con.prepareStatement(
+                    sql,
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+            pst.setString(1, username);
+            pst.setString(2, email);
+            pst.setString(3, bCryptPasswordEncoder.encode(password));
+            return pst;
+        }, keyHolder);
+        return new User(keyHolder.getKey().longValue(), username, email, password);
+    }
+
+
+    public User save(User user)
+            throws org.springframework.dao.DuplicateKeyException, org.mariadb.jdbc.internal.util.dao.QueryException {
+
+        return create(user.getUsername(), user.getEmail(), user.getPassword());
     }
 
 
