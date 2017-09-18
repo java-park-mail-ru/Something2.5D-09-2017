@@ -25,7 +25,7 @@ public class NewUserRepository {
     }
 
 
-    public User isSignedIn(User user) throws org.springframework.dao.EmptyResultDataAccessException {
+    public User signIn(User user) throws org.springframework.dao.EmptyResultDataAccessException {
         String sql = "SELECT * FROM user_tbl WHERE email = ?";
 
         User anotherUser = jdbcTemplate.queryForObject(sql, new Object[] { user.getEmail() }, new UserMapper());

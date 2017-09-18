@@ -59,7 +59,7 @@ public class SingUpController {
     {
         User result = null;
         try {
-            result = newUserRepository.isSignedIn(user);
+            result = newUserRepository.signIn(user);
         }
         catch(org.springframework.dao.EmptyResultDataAccessException e) {
             System.out.println("SignedIn exceprion@@ = " + e);
