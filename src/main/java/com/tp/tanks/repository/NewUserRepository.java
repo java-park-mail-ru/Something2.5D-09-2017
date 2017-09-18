@@ -5,7 +5,6 @@ import com.tp.tanks.service.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class NewUserRepository {
@@ -27,7 +26,7 @@ public class NewUserRepository {
 
 
     public User isSignedIn(User user) throws org.springframework.dao.EmptyResultDataAccessException {
-        String sql = "SELECT id, username, email, password FROM user_tbl WHERE email = ?";
+        String sql = "SELECT * FROM user_tbl WHERE email = ?";
 
         User anotherUser = jdbcTemplate.queryForObject(sql, new Object[] { user.getEmail() }, new UserMapper());
 
@@ -38,6 +37,7 @@ public class NewUserRepository {
         if( !anotherUser.getPassword().equals( user.getPassword() ) ) {
             return null;
         }
+
         System.out.println("SignIn complete!");
         return anotherUser;
     }
@@ -52,4 +52,13 @@ public class NewUserRepository {
         return user;
     }
 }
+
+//How to get map
+//        Map<String, Object> anotherUser2 = jdbcTemplate.queryForMap("select * from user_tbl where email = ?",
+//                user.getEmail());
+//
+//        List<String> keys = new ArrayList<String>(anotherUser2.keySet());
+//        for (String key: keys) {
+//            System.out.println(key + ": " + anotherUser2.get(key));
+//        }
 
