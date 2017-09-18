@@ -22,22 +22,23 @@ public class NewUserRepository {
         String sql = "INSERT INTO user_tbl (username, email, password) VALUES (?, ?, ?)";
 
         jdbcTemplate.update(sql, user.getUsername(), user.getEmail(), user.getPassword());
-        System.out.println("Created User = " + user.getUsername() + " email = " + user.getEmail());
+        System.out.println("Created User = " + user.getUsername() + " email = " + user.getEmail() + " password = " + user.getPassword());
     }
 
 
     public User isSignedIn(User user) throws org.springframework.dao.EmptyResultDataAccessException {
-        String sql = "SELECT id, username, email FROM user_tbl WHERE email = '123@yandex.ru'";
+        String sql = "SELECT id, username, email, password FROM user_tbl WHERE email = ?";
 
-        User anotherUser = jdbcTemplate.queryForObject(sql, new UserMapper());
+        User anotherUser = jdbcTemplate.queryForObject(sql, new Object[] { user.getEmail() }, new UserMapper());
 
         if(anotherUser == null) {
             return null;
         }
 
-//        if( !anotherUser.getPassword().equals( user.getPassword() ) ) {
-//            return false;
-//        }
+        if( !anotherUser.getPassword().equals( user.getPassword() ) ) {
+            return null;
+        }
+        System.out.println("SignIn complete!");
         return anotherUser;
     }
 

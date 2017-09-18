@@ -16,7 +16,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @JsonIgnore
+//    @JsonIgnore
     private String password;
 
     public User()
@@ -53,9 +53,9 @@ public class User {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    @JsonIgnore
+//    @JsonIgnore
     public String getPassword() { return password; }
-    @JsonProperty
+//    @JsonProperty
     public void setPassword(String password) { this.password = password; }
 
     @Override
