@@ -18,54 +18,40 @@ public class SingUpController {
 
     private final static Logger logger = Logger.getLogger(SingUpController.class.getName());
 
-
     @RequestMapping(value = "/signUp", method = RequestMethod.POST,
                     consumes = "application/json", produces = "application/json")
-    public ResponseEntity<User> signUp(@RequestBody User user, HttpSession sessioin) {
-
-        // TODO ConstraintViolationException
-        logger.info("Start Sign Up");
+    public ResponseEntity<User> signUp(@RequestBody User user, HttpSession session) {
 
         User saveUser = userService.save(user);
         if (saveUser == null) { return new ResponseEntity<>(HttpStatus.FORBIDDEN); }
 
-        sessioin.setAttribute("user", saveUser);
-        System.out.println("Registration complete!");
+        session.setAttribute("user", saveUser);
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }
-
 
     @RequestMapping(value = "/signIn", method = RequestMethod.POST,
                     consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> signIn(@RequestBody User user, HttpSession session)
     {
-//        User result = null;
-//        try {
-//            result = userService.signIn(user);
-//        }
-//        catch(org.springframework.dao.EmptyResultDataAccessException e) {
-//            System.out.println("SignedIn exceprion@@ = " + e);
-//        }
+        User loginUser = userService.signIn(user);
+        if (loginUser == null) { return new ResponseEntity<>(HttpStatus.FORBIDDEN); }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        session.setAttribute("user", loginUser);
+
+        return new ResponseEntity<>(loginUser, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity logout(HttpSession session) {
+        session.removeAttribute("user");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getProfile(HttpSession session)
     {
         Object user = session.getAttribute("user");
-        if (user == null) {
-            System.out.println("Not logged in!");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-////        User user = userServise.getById((Long) userId);
-//
-//        User user = userService.getById((Long)userId);
-//
-//        System.out.println("id = " + user.getId() + "username = " + user.getUsername() + "; email = " + user.getPassword());
-
+        if (user == null) { return new ResponseEntity<>(HttpStatus.FORBIDDEN); }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

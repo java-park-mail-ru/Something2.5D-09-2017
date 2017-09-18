@@ -21,16 +21,8 @@ public class UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Bean
-    public BCryptPasswordEncoder bcryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    private User create(String username, String email, String password)
-            throws org.springframework.dao.DuplicateKeyException, org.mariadb.jdbc.internal.util.dao.QueryException
+    public User create(String username, String email, String password)
+            throws org.springframework.dao.DuplicateKeyException
     {
 
         String sql = "INSERT INTO user_tbl (username, email, password) VALUES (?, ?, ?)";
@@ -42,35 +34,16 @@ public class UserRepository {
                     PreparedStatement.RETURN_GENERATED_KEYS);
             pst.setString(1, username);
             pst.setString(2, email);
-            pst.setString(3, bCryptPasswordEncoder.encode(password));
+            pst.setString(3, password);
             return pst;
         }, keyHolder);
         return new User(keyHolder.getKey().longValue(), username, email, password);
     }
 
+    public User findByEmail(String email) throws org.springframework.dao.EmptyResultDataAccessException {
 
-    public User save(User user)
-            throws org.springframework.dao.DuplicateKeyException, org.mariadb.jdbc.internal.util.dao.QueryException {
-
-        return create(user.getUsername(), user.getEmail(), user.getPassword());
-    }
-
-
-    public User signIn(User user) throws org.springframework.dao.EmptyResultDataAccessException {
         String sql = "SELECT * FROM user_tbl WHERE email = ?";
-
-        User anotherUser = jdbcTemplate.queryForObject(sql, new Object[] { user.getEmail() }, new UserMapper());
-
-        if(anotherUser == null) {
-            return null;
-        }
-
-        if( !anotherUser.getPassword().equals( user.getPassword() ) ) {
-            return null;
-        }
-
-        System.out.println("SignIn complete!");
-        return anotherUser;
+        return jdbcTemplate.queryForObject(sql, new Object[] { email }, new UserMapper());
     }
 
 
@@ -83,13 +56,3 @@ public class UserRepository {
         return user;
     }
 }
-
-//How to get map
-//        Map<String, Object> anotherUser2 = jdbcTemplate.queryForMap("select * from user_tbl where email = ?",
-//                user.getEmail());
-//
-//        List<String> keys = new ArrayList<String>(anotherUser2.keySet());
-//        for (String key: keys) {
-//            System.out.println(key + ": " + anotherUser2.get(key));
-//        }
-
