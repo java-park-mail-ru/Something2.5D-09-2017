@@ -12,12 +12,12 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 
 @Repository
-public class NewUserRepository {
+public class UserRepository {
     private final JdbcTemplate jdbcTemplate ;
 
 
     @Autowired
-    public NewUserRepository(JdbcTemplate jdbcTemplate) {
+    public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
