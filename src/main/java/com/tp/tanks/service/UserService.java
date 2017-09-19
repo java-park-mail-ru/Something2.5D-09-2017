@@ -58,9 +58,3 @@ public class UserService {
         }
     }
 }
-
-//    @Transactional
-//    public User getById(Long id)
-//    {
-//        return userRepository.getOne(id);
-//    }
