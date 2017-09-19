@@ -25,15 +25,17 @@ public class UserRepository {
             throws DuplicateKeyException {
 
         final String sql = "INSERT INTO user_tbl (username, email, password) VALUES (?, ?, ?)";
-
+        final int usernameIdx = 1;
+        final int emailIdx = 2;
+        final int passwordIdx = 3;
         final GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             final PreparedStatement pst = con.prepareStatement(
                     sql,
                     PreparedStatement.RETURN_GENERATED_KEYS);
-            pst.setString(1, username);
-            pst.setString(2, email);
-            pst.setString(3, password);
+            pst.setString(usernameIdx, username);
+            pst.setString(emailIdx, email);
+            pst.setString(passwordIdx, password);
             return pst;
         }, keyHolder);
         return new User(keyHolder.getKey().longValue(), username, email, password);
