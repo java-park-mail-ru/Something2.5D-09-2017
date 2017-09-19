@@ -18,7 +18,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptEncoder;
+    private BCryptPasswordEncoder cryptEncoder;
 
     @Bean
     public BCryptPasswordEncoder bcryptPasswordEncoder() {
@@ -29,9 +29,8 @@ public class UserService {
 
         try {
 
-            return userRepository.create(user.getUsername(), user.getEmail(), bCryptEncoder.encode(user.getPassword()));
-        }
-        catch (DuplicateKeyException err) {
+            return userRepository.create(user.getUsername(), user.getEmail(), cryptEncoder.encode(user.getPassword()));
+        } catch (DuplicateKeyException err) {
             System.out.println(err.toString());
             return null;
         }
@@ -43,7 +42,7 @@ public class UserService {
 
             final User findUser = userRepository.findByEmail(user.getEmail());
 
-            if (!bCryptEncoder.matches(user.getPassword(), findUser.getPassword())) {
+            if (!cryptEncoder.matches(user.getPassword(), findUser.getPassword())) {
                 System.out.println("password not equal");
                 return null;
             }
