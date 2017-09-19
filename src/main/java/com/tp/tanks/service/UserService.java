@@ -4,13 +4,13 @@ import com.tp.tanks.model.User;
 import com.tp.tanks.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.HashMap;
 
-
+@SuppressWarnings("SpringAutowiredFieldsWarningInspection")
 @Service
 public class UserService {
 
@@ -18,23 +18,42 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder cryptEncoder;
 
     @Bean
     public BCryptPasswordEncoder bcryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Transactional
-    public HashMap<String, String> save(User user) {
+    public User save(User user) {
 
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        User saving_user = userRepository.save(user);
+        try {
 
-        HashMap<String, String> body = new HashMap<>();
-        body.put("id", saving_user.getId().toString());
-        body.put("username", saving_user.getUsername());
+            return userRepository.create(user.getUsername(), user.getEmail(), cryptEncoder.encode(user.getPassword()));
+        } catch (DuplicateKeyException err) {
+            System.out.println(err.toString());
+            return null;
+        }
+    }
 
-        return body;
+    public User signIn(User user) {
+
+        try {
+
+            final User findUser = userRepository.findByEmail(user.getEmail());
+
+            if (!cryptEncoder.matches(user.getPassword(), findUser.getPassword())) {
+                System.out.println("password not equal");
+                return null;
+            }
+
+            return findUser;
+
+        } catch (EmptyResultDataAccessException err) {
+
+            System.out.println(err.toString());
+            System.out.println("not found by email");
+            return null;
+        }
     }
 }

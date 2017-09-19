@@ -5,45 +5,58 @@ import com.tp.tanks.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 
-@Controller
+@SuppressWarnings("SpringAutowiredFieldsWarningInspection")
+@RestController
 public class SingUpController {
 
     @Autowired
-    private UserService userServise;
+    private UserService userService;
 
-    private final static Logger logger = Logger.getLogger(SingUpController.class.getName());
+    @RequestMapping(value = "/signUp", method = RequestMethod.POST,
+            consumes = "application/json", produces = "application/json")
+    public ResponseEntity<User> signUp(@RequestBody User user, HttpSession session) {
 
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public String signupGet(Model model) {
+        final User saveUser = userService.save(user);
+        if (saveUser == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
 
-        return "signupGet";
+        session.setAttribute("user", saveUser);
+        return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST,
-                    consumes = "application/json", produces = "application/json")
-    public ResponseEntity<HashMap<String, String>> signupPost(@RequestBody User user) {
+    @RequestMapping(value = "/signIn", method = RequestMethod.POST,
+            consumes = "application/json", produces = "application/json")
+    public ResponseEntity<User> signIn(@RequestBody User user, HttpSession session) {
 
-        // TODO ConstraintViolationException
-        logger.info("Start Sign Up");
+        final User loginUser = userService.signIn(user);
+        if (loginUser == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
 
-        HashMap<String, String> body = userServise.save(user);
+        session.setAttribute("user", loginUser);
 
-        MultiValueMap<String, String> responseHeaders = new LinkedMultiValueMap<String, String>();
-        responseHeaders.set("Content-Type", "application/json");
-        responseHeaders.set("Accept", "application/json");
+        return new ResponseEntity<>(loginUser, HttpStatus.OK);
+    }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity logout(HttpSession session) {
 
-        return new ResponseEntity<>(body, responseHeaders, HttpStatus.OK);
+        session.removeAttribute("user");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/profile", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity getProfile(HttpSession session) {
+
+        final Object user = session.getAttribute("user");
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

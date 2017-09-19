@@ -1,6 +1,6 @@
 # tanks-backend
 
-## requarements
+## requirements
 Install MariaDB from official website: 
 
     https://downloads.mariadb.org/mariadb/repositories/#mirror=mephi
