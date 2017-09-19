@@ -31,14 +31,6 @@ public class User {
         this.password = password;
     }
 
-    public User(User other)
-    {
-        this.id = other.id;
-        this.username = other.username;
-        this.email = other.email;
-        this.password = other.password;
-    }
-
     public Long getId() { return id; }
     public void setId(Long id) {
         this.id = id;

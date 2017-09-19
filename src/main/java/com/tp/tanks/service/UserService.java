@@ -4,10 +4,13 @@ import com.tp.tanks.model.User;
 import com.tp.tanks.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+@SuppressWarnings("SpringAutowiredFieldsWarningInspection")
 @Service
 public class UserService {
 
@@ -28,7 +31,7 @@ public class UserService {
 
             return userRepository.create(user.getUsername(), user.getEmail(), bCryptEncoder.encode(user.getPassword()));
         }
-        catch (org.springframework.dao.DuplicateKeyException err) {
+        catch (DuplicateKeyException err) {
             System.out.println(err.toString());
             return null;
         }
@@ -38,7 +41,7 @@ public class UserService {
 
         try {
 
-            User findUser = userRepository.findByEmail(user.getEmail());
+            final User findUser = userRepository.findByEmail(user.getEmail());
 
             if (!bCryptEncoder.matches(user.getPassword(), findUser.getPassword())) {
                 System.out.println("password not equal");
@@ -47,18 +50,17 @@ public class UserService {
 
             return findUser;
 
-        } catch (org.springframework.dao.EmptyResultDataAccessException err) {
+        } catch (EmptyResultDataAccessException err) {
 
             System.out.println(err.toString());
             System.out.println("not found by email");
             return null;
         }
     }
+}
 
 //    @Transactional
 //    public User getById(Long id)
 //    {
 //        return userRepository.getOne(id);
 //    }
-
-}
