@@ -25,6 +25,8 @@ public class SingUpController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
+        System.out.println("signup: id = " + saveUser.getId());
+
         session.setAttribute("userId", saveUser.getId());
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }
@@ -53,7 +55,7 @@ public class SingUpController {
     @RequestMapping(value = "/profile", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getProfile(HttpSession session) {
 
-        final Object id = session.getAttribute("userID");
+        final Object id = session.getAttribute("userId");
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
