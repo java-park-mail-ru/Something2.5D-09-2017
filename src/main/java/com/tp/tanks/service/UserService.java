@@ -9,7 +9,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 @SuppressWarnings("SpringAutowiredFieldsWarningInspection")
 @Service
 public class UserService {
@@ -19,6 +18,7 @@ public class UserService {
 
     @Autowired
     private BCryptPasswordEncoder cryptEncoder;
+
 
     @Bean
     public BCryptPasswordEncoder bcryptPasswordEncoder() {
@@ -44,6 +44,15 @@ public class UserService {
             }
 
             return findUser;
+        } catch (EmptyResultDataAccessException err) {
+            return null;
+        }
+    }
+
+    public User getByid(Long id) {
+
+        try {
+            return userRepository.getById(id);
         } catch (EmptyResultDataAccessException err) {
             return null;
         }
