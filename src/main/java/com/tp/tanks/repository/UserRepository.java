@@ -48,8 +48,7 @@ public class UserRepository {
     }
 
 
-    @SuppressWarnings("unused")
-    public User getById(long userId) {
+    public User getById(long userId) throws EmptyResultDataAccessException {
         final String sql = "SELECT id, username, email FROM user_tbl WHERE id = ?";
 
         return jdbcTemplate.queryForObject(sql, new Object[]{userId}, new UserMapper());

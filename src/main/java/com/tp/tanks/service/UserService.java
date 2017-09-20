@@ -51,4 +51,13 @@ public class UserService {
             return null;
         }
     }
+
+    public User getByid(Long id) {
+
+        try {
+            return userRepository.getById(id);
+        } catch (EmptyResultDataAccessException err) {
+            return null;
+        }
+    }
 }
