@@ -28,10 +28,8 @@ public class UserService {
     public User save(User user) {
 
         try {
-
             return userRepository.create(user.getUsername(), user.getEmail(), cryptEncoder.encode(user.getPassword()));
         } catch (DuplicateKeyException err) {
-            System.out.println(err.toString());
             return null;
         }
     }
@@ -39,20 +37,14 @@ public class UserService {
     public User signIn(User user) {
 
         try {
-
             final User findUser = userRepository.findByEmail(user.getEmail());
 
             if (!cryptEncoder.matches(user.getPassword(), findUser.getPassword())) {
-                System.out.println("password not equal");
                 return null;
             }
 
             return findUser;
-
         } catch (EmptyResultDataAccessException err) {
-
-            System.out.println(err.toString());
-            System.out.println("not found by email");
             return null;
         }
     }

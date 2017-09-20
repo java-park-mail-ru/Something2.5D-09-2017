@@ -42,8 +42,8 @@ public class UserRepository {
     }
 
     public User findByEmail(String email) throws EmptyResultDataAccessException {
-
         final String sql = "SELECT * FROM user_tbl WHERE email = ?";
+
         return jdbcTemplate.queryForObject(sql, new Object[]{email}, new UserMapper());
     }
 
@@ -52,9 +52,6 @@ public class UserRepository {
     public User getById(long userId) {
         final String sql = "SELECT id, username, email FROM user_tbl WHERE id = ?";
 
-        final User user = jdbcTemplate.queryForObject(sql, new Object[]{userId}, new UserMapper());
-
-        System.out.println("User From Base!!! " + user.getId() + "username = " + user.getUsername() + " email = " + user.getEmail());
-        return user;
+        return jdbcTemplate.queryForObject(sql, new Object[]{userId}, new UserMapper());
     }
 }
