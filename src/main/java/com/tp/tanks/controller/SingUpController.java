@@ -9,15 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+@SuppressWarnings("SpringAutowiredFieldsWarningInspection")
 @RestController
 public class SingUpController {
 
-    private final UserService userService;
-
     @Autowired
-    public SingUpController(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @RequestMapping(value = "/signUp", method = RequestMethod.POST,
             consumes = "application/json", produces = "application/json")

@@ -9,19 +9,16 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
+@SuppressWarnings("SpringAutowiredFieldsWarningInspection")
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-
-    private final BCryptPasswordEncoder cryptEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder cryptEncoder) {
-        this.userRepository = userRepository;
-        this.cryptEncoder = cryptEncoder;
-    }
+    private BCryptPasswordEncoder cryptEncoder;
+
 
     @Bean
     public BCryptPasswordEncoder bcryptPasswordEncoder() {
