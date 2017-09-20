@@ -10,15 +10,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
-@SuppressWarnings("SpringAutowiredFieldsWarningInspection")
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final BCryptPasswordEncoder cryptEncoder;
 
     @Autowired
-    private BCryptPasswordEncoder cryptEncoder;
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder cryptEncoder) {
+        this.userRepository = userRepository;
+        this.cryptEncoder = cryptEncoder;
+    }
 
     @Bean
     public BCryptPasswordEncoder bcryptPasswordEncoder() {
