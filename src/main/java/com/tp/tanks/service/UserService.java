@@ -4,20 +4,24 @@ import com.tp.tanks.model.User;
 import com.tp.tanks.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@SuppressWarnings("SpringAutowiredFieldsWarningInspection")
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final BCryptPasswordEncoder cryptEncoder;
 
     @Autowired
-    private BCryptPasswordEncoder cryptEncoder;
+    public UserService(UserRepository userRepository, @Lazy BCryptPasswordEncoder cryptEncoder) {
+        this.userRepository = userRepository;
+        this.cryptEncoder = cryptEncoder;
+    }
 
 
     @Bean
