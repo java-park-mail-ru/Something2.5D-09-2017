@@ -31,6 +31,7 @@ public class User {
         this.password = password;
     }
 
+    @SuppressWarnings("unused")
     public Long getId() {
         return id;
     }
