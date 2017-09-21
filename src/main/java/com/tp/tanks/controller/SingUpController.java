@@ -28,8 +28,6 @@ public class SingUpController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        System.out.println("signup: id = " + saveUser.getId());
-
         session.setAttribute("userId", saveUser.getId());
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }
