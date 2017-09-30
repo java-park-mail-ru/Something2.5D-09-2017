@@ -24,6 +24,7 @@ public class SingUpController {
         this.logger = LoggerFactory.getLogger(SingUpController.class);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/signUp", method = RequestMethod.POST,
             consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> signUp(@RequestBody User user, HttpSession session) {
@@ -43,6 +44,7 @@ public class SingUpController {
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/signIn", method = RequestMethod.POST,
             consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> signIn(@RequestBody User user, HttpSession session) {
@@ -62,6 +64,7 @@ public class SingUpController {
         return new ResponseEntity<>(loginUser, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity logout(HttpSession session) {
 
@@ -70,6 +73,7 @@ public class SingUpController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/profile", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getProfile(HttpSession session) {
 
