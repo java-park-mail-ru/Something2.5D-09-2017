@@ -28,9 +28,9 @@ public class SingUpController {
     @RequestMapping(value = "/signUp", method = RequestMethod.POST,
             consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> signUp(@RequestBody User user, HttpSession session) {
-
+        //В signUp надо добавить проверку что пользователь залогинен
         this.logger.info("[signUp] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail());
-
+        this.logger.info(user.getPassword());
         final User saveUser = userService.save(user);
 
         if (saveUser == null) {
@@ -65,12 +65,14 @@ public class SingUpController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity logout(HttpSession session) {
-
-        this.logger.info("[logout]");
-        session.removeAttribute("userId");
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (session.getAttribute("userId") != null) {
+            this.logger.info("[logout]");
+            session.removeAttribute("userId");
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @CrossOrigin
