@@ -73,7 +73,7 @@ public class SingUpController {
             session.removeAttribute("userId");
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        
+
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 

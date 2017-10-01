@@ -96,7 +96,6 @@ public class SignUpControllerTest {
 
         final List<String> cookie = signUp(new User(null, defaultUsername, defaultEmail2, defaultPassword), HttpStatus.CREATED);
         logout(cookie, HttpStatus.OK);
-
     }
 
 
@@ -141,5 +140,4 @@ public class SignUpControllerTest {
         logout(cookie, HttpStatus.OK);
         getProfile(cookie, HttpStatus.FORBIDDEN);
     }
-
 }
