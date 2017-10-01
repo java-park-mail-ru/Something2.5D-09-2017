@@ -76,7 +76,7 @@ public class SingUpController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/profile", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/profile", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity getProfile(HttpSession session) {
 
         final Object id = session.getAttribute("userId");
