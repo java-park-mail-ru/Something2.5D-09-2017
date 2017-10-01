@@ -1,9 +1,5 @@
 package com.tp.tanks.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.tp.tanks.model.JsonCreator;
 import com.tp.tanks.model.User;
 import com.tp.tanks.model.UserGenerator;
 import org.junit.Test;
@@ -13,8 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,12 +43,12 @@ public class SignUpControllerTest {
         return parts;
     }
 
-    private User signUp(User user) {
-        return restTemplate.postForObject("/signUp", generateMap(user), User.class);
+    private ResponseEntity<User> signUp(User user) {
+        return restTemplate.postForEntity("/signUp", generateMap(user), User.class);
     }
 
     private ResponseEntity<User> signIn(User user) {
-        return restTemplate.postForEntity("/signIn", user, User.class);
+        return restTemplate.postForEntity("/signIn", generateMap(user), User.class);
     }
 
     private HttpEntity getEntity(List<String> cookie) {
@@ -75,68 +69,68 @@ public class SignUpControllerTest {
     @Test
     public void testSignUp() {
         User testUser = UserGenerator.generateUser();
-        User resultUser;
+        ResponseEntity<User> resultUser;
 
         resultUser = signUp(testUser);
-        signUp(testUser);
-//        assertEquals(HttpStatus.CREATED, resultUser.getStatusCode());
-//        resultUser = logout(getCookie(resultUser));
-//        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
+        assertEquals(HttpStatus.CREATED, resultUser.getStatusCode());
+
+        resultUser = logout(getCookie(resultUser));
+        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
     }
 
-//    @Test
-//    public void testSignUpConflict() {
-//        User testUser = UserGenerator.generateUser();
-//
-//        ResponseEntity<User> resultUser = signUp(testUser);
-//        assertEquals(HttpStatus.CREATED, resultUser.getStatusCode());
-//
-//        resultUser = signUp(testUser);
-//        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
-//    }
-//
-//    @Test
-//    public void testSignIn() {
-//        User firstUser = UserGenerator.generateUser();
-//
-//        ResponseEntity<User> resultUser = signIn(firstUser);
-//        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
-//
-//        resultUser = signUp(firstUser);
-//        logout(getCookie(resultUser));
-//
-//        resultUser = signIn(firstUser);
-//        resultUser = logout(getCookie(resultUser));
-//        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
-//    }
-//
-//    @Test
-//    public void testLogout() {
-//        User testUser = UserGenerator.generateUser();
-//
-//        ResponseEntity<User> resultUser = signUp(testUser);
-//
-//        resultUser = logout(getCookie(resultUser));
-//        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
-//
-//        resultUser = logout(getCookie(resultUser));
-//        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
-//    }
-//
-//    @Test
-//    public void testGetProfile() {
-//        List<String> cookie = new ArrayList<>();
-//        ResponseEntity<User> resultUser = getProfile(cookie);
-//        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
-//
-//        User testUser = UserGenerator.generateUser();
-//
-//        resultUser = signUp(testUser);
-//        resultUser = getProfile(getCookie(resultUser));
-//        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
-//
-//        logout(getCookie(resultUser));
-//        resultUser = getProfile(getCookie(resultUser));
-//        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
-//    }
+    @Test
+    public void testSignUpConflict() {
+        User testUser = UserGenerator.generateUser();
+
+        ResponseEntity<User> resultUser = signUp(testUser);
+        assertEquals(HttpStatus.CREATED, resultUser.getStatusCode());
+
+        resultUser = signUp(testUser);
+        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
+    }
+
+    @Test
+    public void testSignIn() {
+        User firstUser = UserGenerator.generateUser();
+
+        ResponseEntity<User> resultUser = signIn(firstUser);
+        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
+
+        resultUser = signUp(firstUser);
+        logout(getCookie(resultUser));
+
+        resultUser = signIn(firstUser);
+        resultUser = logout(getCookie(resultUser));
+        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
+    }
+
+    @Test
+    public void testLogout() {
+        User testUser = UserGenerator.generateUser();
+
+        ResponseEntity<User> resultUser = signUp(testUser);
+
+        resultUser = logout(getCookie(resultUser));
+        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
+
+        resultUser = logout(getCookie(resultUser));
+        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
+    }
+
+    @Test
+    public void testGetProfile() {
+        List<String> cookie = new ArrayList<>();
+        ResponseEntity<User> resultUser = getProfile(cookie);
+        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
+
+        User testUser = UserGenerator.generateUser();
+
+        resultUser = signUp(testUser);
+        resultUser = getProfile(getCookie(resultUser));
+        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
+
+        logout(getCookie(resultUser));
+        resultUser = getProfile(getCookie(resultUser));
+        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
+    }
 }
