@@ -40,22 +40,19 @@ public class SignUpControllerTest {
         return restTemplate.postForEntity("/signIn", user, User.class);
     }
 
-    private ResponseEntity<User> logout(List<String> cookie) {
+    private HttpEntity getEntity(List<String> cookie) {
         final HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.put(HttpHeaders.COOKIE, cookie);
 
-        final HttpEntity requestEntity = new HttpEntity(requestHeaders);
+        return new HttpEntity(requestHeaders);
+    }
 
-        return restTemplate.exchange("/logout", HttpMethod.GET, requestEntity, User.class);
+    private ResponseEntity<User> logout(List<String> cookie) {
+        return restTemplate.exchange("/logout", HttpMethod.GET, getEntity(cookie), User.class);
     }
 
     private ResponseEntity<User> getProfile(List<String> cookie) {
-        final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.put(HttpHeaders.COOKIE, cookie);
-
-        final HttpEntity requestEntity = new HttpEntity(requestHeaders);
-
-        return restTemplate.exchange("/profile", HttpMethod.GET, requestEntity, User.class);
+        return restTemplate.exchange("/profile", HttpMethod.GET, getEntity(cookie), User.class);
     }
 
     @Test
