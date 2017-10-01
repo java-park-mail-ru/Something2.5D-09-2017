@@ -1,6 +1,8 @@
 package com.tp.tanks.controller;
 
 import com.tp.tanks.model.User;
+import com.tp.tanks.model.UserGenerator;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,6 @@ public class SignUpControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
-
-    private final String defaultUsername = "userNameeee";
-    private final String defaultPassword = "iampassword";
 
     private List<String> getCookie(ResponseEntity<User> user) {
         final List<String> cookie = user.getHeaders().get("Set-Cookie");
@@ -82,39 +81,36 @@ public class SignUpControllerTest {
 
     @Test
     public void testSignUp() {
-        final String defaultEmail = "aaabbb@mail.com";
-        final String defaultEmail2 = "sssxxx@mail.com";
+        User testUser = UserGenerator.generateUser();
 
-        signUp(new User(null, defaultUsername, defaultEmail, defaultPassword), HttpStatus.CREATED);
-        signUp(new User(null, defaultUsername, defaultEmail, defaultPassword), HttpStatus.FORBIDDEN);
-
-        final List<String> cookie = signUp(new User(null, defaultUsername, defaultEmail2, defaultPassword), HttpStatus.CREATED);
+        final List<String> cookie = signUp(testUser, HttpStatus.CREATED);
         logout(cookie, HttpStatus.OK);
+    }
+
+    @Test
+    public void testSignUpConflict() {
+        User testUser = UserGenerator.generateUser();
+
+        signUp(testUser, HttpStatus.CREATED);
+        signUp(testUser, HttpStatus.FORBIDDEN);
     }
 
     @Test
     public void testSignIn() {
-        final String defaultEmail = "f123@mail.com";
-        final String wrongEmail = "999@mail.com";
-        final String wrongPassword = "33333";
+        User firstUser = UserGenerator.generateUser();
+        signIn(firstUser, HttpStatus.FORBIDDEN);
 
-        signIn(new User(null, defaultUsername, "", defaultPassword), HttpStatus.FORBIDDEN);
-        signIn(new User(null, defaultUsername, defaultEmail, ""), HttpStatus.FORBIDDEN);
-
-        List<String> cookie = signUp(new User(null, defaultUsername, defaultEmail, defaultPassword), HttpStatus.CREATED);
+        List<String> cookie = signUp(firstUser, HttpStatus.CREATED);
         logout(cookie, HttpStatus.OK);
 
-        cookie = signIn(new User(null, defaultUsername, defaultEmail, defaultPassword), HttpStatus.OK);
+        cookie = signIn(firstUser, HttpStatus.OK);
         logout(cookie, HttpStatus.OK);
-
-        signIn(new User(null, defaultUsername, wrongEmail, defaultPassword), HttpStatus.FORBIDDEN); //incorrect email
-        signIn(new User(null, defaultUsername, wrongEmail, wrongPassword), HttpStatus.FORBIDDEN); //incorrect password
     }
 
     @Test
     public void testLogout() {
-        final String defaultEmail = "456g@mail.com";
-        final List<String> cookie = signUp(new User(null, defaultUsername, defaultEmail, defaultPassword), HttpStatus.CREATED);
+        User testUser = UserGenerator.generateUser();
+        final List<String> cookie = signUp(testUser, HttpStatus.CREATED);
 
         logout(cookie, HttpStatus.OK);
         logout(cookie, HttpStatus.FORBIDDEN);//already logged out
@@ -122,12 +118,13 @@ public class SignUpControllerTest {
 
     @Test
     public void testGetProfile() {
-        final String defaultEmail = "yablyk@mail.com";
         List<String> cookie = new ArrayList<>();
         getProfile(cookie, HttpStatus.FORBIDDEN);
 
-        cookie = signUp(new User(null, defaultUsername, defaultEmail, defaultPassword), HttpStatus.CREATED);
+        User testUser = UserGenerator.generateUser();
+        cookie = signUp(testUser, HttpStatus.CREATED);
         getProfile(cookie, HttpStatus.OK);
+        
         logout(cookie, HttpStatus.OK);
         getProfile(cookie, HttpStatus.FORBIDDEN);
     }
