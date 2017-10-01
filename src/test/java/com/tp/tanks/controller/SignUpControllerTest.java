@@ -35,7 +35,12 @@ public class SignUpControllerTest {
     private ResponseEntity<User> signUp(User user) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<User> entity = new HttpEntity<>(user);
+
+        ArrayList<MediaType> arrayList = new ArrayList<>();
+        arrayList.add(MediaType.APPLICATION_JSON);
+        headers.setAccept(arrayList);
+
+        HttpEntity<User> entity = new HttpEntity<>(user, headers);
 
         return restTemplate.postForEntity("/signUp", entity, User.class);
     }
