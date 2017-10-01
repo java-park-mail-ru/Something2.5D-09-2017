@@ -23,31 +23,27 @@ public class UserTest {
     }
 
     @Test
-    public void testSetFields() {
-        testId();
-        testUsername();
-        testEmail();
-        testPassword();
-    }
-
     public void testId() {
         Long newId = 190L;
         user.setId(newId);
         assertEquals(user.getId(), newId);
     }
 
+    @Test
     public void testUsername() {
         String newUserName = "newUserName";
         user.setUsername(newUserName);
         assertEquals(user.getUsername(), newUserName);
     }
 
+    @Test
     public void testEmail() {
         String newEmail = "newEmail";
         user.setEmail(newEmail);
         assertEquals(user.getEmail(), newEmail);
     }
 
+    @Test
     public void testPassword() {
         String newPassword = "newPassword";
         user.setPassword(newPassword);

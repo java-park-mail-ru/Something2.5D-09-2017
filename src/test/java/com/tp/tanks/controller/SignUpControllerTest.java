@@ -29,7 +29,6 @@ public class SignUpControllerTest {
     private final String defaultUsername = "userNameeee";
     private final String defaultPassword = "iampassword";
 
-
     private List<String> getCookie(ResponseEntity<User> user) {
         final List<String> cookie = user.getHeaders().get("Set-Cookie");
 
@@ -38,7 +37,6 @@ public class SignUpControllerTest {
 
         return cookie;
     }
-
 
     private List<String> signUp(User user, HttpStatus httpStatus) {
         final ResponseEntity<User> resultUser = restTemplate.postForEntity("/signUp", user, User.class);
@@ -51,7 +49,6 @@ public class SignUpControllerTest {
         return getCookie(resultUser);
     }
 
-
     private List<String> signIn(User user, HttpStatus httpStatus) {
         final ResponseEntity<User> result = restTemplate.postForEntity("/signIn", user, User.class);
         assertEquals(httpStatus, result.getStatusCode());
@@ -63,7 +60,6 @@ public class SignUpControllerTest {
         return getCookie(result);
     }
 
-
     private void logout(List<String> cookie, HttpStatus httpStatus) {
         final HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.put(HttpHeaders.COOKIE, cookie);
@@ -74,7 +70,6 @@ public class SignUpControllerTest {
         assertEquals(httpStatus, result.getStatusCode());
     }
 
-
     private void getProfile(List<String> cookie, HttpStatus httpStatus) {
         final HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.put(HttpHeaders.COOKIE, cookie);
@@ -84,7 +79,6 @@ public class SignUpControllerTest {
         final ResponseEntity<User> result = restTemplate.exchange("/profile", HttpMethod.GET, requestEntity, User.class);
         assertEquals(httpStatus, result.getStatusCode());
     }
-
 
     @Test
     public void testSignUp() {
@@ -97,7 +91,6 @@ public class SignUpControllerTest {
         final List<String> cookie = signUp(new User(null, defaultUsername, defaultEmail2, defaultPassword), HttpStatus.CREATED);
         logout(cookie, HttpStatus.OK);
     }
-
 
     @Test
     public void testSignIn() {
@@ -118,7 +111,6 @@ public class SignUpControllerTest {
         signIn(new User(null, defaultUsername, wrongEmail, wrongPassword), HttpStatus.FORBIDDEN); //incorrect password
     }
 
-
     @Test
     public void testLogout() {
         final String defaultEmail = "456g@mail.com";
@@ -127,7 +119,6 @@ public class SignUpControllerTest {
         logout(cookie, HttpStatus.OK);
         logout(cookie, HttpStatus.FORBIDDEN);//already logged out
     }
-
 
     @Test
     public void testGetProfile() {
