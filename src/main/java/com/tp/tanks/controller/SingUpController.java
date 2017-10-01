@@ -65,18 +65,20 @@ public class SingUpController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity logout(HttpSession session) {
+
         if (session.getAttribute("userId") != null) {
             this.logger.info("[logout]");
             session.removeAttribute("userId");
             return new ResponseEntity<>(HttpStatus.OK);
         }
+        
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/profile", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/profile", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getProfile(HttpSession session) {
 
         final Object id = session.getAttribute("userId");

@@ -6,10 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,7 +70,7 @@ public class SignUpControllerTest {
 
         final HttpEntity requestEntity = new HttpEntity(requestHeaders);
 
-        final ResponseEntity result = restTemplate.postForEntity("/logout", requestEntity, String.class);
+        final ResponseEntity result = restTemplate.exchange("/logout", HttpMethod.GET, requestEntity, User.class);
         assertEquals(httpStatus, result.getStatusCode());
     }
 
@@ -84,7 +81,7 @@ public class SignUpControllerTest {
 
         final HttpEntity requestEntity = new HttpEntity(requestHeaders);
 
-        final ResponseEntity result = restTemplate.postForEntity("/profile", requestEntity, String.class);
+        final ResponseEntity<User> result = restTemplate.exchange("/profile", HttpMethod.GET, requestEntity, User.class);
         assertEquals(httpStatus, result.getStatusCode());
     }
 
@@ -132,8 +129,8 @@ public class SignUpControllerTest {
         logout(cookie, HttpStatus.FORBIDDEN);//already logged out
     }
 
-    @Test
 
+    @Test
     public void testGetProfile() {
         final String defaultEmail = "yablyk@mail.com";
         List<String> cookie = new ArrayList<>();
