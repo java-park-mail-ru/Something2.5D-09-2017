@@ -30,7 +30,6 @@ public class SingUpController {
     @RequestMapping(value = "/signUp", method = RequestMethod.POST,
             consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> signUp(@RequestBody User user, HttpSession session) {
-        //В signUp надо добавить проверку что пользователь залогинен
         this.logger.info("[signUp] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail());
         this.logger.info(user.getPassword());
         final User saveUser = userService.save(user);

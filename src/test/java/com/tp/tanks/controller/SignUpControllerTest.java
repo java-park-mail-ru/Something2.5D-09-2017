@@ -33,7 +33,11 @@ public class SignUpControllerTest {
     }
 
     private ResponseEntity<User> signUp(User user) {
-        return restTemplate.postForEntity("/signUp", user, User.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<User> entity = new HttpEntity<>(user);
+
+        return restTemplate.postForEntity("/signUp", entity, User.class);
     }
 
     private ResponseEntity<User> signIn(User user) {

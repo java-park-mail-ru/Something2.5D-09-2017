@@ -16,7 +16,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
-//    @JsonIgnore
+    @JsonIgnore
     private String password;
 
     private String username;
@@ -56,7 +56,7 @@ public class User {
         this.email = email;
     }
 
-//    @JsonIgnore
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
