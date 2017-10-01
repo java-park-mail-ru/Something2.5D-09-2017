@@ -30,21 +30,22 @@ public class UserTest {
 
     @Test
     public void testUsername() {
-        String newUserName = "newUserName";
+        String newUserName = StringGenerator.generateString(10);
         user.setUsername(newUserName);
         assertEquals(user.getUsername(), newUserName);
     }
 
     @Test
     public void testEmail() {
-        String newEmail = "newEmail";
+        String newEmail = StringGenerator.generateString(7);
+        newEmail += "@mail.ru";
         user.setEmail(newEmail);
         assertEquals(user.getEmail(), newEmail);
     }
 
     @Test
     public void testPassword() {
-        String newPassword = "newPassword";
+        String newPassword = StringGenerator.generateString(10);
         user.setPassword(newPassword);
         assertEquals(user.getPassword(), newPassword);
     }

@@ -1,6 +1,7 @@
 package com.tp.tanks.service;
 
 import com.tp.tanks.model.User;
+import com.tp.tanks.model.UserGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,45 +24,59 @@ public class UserServiceTest {
     private final String defaultUsername = "yoyyouUser";
     private final String defaultPassword = "yoyPass";
 
-    @Test
-    public void testSave() {
-        final String defaultEmail = "yoy@mail.ru";
-
-        User resultUser = userService.save(new User(null, defaultUsername, defaultEmail, defaultPassword));
-        assertNotNull(resultUser);
-        assertEquals(defaultEmail, resultUser.getEmail());
-
-        testSaveConflict(resultUser);
+    private User save(User user) {
+        return userService.save(user);
     }
 
-    private void testSaveConflict(User user) {
-        User resultUser = userService.save(user);
-        assertNull(resultUser);
+    private User signIn(User user) {
+        return userService.signIn(user);
+    }
+
+    private User getById(Long id) {
+        return userService.getByid(id);
+    }
+
+    @Test
+    public void testSave() {
+        User testUser = UserGenerator.generateUser();
+
+        User responseUser = save(testUser);
+        assertNotNull(responseUser);
+        assertEquals(responseUser.getEmail(), testUser.getEmail());
+    }
+
+    @Test
+    public void testSaveConflict() {
+        User testUser = UserGenerator.generateUser();
+
+        User responseUser = save(testUser);
+        assertNotNull(responseUser);
+
+        responseUser = save(testUser);
+        assertNull(responseUser);
     }
 
     @Test
     public void testSignIn() {
-        final String defaultEmail = "dancingUser@mail.ru";
+        User testUser = UserGenerator.generateUser();
 
-        User toSignIn = new User(null, defaultUsername, defaultEmail, defaultPassword);
-        User resultSignIn = userService.signIn(toSignIn);
-        assertNull(resultSignIn);
+        User responseUser = signIn(testUser);
+        assertNull(responseUser);
 
-        userService.save(toSignIn);
-        resultSignIn = userService.signIn(toSignIn);
-        assertNotNull(resultSignIn);
-        assertEquals(defaultEmail, resultSignIn.getEmail());
+        save(testUser);
+        responseUser = signIn(testUser);
+        assertNotNull(responseUser);
+        assertEquals(testUser.getEmail(), responseUser.getEmail());
     }
 
     @Test
     public void getById() {
-        final String defaultEmail = "IDDuSER@mail.ru";
+        User testUser = UserGenerator.generateUser();
 
-        User saved = userService.save(new User(null, defaultUsername, defaultEmail, defaultPassword));
-        assertNotNull(saved.getId());
+        User responseUser = save(testUser);
 
-        User wasFound = userService.getByid(saved.getId());
+        User wasFound = getById(responseUser.getId());
         assertNotNull(wasFound);
-        assertEquals(saved.getId(), wasFound.getId());
+        assertEquals(responseUser.getId(), wasFound.getId());
     }
 }
