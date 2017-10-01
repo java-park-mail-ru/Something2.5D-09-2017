@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class SingUpController {
@@ -89,5 +91,14 @@ public class SingUpController {
         final User user = userService.getByid((Long) id);
         this.logger.info("[getProfile] OUTPUT: username = " + user.getUsername() + " email = " + user.getEmail());
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/index", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity index() {
+
+        final Map<String, String> body = new HashMap<>();
+        body.put("value", "index");
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 }
