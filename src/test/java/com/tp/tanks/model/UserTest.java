@@ -12,7 +12,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@Transactional
 public class UserTest {
 
     User user;
