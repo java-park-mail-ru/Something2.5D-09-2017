@@ -14,16 +14,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class SingUpController {
+public class UserController {
 
     private final UserService userService;
     private Logger logger;
 
     @Autowired
-    public SingUpController(UserService userService) {
+    public UserController(UserService userService) {
 
         this.userService = userService;
-        this.logger = LoggerFactory.getLogger(SingUpController.class);
+        this.logger = LoggerFactory.getLogger(UserController.class);
     }
 
     @CrossOrigin

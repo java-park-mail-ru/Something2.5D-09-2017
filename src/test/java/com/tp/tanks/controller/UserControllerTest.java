@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -20,7 +21,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class SignUpControllerTest {
+@ActiveProfiles("test")
+public class UserControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -35,7 +37,7 @@ public class SignUpControllerTest {
     }
 
     private Map<String, String> generateMap(User user) {
-        Map<String, String> parts = new HashMap<>();
+        final Map<String, String> parts = new HashMap<>();
         parts.put("id", null);
         parts.put("username", user.getUsername());
         parts.put("email", user.getEmail());
@@ -68,10 +70,9 @@ public class SignUpControllerTest {
 
     @Test
     public void testSignUp() {
-        User testUser = UserGenerator.generateUser();
-        ResponseEntity<User> resultUser;
+        final User testUser = UserGenerator.generateUser();
 
-        resultUser = signUp(testUser);
+        ResponseEntity<User> resultUser = signUp(testUser);
         assertEquals(HttpStatus.CREATED, resultUser.getStatusCode());
 
         resultUser = logout(getCookie(resultUser));
@@ -80,7 +81,7 @@ public class SignUpControllerTest {
 
     @Test
     public void testSignUpConflict() {
-        User testUser = UserGenerator.generateUser();
+        final User testUser = UserGenerator.generateUser();
 
         ResponseEntity<User> resultUser = signUp(testUser);
         assertEquals(HttpStatus.CREATED, resultUser.getStatusCode());
@@ -91,7 +92,7 @@ public class SignUpControllerTest {
 
     @Test
     public void testSignIn() {
-        User firstUser = UserGenerator.generateUser();
+        final User firstUser = UserGenerator.generateUser();
 
         ResponseEntity<User> resultUser = signIn(firstUser);
         assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
@@ -106,7 +107,7 @@ public class SignUpControllerTest {
 
     @Test
     public void testLogout() {
-        User testUser = UserGenerator.generateUser();
+        final User testUser = UserGenerator.generateUser();
 
         ResponseEntity<User> resultUser = signUp(testUser);
 
@@ -119,11 +120,11 @@ public class SignUpControllerTest {
 
     @Test
     public void testGetProfile() {
-        List<String> cookie = new ArrayList<>();
+        final List<String> cookie = new ArrayList<>();
         ResponseEntity<User> resultUser = getProfile(cookie);
         assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
 
-        User testUser = UserGenerator.generateUser();
+        final User testUser = UserGenerator.generateUser();
 
         resultUser = signUp(testUser);
         resultUser = getProfile(getCookie(resultUser));

@@ -15,7 +15,7 @@ class StringGenerator {
 
     static String generateString(int length)
     {
-        char[] text = new char[length];
+        final char[] text = new char[length];
         for (int i = 0; i < length; i++)
         {
             text[i] = alphanum.charAt(threadLocalRandom.nextInt(alphanum.length()));

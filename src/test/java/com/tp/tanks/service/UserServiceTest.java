@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -20,9 +19,6 @@ public class UserServiceTest {
 
     @Autowired
     UserService userService;
-
-    private final String defaultUsername = "yoyyouUser";
-    private final String defaultPassword = "yoyPass";
 
     private User save(User user) {
         return userService.save(user);
@@ -38,16 +34,16 @@ public class UserServiceTest {
 
     @Test
     public void testSave() {
-        User testUser = UserGenerator.generateUser();
+        final User testUser = UserGenerator.generateUser();
 
-        User responseUser = save(testUser);
+        final User responseUser = save(testUser);
         assertNotNull(responseUser);
         assertEquals(responseUser.getEmail(), testUser.getEmail());
     }
 
     @Test
     public void testSaveConflict() {
-        User testUser = UserGenerator.generateUser();
+        final User testUser = UserGenerator.generateUser();
 
         User responseUser = save(testUser);
         assertNotNull(responseUser);
@@ -58,7 +54,7 @@ public class UserServiceTest {
 
     @Test
     public void testSignIn() {
-        User testUser = UserGenerator.generateUser();
+        final User testUser = UserGenerator.generateUser();
 
         User responseUser = signIn(testUser);
         assertNull(responseUser);
@@ -71,11 +67,11 @@ public class UserServiceTest {
 
     @Test
     public void getById() {
-        User testUser = UserGenerator.generateUser();
+        final User testUser = UserGenerator.generateUser();
 
-        User responseUser = save(testUser);
+        final User responseUser = save(testUser);
 
-        User wasFound = getById(responseUser.getId());
+        final User wasFound = getById(responseUser.getId());
         assertNotNull(wasFound);
         assertEquals(responseUser.getId(), wasFound.getId());
     }
