@@ -1,5 +1,7 @@
-package com.tp.tanks.model;
+package com.tp.tanks.user;
 
+import com.tp.tanks.model.User;
+import com.tp.tanks.stubs.StringGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,39 +17,39 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ActiveProfiles("test")
 public class UserTest {
 
-    User user;
+    User userStub;
 
     @Before
     public void setup() {
-        user = new User(123L, "dracula", "pummol@mail.ru", "mypass");
+        userStub = new User(123L, "dracula", "pummol@mail.ru", "mypass");
     }
 
     @Test
     public void testId() {
         Long newId = 190L;
-        user.setId(newId);
-        assertEquals(user.getId(), newId);
+        userStub.setId(newId);
+        assertEquals(userStub.getId(), newId);
     }
 
     @Test
     public void testUsername() {
-        String newUserName = StringGenerator.generateString(10);
-        user.setUsername(newUserName);
-        assertEquals(user.getUsername(), newUserName);
+        String newUserName = StringGenerator.generate(10);
+        userStub.setUsername(newUserName);
+        assertEquals(userStub.getUsername(), newUserName);
     }
 
     @Test
     public void testEmail() {
-        String newEmail = StringGenerator.generateString(7);
+        String newEmail = StringGenerator.generate(7);
         newEmail += "@mail.ru";
-        user.setEmail(newEmail);
-        assertEquals(user.getEmail(), newEmail);
+        userStub.setEmail(newEmail);
+        assertEquals(userStub.getEmail(), newEmail);
     }
 
     @Test
     public void testPassword() {
-        String newPassword = StringGenerator.generateString(10);
-        user.setPassword(newPassword);
-        assertEquals(user.getPassword(), newPassword);
+        String newPassword = StringGenerator.generate(10);
+        userStub.setPassword(newPassword);
+        assertEquals(userStub.getPassword(), newPassword);
     }
 }

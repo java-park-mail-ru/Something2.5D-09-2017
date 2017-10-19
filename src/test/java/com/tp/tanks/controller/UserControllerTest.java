@@ -1,7 +1,7 @@
 package com.tp.tanks.controller;
 
 import com.tp.tanks.model.User;
-import com.tp.tanks.model.UserGenerator;
+import com.tp.tanks.stubs.UserStub;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +70,7 @@ public class UserControllerTest {
 
     @Test
     public void testSignUp() {
-        final User testUser = UserGenerator.generateUser();
+        final User testUser = UserStub.create();
 
         ResponseEntity<User> resultUser = signUp(testUser);
         assertEquals(HttpStatus.CREATED, resultUser.getStatusCode());
@@ -81,7 +81,7 @@ public class UserControllerTest {
 
     @Test
     public void testSignUpConflict() {
-        final User testUser = UserGenerator.generateUser();
+        final User testUser = UserStub.create();
 
         ResponseEntity<User> resultUser = signUp(testUser);
         assertEquals(HttpStatus.CREATED, resultUser.getStatusCode());
@@ -92,7 +92,7 @@ public class UserControllerTest {
 
     @Test
     public void testSignIn() {
-        final User firstUser = UserGenerator.generateUser();
+        final User firstUser = UserStub.create();
 
         ResponseEntity<User> resultUser = signIn(firstUser);
         assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
@@ -107,7 +107,7 @@ public class UserControllerTest {
 
     @Test
     public void testLogout() {
-        final User testUser = UserGenerator.generateUser();
+        final User testUser = UserStub.create();
 
         ResponseEntity<User> resultUser = signUp(testUser);
 
@@ -124,7 +124,7 @@ public class UserControllerTest {
         ResponseEntity<User> resultUser = getProfile(cookie);
         assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
 
-        final User testUser = UserGenerator.generateUser();
+        final User testUser = UserStub.create();
 
         resultUser = signUp(testUser);
         resultUser = getProfile(getCookie(resultUser));

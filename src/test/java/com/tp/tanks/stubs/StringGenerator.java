@@ -1,8 +1,8 @@
-package com.tp.tanks.model;
+package com.tp.tanks.stubs;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-class StringGenerator {
+public class StringGenerator {
     private static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     private static final String lower = upper.toLowerCase();
@@ -13,7 +13,7 @@ class StringGenerator {
 
     private static final ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
 
-    static String generateString(int length)
+    public static String generate(int length)
     {
         final char[] text = new char[length];
         for (int i = 0; i < length; i++)
