@@ -17,39 +17,39 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ActiveProfiles("test")
 public class UserTest {
 
-    User userStub;
+    User user;
 
     @Before
     public void setup() {
-        userStub = new User(123L, "dracula", "pummol@mail.ru", "mypass");
+        user = new User(123L, "dracula", "pummol@mail.ru", "mypass");
     }
 
     @Test
     public void testId() {
-        Long newId = 190L;
-        userStub.setId(newId);
-        assertEquals(userStub.getId(), newId);
+        final Long newId = 190L;
+        user.setId(newId);
+        assertEquals(user.getId(), newId);
     }
 
     @Test
     public void testUsername() {
-        String newUserName = StringGenerator.generate(10);
-        userStub.setUsername(newUserName);
-        assertEquals(userStub.getUsername(), newUserName);
+        final String newUserName = StringGenerator.generate(10);
+        user.setUsername(newUserName);
+        assertEquals(user.getUsername(), newUserName);
     }
 
     @Test
     public void testEmail() {
         String newEmail = StringGenerator.generate(7);
         newEmail += "@mail.ru";
-        userStub.setEmail(newEmail);
-        assertEquals(userStub.getEmail(), newEmail);
+        user.setEmail(newEmail);
+        assertEquals(user.getEmail(), newEmail);
     }
 
     @Test
     public void testPassword() {
-        String newPassword = StringGenerator.generate(10);
-        userStub.setPassword(newPassword);
-        assertEquals(userStub.getPassword(), newPassword);
+        final String newPassword = StringGenerator.generate(10);
+        user.setPassword(newPassword);
+        assertEquals(user.getPassword(), newPassword);
     }
 }
