@@ -1,10 +1,16 @@
 package com.tp.tanks.stubs;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+
 public class UserStub {
 
     private String email;
     private String password;
     private String username;
+
+    @JsonCreator
+    public UserStub() {}
 
     public UserStub(String username, String email, String password) {
         this.username = username;
@@ -20,6 +26,18 @@ public class UserStub {
     }
     public String getPassword() {
         return password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public static UserStub create() {
