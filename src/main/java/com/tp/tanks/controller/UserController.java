@@ -17,29 +17,28 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-    private Logger logger;
+    private static Logger logger;
 
     @Autowired
     public UserController(UserService userService) {
 
         this.userService = userService;
-        this.logger = LoggerFactory.getLogger(UserController.class);
+        logger = LoggerFactory.getLogger(UserController.class);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/signUp", method = RequestMethod.POST,
             consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> signUp(@RequestBody User user, HttpSession session) {
-        this.logger.info("[signUp] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail());
-        this.logger.info(user.getPassword());
+        logger.info("[signUp] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail());
         final User saveUser = userService.save(user);
 
         if (saveUser == null) {
-            this.logger.error("[signUp] saveUser == null");
+            logger.error("[signUp] saveUser == null");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        this.logger.info("[signUp] OUTPUT: username = " + user.getUsername() + " email = " + user.getEmail());
+        logger.info("[signUp] OUTPUT: username = " + user.getUsername() + " email = " + user.getEmail());
 
         session.setAttribute("userId", saveUser.getId());
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
@@ -50,15 +49,15 @@ public class UserController {
             consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> signIn(@RequestBody User user, HttpSession session) {
 
-        this.logger.info("[signIn] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail());
+        logger.info("[signIn] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail());
 
         final User loginUser = userService.signIn(user);
         if (loginUser == null) {
-            this.logger.error("[signIn] loginUser == null");
+            logger.error("[signIn] loginUser == null");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        this.logger.info("[signIn] OUTPUT: username = " + loginUser.getUsername() + " email = " + loginUser.getEmail());
+        logger.info("[signIn] OUTPUT: username = " + loginUser.getUsername() + " email = " + loginUser.getEmail());
 
         session.setAttribute("userId", loginUser.getId());
 
@@ -70,7 +69,7 @@ public class UserController {
     public ResponseEntity logout(HttpSession session) {
 
         if (session.getAttribute("userId") != null) {
-            this.logger.info("[logout]");
+            logger.info("[logout]");
             session.removeAttribute("userId");
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -84,11 +83,11 @@ public class UserController {
 
         final Object id = session.getAttribute("userId");
         if (id == null) {
-            this.logger.info("[getProfile] user not found in session");
+            logger.info("[getProfile] user not found in session");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         final User user = userService.getByid((Long) id);
-        this.logger.info("[getProfile] OUTPUT: username = " + user.getUsername() + " email = " + user.getEmail());
+        logger.info("[getProfile] OUTPUT: username = " + user.getUsername() + " email = " + user.getEmail());
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
