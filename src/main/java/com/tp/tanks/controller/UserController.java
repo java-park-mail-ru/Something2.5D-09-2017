@@ -68,13 +68,13 @@ public class UserController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity logout(HttpSession session) {
 
-        if (session.getAttribute("userId") != null) {
-            logger.info("[logout]");
-            session.removeAttribute("userId");
-            return new ResponseEntity<>(HttpStatus.OK);
+        if (session.getAttribute("userId") == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        logger.info("[logout]");
+        session.removeAttribute("userId");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @CrossOrigin
