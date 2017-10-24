@@ -79,7 +79,7 @@ public class UserController {
     @RequestMapping(value = "/profile", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getProfile(HttpSession session) {
 
-        final Object id = session.getAttribute("userId");
+        final Long id = (Long)session.getAttribute("userId");
         if (id == null) {
             logger.info("[getProfile] user not found in session");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
