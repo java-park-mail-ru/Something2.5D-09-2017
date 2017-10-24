@@ -17,11 +17,10 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-    private static Logger logger = LoggerFactory.getLogger(UserController.class);;
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     public UserController(UserService userService) {
-
         this.userService = userService;
     }
 
