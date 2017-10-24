@@ -79,20 +79,17 @@ public class UserController {
     @RequestMapping(value = "/profile", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getProfile(HttpSession session) {
 
-        Long id = null;
         try {
-            id = (Long) session.getAttribute("userId");
-        }
-        catch(java.lang.ClassCastException ex) {
-            logger.info("[getProfile] attribute cast to Long exc: " + ex);
-        }
-        if (id == null) {
-            logger.info("[getProfile] user not found in session");
+            final Long uid = (Long) session.getAttribute("userId");
+            final User user = userService.getByid(uid);
+            logger.info("[getProfile] OUTPUT: username = " + user.getUsername() + " email = " + user.getEmail());
+
+            return new ResponseEntity<>(user, HttpStatus.OK);
+
+        } catch (RuntimeException ex) {
+            logger.info("[getProfile] Can't find user in session");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        final User user = userService.getByid((Long) id);
-        logger.info("[getProfile] OUTPUT: username = " + user.getUsername() + " email = " + user.getEmail());
-        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @CrossOrigin
