@@ -2,7 +2,7 @@ package com.tp.tanks.stubs;
 
 import com.tp.tanks.model.User;
 
-public class UserStub {
+public class UserFactory {
 
     public static User create() {
         final Long id = null;
