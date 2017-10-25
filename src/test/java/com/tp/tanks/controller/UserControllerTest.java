@@ -69,68 +69,68 @@ public class UserControllerTest {
 
     @Test
     public void testSignUp() {
-        final User testUser = UserFactory.create();
+        final User user = UserFactory.create();
 
-        ResponseEntity<User> resultUser = signUp(testUser);
-        assertEquals(HttpStatus.CREATED, resultUser.getStatusCode());
+        ResponseEntity<User> responseUser = signUp(user);
+        assertEquals(HttpStatus.CREATED, responseUser.getStatusCode());
 
-        resultUser = logout(getCookie(resultUser));
-        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
+        responseUser = logout(getCookie(responseUser));
+        assertEquals(HttpStatus.OK, responseUser.getStatusCode());
     }
 
     @Test
     public void testSignUpConflict() {
-        final User testUser = UserFactory.create();
+        final User user = UserFactory.create();
 
-        ResponseEntity<User> resultUser = signUp(testUser);
-        assertEquals(HttpStatus.CREATED, resultUser.getStatusCode());
+        ResponseEntity<User> responseUser = signUp(user);
+        assertEquals(HttpStatus.CREATED, responseUser.getStatusCode());
 
-        resultUser = signUp(testUser);
-        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
+        responseUser = signUp(user);
+        assertEquals(HttpStatus.FORBIDDEN, responseUser.getStatusCode());
     }
 
     @Test
     public void testSignIn() {
         final User firstUser = UserFactory.create();
 
-        ResponseEntity<User> resultUser = signIn(firstUser);
-        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
+        ResponseEntity<User> responseUser = signIn(firstUser);
+        assertEquals(HttpStatus.FORBIDDEN, responseUser.getStatusCode());
 
-        resultUser = signUp(firstUser);
-        logout(getCookie(resultUser));
+        responseUser = signUp(firstUser);
+        logout(getCookie(responseUser));
 
-        resultUser = signIn(firstUser);
-        resultUser = logout(getCookie(resultUser));
-        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
+        responseUser = signIn(firstUser);
+        responseUser = logout(getCookie(responseUser));
+        assertEquals(HttpStatus.OK, responseUser.getStatusCode());
     }
 
     @Test
     public void testLogout() {
-        final User testUser = UserFactory.create();
+        final User user = UserFactory.create();
 
-        ResponseEntity<User> resultUser = signUp(testUser);
+        ResponseEntity<User> responseUser = signUp(user);
 
-        resultUser = logout(getCookie(resultUser));
-        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
+        responseUser = logout(getCookie(responseUser));
+        assertEquals(HttpStatus.OK, responseUser.getStatusCode());
 
-        resultUser = logout(getCookie(resultUser));
-        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
+        responseUser = logout(getCookie(responseUser));
+        assertEquals(HttpStatus.FORBIDDEN, responseUser.getStatusCode());
     }
 
     @Test
     public void testGetProfile() {
         final List<String> cookie = new ArrayList<>();
-        ResponseEntity<User> resultUser = getProfile(cookie);
-        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
+        ResponseEntity<User> responseUser = getProfile(cookie);
+        assertEquals(HttpStatus.FORBIDDEN, responseUser.getStatusCode());
 
-        final User testUser = UserFactory.create();
+        final User user = UserFactory.create();
 
-        resultUser = signUp(testUser);
-        resultUser = getProfile(getCookie(resultUser));
-        assertEquals(HttpStatus.OK, resultUser.getStatusCode());
+        responseUser = signUp(user);
+        responseUser = getProfile(getCookie(responseUser));
+        assertEquals(HttpStatus.OK, responseUser.getStatusCode());
 
-        logout(getCookie(resultUser));
-        resultUser = getProfile(getCookie(resultUser));
-        assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
+        logout(getCookie(responseUser));
+        responseUser = getProfile(getCookie(responseUser));
+        assertEquals(HttpStatus.FORBIDDEN, responseUser.getStatusCode());
     }
 }

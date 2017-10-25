@@ -92,8 +92,8 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         catch (RuntimeException ex) {
-            LOGGER.debug("[getProfile] Another exception");
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            LOGGER.error("[getProfile] Runtime exception"+ ex);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
