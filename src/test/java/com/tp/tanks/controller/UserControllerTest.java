@@ -121,7 +121,7 @@ public class UserControllerTest {
     public void testGetProfile() {
         final List<String> cookie = new ArrayList<>();
         ResponseEntity<User> responseUser = getProfile(cookie);
-        assertEquals(HttpStatus.FORBIDDEN, responseUser.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, responseUser.getStatusCode());
 
         final User user = UserFactory.create();
 
@@ -131,6 +131,6 @@ public class UserControllerTest {
 
         logout(getCookie(responseUser));
         responseUser = getProfile(getCookie(responseUser));
-        assertEquals(HttpStatus.FORBIDDEN, responseUser.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, responseUser.getStatusCode());
     }
 }
