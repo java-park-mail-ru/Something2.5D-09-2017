@@ -84,7 +84,7 @@ public class UserController {
 
             if (sessionObject == null) {
                 LOGGER.debug("[getProfile] Can't find user in session");
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             final User user = userService.getByid((Long) sessionObject);
             LOGGER.debug("[getProfile] OUTPUT: username = " + user.getUsername() + " email = " + user.getEmail());
@@ -93,7 +93,8 @@ public class UserController {
 
         } catch (ClassCastException ex) {
             LOGGER.error("[getProfile] ClassCastException exception" + ex);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            session.removeAttribute("userId");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
