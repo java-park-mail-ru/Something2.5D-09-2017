@@ -80,15 +80,17 @@ public class UserController {
     public ResponseEntity getProfile(HttpSession session) {
 
         try {
-            final Long uid = (Long) session.getAttribute("userId");
-            final User user = userService.getByid(uid);
+            final Object sessionObject = session.getAttribute("userId");
+
+            if (sessionObject == null) {
+                LOGGER.debug("[getProfile] Can't find user in session");
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+            final User user = userService.getByid((Long) sessionObject);
             LOGGER.debug("[getProfile] OUTPUT: username = " + user.getUsername() + " email = " + user.getEmail());
 
             return new ResponseEntity<>(user, HttpStatus.OK);
 
-        } catch (NullPointerException ex) {
-            LOGGER.debug("[getProfile] Can't find user in session");
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } catch (ClassCastException ex) {
             LOGGER.error("[getProfile] ClassCastException exception" + ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
