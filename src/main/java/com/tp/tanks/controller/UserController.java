@@ -17,7 +17,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-    private static Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     public UserController(UserService userService) {
@@ -86,8 +86,13 @@ public class UserController {
 
             return new ResponseEntity<>(user, HttpStatus.OK);
 
-        } catch (RuntimeException ex) {
+        }
+        catch (NullPointerException ex) {
             logger.info("[getProfile] Can't find user in session");
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        catch (RuntimeException ex) {
+            logger.info("[getProfile] Another exception");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }

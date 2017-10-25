@@ -1,5 +1,6 @@
 package com.tp.tanks.controller;
 
+import com.tp.tanks.model.User;
 import com.tp.tanks.stubs.UserStub;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +27,7 @@ public class UserControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private List<String> getCookie(ResponseEntity<UserStub> user) {
+    private List<String> getCookie(ResponseEntity<User> user) {
         List<String> cookie = user.getHeaders().get("Set-Cookie");
 
         if(cookie == null) {
@@ -35,7 +36,7 @@ public class UserControllerTest {
         return cookie;
     }
 
-    private Map<String, String> generateMap(UserStub user) {
+    private Map<String, String> generateMap(User user) {
         final Map<String, String> parts = new HashMap<>();
         parts.put("username", user.getUsername());
         parts.put("email", user.getEmail());
@@ -43,12 +44,12 @@ public class UserControllerTest {
         return parts;
     }
 
-    private ResponseEntity<UserStub> signUp(UserStub user) {
-        return restTemplate.postForEntity("/signUp", generateMap(user), UserStub.class);
+    private ResponseEntity<User> signUp(User user) {
+        return restTemplate.postForEntity("/signUp", generateMap(user), User.class);
     }
 
-    private ResponseEntity<UserStub> signIn(UserStub user) {
-        return restTemplate.postForEntity("/signIn", generateMap(user), UserStub.class);
+    private ResponseEntity<User> signIn(User user) {
+        return restTemplate.postForEntity("/signIn", generateMap(user), User.class);
     }
 
     private HttpEntity getEntity(List<String> cookie) {
@@ -58,19 +59,19 @@ public class UserControllerTest {
         return new HttpEntity(requestHeaders);
     }
 
-    private ResponseEntity<UserStub> logout(List<String> cookie) {
-        return restTemplate.exchange("/logout", HttpMethod.GET, getEntity(cookie), UserStub.class);
+    private ResponseEntity<User> logout(List<String> cookie) {
+        return restTemplate.exchange("/logout", HttpMethod.GET, getEntity(cookie), User.class);
     }
 
-    private ResponseEntity<UserStub> getProfile(List<String> cookie) {
-        return restTemplate.exchange("/profile", HttpMethod.GET, getEntity(cookie), UserStub.class);
+    private ResponseEntity<User> getProfile(List<String> cookie) {
+        return restTemplate.exchange("/profile", HttpMethod.GET, getEntity(cookie), User.class);
     }
 
     @Test
     public void testSignUp() {
-        final UserStub testUser = UserStub.create();
+        final User testUser = UserStub.create();
 
-        ResponseEntity<UserStub> resultUser = signUp(testUser);
+        ResponseEntity<User> resultUser = signUp(testUser);
         assertEquals(HttpStatus.CREATED, resultUser.getStatusCode());
 
         resultUser = logout(getCookie(resultUser));
@@ -79,9 +80,9 @@ public class UserControllerTest {
 
     @Test
     public void testSignUpConflict() {
-        final UserStub testUser = UserStub.create();
+        final User testUser = UserStub.create();
 
-        ResponseEntity<UserStub> resultUser = signUp(testUser);
+        ResponseEntity<User> resultUser = signUp(testUser);
         assertEquals(HttpStatus.CREATED, resultUser.getStatusCode());
 
         resultUser = signUp(testUser);
@@ -90,9 +91,9 @@ public class UserControllerTest {
 
     @Test
     public void testSignIn() {
-        final UserStub firstUser = UserStub.create();
+        final User firstUser = UserStub.create();
 
-        ResponseEntity<UserStub> resultUser = signIn(firstUser);
+        ResponseEntity<User> resultUser = signIn(firstUser);
         assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
 
         resultUser = signUp(firstUser);
@@ -105,9 +106,9 @@ public class UserControllerTest {
 
     @Test
     public void testLogout() {
-        final UserStub testUser = UserStub.create();
+        final User testUser = UserStub.create();
 
-        ResponseEntity<UserStub> resultUser = signUp(testUser);
+        ResponseEntity<User> resultUser = signUp(testUser);
 
         resultUser = logout(getCookie(resultUser));
         assertEquals(HttpStatus.OK, resultUser.getStatusCode());
@@ -119,10 +120,10 @@ public class UserControllerTest {
     @Test
     public void testGetProfile() {
         final List<String> cookie = new ArrayList<>();
-        ResponseEntity<UserStub> resultUser = getProfile(cookie);
+        ResponseEntity<User> resultUser = getProfile(cookie);
         assertEquals(HttpStatus.FORBIDDEN, resultUser.getStatusCode());
 
-        final UserStub testUser = UserStub.create();
+        final User testUser = UserStub.create();
 
         resultUser = signUp(testUser);
         resultUser = getProfile(getCookie(resultUser));
