@@ -89,8 +89,8 @@ public class UserController {
         } catch (NullPointerException ex) {
             LOGGER.debug("[getProfile] Can't find user in session");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } catch (RuntimeException ex) {
-            LOGGER.error("[getProfile] Runtime exception" + ex);
+        } catch (ClassCastException ex) {
+            LOGGER.error("[getProfile] ClassCastException exception" + ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
