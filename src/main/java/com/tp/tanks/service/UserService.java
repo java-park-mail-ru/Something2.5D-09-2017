@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
+    @Autowired
     private final UserRepository userRepository;
 
+    @Autowired
     private final BCryptPasswordEncoder cryptEncoder;
 
-    @Autowired
+
     public UserService(UserRepository userRepository, BCryptPasswordEncoder cryptEncoder) {
         this.userRepository = userRepository;
         this.cryptEncoder = cryptEncoder;
