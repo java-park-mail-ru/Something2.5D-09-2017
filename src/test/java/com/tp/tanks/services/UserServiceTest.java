@@ -52,8 +52,8 @@ public class UserServiceTest {
 
         assertEquals(user.getUsername(), detectedUser.getUsername());
         assertEquals(user.getEmail(), detectedUser.getEmail());
-        assertNotEquals(user.getPassword(), detectedUser.getPassword()); //  saved user must have an encrypted password
-        assertNotNull(detectedUser.getId());                             //  saved user must have an id
+        assertNotEquals(user.getPassword(), detectedUser.getPassword());
+        assertNotNull(detectedUser.getId());
     }
 
     @Test
