@@ -10,7 +10,6 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import com.tp.tanks.models.Id;
 import com.tp.tanks.services.UserService;
 
 
@@ -48,7 +47,6 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             closeSessionSilently(webSocketSession, ACCESS_DENIED);
             return;
         }
-        final Id<User> userId = Id.of(id);
         remotePointService.registerUser(userId, webSocketSession);
     }
 
