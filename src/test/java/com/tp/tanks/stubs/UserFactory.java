@@ -1,6 +1,6 @@
 package com.tp.tanks.stubs;
 
-import com.tp.tanks.model.User;
+import com.tp.tanks.models.User;
 
 public class UserFactory {
 

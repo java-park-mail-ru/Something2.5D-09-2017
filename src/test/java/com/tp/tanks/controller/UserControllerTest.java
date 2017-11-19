@@ -1,6 +1,6 @@
 package com.tp.tanks.controller;
 
-import com.tp.tanks.model.User;
+import com.tp.tanks.models.User;
 import com.tp.tanks.stubs.UserFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;

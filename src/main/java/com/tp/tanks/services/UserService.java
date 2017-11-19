@@ -1,6 +1,6 @@
-package com.tp.tanks.service;
+package com.tp.tanks.services;
 
-import com.tp.tanks.model.User;
+import com.tp.tanks.models.User;
 import com.tp.tanks.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -47,7 +47,7 @@ public class UserService {
         }
     }
 
-    public User getByid(Long id) {
+    public User getById(Long id) {
 
         try {
             return userRepository.getById(id);

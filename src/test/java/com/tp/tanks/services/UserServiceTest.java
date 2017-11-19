@@ -1,7 +1,6 @@
 package com.tp.tanks.services;
 
-import com.tp.tanks.model.User;
-import com.tp.tanks.service.UserService;
+import com.tp.tanks.models.User;
 import com.tp.tanks.stubs.StringGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,7 +81,7 @@ public class UserServiceTest {
     public void testGetById() {
         User user = UserFactory.create();
         User savedUser = service.save(user);
-        User detectedUser = service.getByid(savedUser.getId());
+        User detectedUser = service.getById(savedUser.getId());
 
         assertEquals(savedUser.getId(), detectedUser.getId());
         assertEquals(savedUser.getUsername(), detectedUser.getUsername());
