@@ -1,4 +1,4 @@
-package com.tp.tanks.mechanic.base;
+package com.tp.tanks.mechanics.base;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
