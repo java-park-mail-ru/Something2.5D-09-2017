@@ -1,7 +1,6 @@
 package com.tp.tanks.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tp.tanks.models.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -41,9 +40,9 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocketSession) {
-        final Long id = (Long) webSocketSession.getAttributes().get("userId");
-        if (id == null || userService.getById(id) == null) {
-            LOGGER.warn("[GameWebSocketHandler.afterConnectionEstablished] Can't get user by id = " + id);
+        final Long userId = (Long) webSocketSession.getAttributes().get("userId");
+        if (userId == null || userService.getById(userId) == null) {
+            LOGGER.warn("[GameWebSocketHandler.afterConnectionEstablished] Can't get user by id = " + userId);
             closeSessionSilently(webSocketSession, ACCESS_DENIED);
             return;
         }
@@ -61,7 +60,8 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             closeSessionSilently(webSocketSession, ACCESS_DENIED);
             return;
         }
-        handleMessage(userID, message);
+
+        handleMessage(userId, message);
     }
 
     @SuppressWarnings("OverlyBroadCatchBlock")
@@ -93,7 +93,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             LOGGER.warn("User disconnected but his session was not found (closeStatus=" + closeStatus + ')');
             return;
         }
-        remotePointService.removeUser(Id.of(userId));
+        remotePointService.removeUser(userId);
     }
 
     private void closeSessionSilently(@NotNull WebSocketSession session, @Nullable CloseStatus closeStatus) {
