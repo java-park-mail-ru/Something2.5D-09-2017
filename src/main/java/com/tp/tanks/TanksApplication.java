@@ -13,7 +13,7 @@ public class TanksApplication {
 
     public static void main(String[] args) {
 
-        SpringApplication.run(TanksApplication.class, args);
+        SpringApplication.run(new Class[]{WebSocketConfig.class, TanksApplication.class}, args);
     }
 
     @Bean
