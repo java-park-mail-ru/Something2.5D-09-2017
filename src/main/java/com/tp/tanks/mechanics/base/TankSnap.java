@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import com.tp.tanks.websocket.Message;
 
-/**
- * Created by Solovyev on 03/11/2016.
- */
+
 @SuppressWarnings({"NullableProblems"})
 public class TankSnap extends Message {
 
