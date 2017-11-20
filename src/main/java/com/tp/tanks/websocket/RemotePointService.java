@@ -2,6 +2,8 @@ package com.tp.tanks.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -14,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class RemotePointService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RemotePointService.class);
     private Map<Long, WebSocketSession> sessions = new ConcurrentHashMap<>();
     private final ObjectMapper objectMapper;
 
@@ -39,6 +42,7 @@ public class RemotePointService {
             try {
                 webSocketSession.close(closeStatus);
             } catch (IOException ignore) {
+                LOGGER.error("Can't close session");
             }
         }
     }

@@ -4,7 +4,9 @@ import org.jetbrains.annotations.NotNull;
 
 
 public abstract class MessageHandler<T extends Message> {
-    private final @NotNull Class<T> clazz;
+
+    @NotNull
+    private final Class<T> clazz;
 
     public MessageHandler(@NotNull Class<T> clazz) {
         this.clazz = clazz;

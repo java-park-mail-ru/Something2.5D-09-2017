@@ -8,7 +8,7 @@ import com.tp.tanks.mechanics.base.TankSnap;
 //import ru.mail.park.mechanics.requests.InitGame;
 //import ru.mail.park.mechanics.requests.JoinGame;
 
-@JsonTypeInfo(use= JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "class")
 @JsonSubTypes({
         @Type(TankSnap.class)
 //        @Type(JoinGame.Request.class),

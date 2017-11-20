@@ -21,9 +21,14 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameWebSocketHandler.class);
     private static final CloseStatus ACCESS_DENIED = new CloseStatus(4500, "Not logged in. Access denied");
 
-    private @NotNull UserService userService;
-    private final @NotNull MessageHandlerContainer messageHandlerContainer;
-    private final @NotNull RemotePointService remotePointService;
+    @NotNull
+    private UserService userService;
+
+    @NotNull
+    private final MessageHandlerContainer messageHandlerContainer;
+
+    @NotNull
+    private final RemotePointService remotePointService;
 
     private final ObjectMapper objectMapper;
 
@@ -42,7 +47,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession webSocketSession) {
         final Long userId = (Long) webSocketSession.getAttributes().get("userId");
         if (userId == null || userService.getById(userId) == null) {
-            LOGGER.warn("[GameWebSocketHandler.afterConnectionEstablished] Can't get user by id = " + userId);
+            LOGGER.warn("Can't get user by id = " + userId);
             closeSessionSilently(webSocketSession, ACCESS_DENIED);
             return;
         }
@@ -56,7 +61,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
         }
         final Long userId = (Long) webSocketSession.getAttributes().get("userId");
         if (userId == null) {
-            LOGGER.warn("[GameWebSocketHandler.handleTextMessage] Can't get userId from webSocketSession");
+            LOGGER.warn("Can't get userId from webSocketSession");
             closeSessionSilently(webSocketSession, ACCESS_DENIED);
             return;
         }
@@ -97,11 +102,15 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     }
 
     private void closeSessionSilently(@NotNull WebSocketSession session, @Nullable CloseStatus closeStatus) {
-        final CloseStatus status = closeStatus == null ? SERVER_ERROR : closeStatus;
+        if (closeStatus == null) {
+            closeStatus = SERVER_ERROR;
+        }
+
         //noinspection OverlyBroadCatchBlock
         try {
-            session.close(status);
+            session.close(closeStatus);
         } catch (Exception ignore) {
+            LOGGER.error("Can't close session");
         }
 
     }

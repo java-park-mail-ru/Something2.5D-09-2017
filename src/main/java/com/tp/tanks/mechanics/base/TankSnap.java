@@ -10,18 +10,22 @@ import com.tp.tanks.websocket.Message;
 @SuppressWarnings({"NullableProblems"})
 public class TankSnap extends Message {
 
-    private @NotNull Coords platform;
-    private @NotNull Coords turret;
+    @NotNull
+    private Coordinate platform;
+
+    @NotNull
+    private Coordinate turret;
 
     private boolean isShoot;
     private long frameTime;
 
 
-    public @NotNull Coords getPlatform() {
+    @NotNull
+    public Coordinate getPlatform() {
         return platform;
     }
 
-    public void setPlatform(@NotNull Coords platform) {
+    public void setPlatform(@NotNull Coordinate platform) {
         this.platform = platform;
     }
 
@@ -33,11 +37,12 @@ public class TankSnap extends Message {
         this.frameTime = frameTime;
     }
 
-    public @NotNull Coords getTurret() {
+    @NotNull
+    public Coordinate getTurret() {
         return turret;
     }
 
-    public void setTurret(Coords turret) {
+    public void setTurret(Coordinate turret) {
         this.turret = turret;
     }
 

@@ -9,8 +9,8 @@ import java.util.Map;
 
 @Service
 public class GameMessageHandlerContainer implements MessageHandlerContainer {
-    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(GameMessageHandlerContainer.class);
-    final Map<Class<?>, MessageHandler<?>> handlerMap = new HashMap<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(GameMessageHandlerContainer.class);
+    private final Map<Class<?>, MessageHandler<?>> handlerMap = new HashMap<>();
 
 
     @Override
@@ -20,7 +20,7 @@ public class GameMessageHandlerContainer implements MessageHandlerContainer {
             throw new HandleException("no handler for message of " + message.getClass().getName() + " type");
         }
         messageHandler.handleMessage(message, userID);
-        LOGGER.trace("message handled: type =[" + message.getClass().getName()+ ']');
+        LOGGER.trace("message handled: type =[" + message.getClass().getName() + ']');
     }
 
     @Override
