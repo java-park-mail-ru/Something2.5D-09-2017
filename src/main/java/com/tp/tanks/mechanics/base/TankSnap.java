@@ -14,7 +14,10 @@ public class TankSnap extends Message {
     private Coordinate platform;
 
     @NotNull
-    private Coordinate turret;
+    private double platformAngle;
+
+    @NotNull
+    private double turretAngle;
 
     private boolean isShoot;
     private long frameTime;
@@ -37,15 +40,6 @@ public class TankSnap extends Message {
         this.frameTime = frameTime;
     }
 
-    @NotNull
-    public Coordinate getTurret() {
-        return turret;
-    }
-
-    public void setTurret(Coordinate turret) {
-        this.turret = turret;
-    }
-
     @JsonProperty("isShoot")
     public boolean isShoot() {
         return isShoot;
@@ -53,5 +47,23 @@ public class TankSnap extends Message {
 
     public void setShoot(boolean shoot) {
         isShoot = shoot;
+    }
+
+    @NotNull
+    public double getPlatformAngle() {
+        return platformAngle;
+    }
+
+    public void setPlatformAngle(double platformAngle) {
+        this.platformAngle = platformAngle;
+    }
+
+    @NotNull
+    public double getTurretAngle() {
+        return turretAngle;
+    }
+
+    public void setTurretAngle(double turretAngle) {
+        this.turretAngle = turretAngle;
     }
 }
