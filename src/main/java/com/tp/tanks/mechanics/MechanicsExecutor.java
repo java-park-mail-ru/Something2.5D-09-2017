@@ -16,6 +16,7 @@ public class MechanicsExecutor implements Runnable {
     @NotNull
     private static final Logger LOGGER = LoggerFactory.getLogger(MechanicsExecutor.class);
     private static final long STEP_TIME = 50;
+    private final GameMechanics gameMechanics;
 
     @NotNull
     private Clock clock = Clock.systemDefaultZone();
@@ -25,6 +26,11 @@ public class MechanicsExecutor implements Runnable {
     @PostConstruct
     public void initAfterStartup() {
         tickExecutor.execute(this);
+    }
+
+    @Autowired
+    public MechanicsExecutor(@NotNull GameMechanics gameMechanics) {
+        this.gameMechanics = gameMechanics;
     }
 
     @Override
@@ -39,10 +45,11 @@ public class MechanicsExecutor implements Runnable {
     private void mainCycle() {
         long lastFrameMillis = STEP_TIME;
         while (true) {
-            LOGGER.info("In main cycle");
+//            LOGGER.info("In main cycle");
             try {
                 try {
-                    Thread.sleep(1000);
+                    gameMechanics.gmStep(lastFrameMillis);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     LOGGER.error("Mechanics thread was interrupted", e);
                 }

@@ -45,13 +45,13 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocketSession) {
-        final Long userId = (Long) webSocketSession.getAttributes().get("userId");
-        if (userId == null || userService.getById(userId) == null) {
-            LOGGER.warn("Can't get user by id = " + userId);
-            closeSessionSilently(webSocketSession, ACCESS_DENIED);
-            return;
-        }
-        remotePointService.registerUser(userId, webSocketSession);
+//        final Long userId = (Long) webSocketSession.getAttributes().get("userId");
+//        if (userId == null || userService.getById(userId) == null) {
+//            LOGGER.warn("Can't get user by id = " + userId);
+//            closeSessionSilently(webSocketSession, ACCESS_DENIED);
+//            return;
+//        }
+//        remotePointService.registerUser(userId, webSocketSession);
     }
 
     @Override
@@ -59,13 +59,14 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
         if (!webSocketSession.isOpen()) {
             return;
         }
-        final Long userId = (Long) webSocketSession.getAttributes().get("userId");
-        if (userId == null) {
-            LOGGER.warn("Can't get userId from webSocketSession");
-            closeSessionSilently(webSocketSession, ACCESS_DENIED);
-            return;
-        }
+//        final Long userId = (Long) webSocketSession.getAttributes().get("userId");
+//        if (userId == null) {
+//            LOGGER.warn("Can't get userId from webSocketSession");
+//            closeSessionSilently(webSocketSession, ACCESS_DENIED);
+//            return;
+//        }
 
+        final Long userId = 100500L;
         handleMessage(userId, message);
     }
 

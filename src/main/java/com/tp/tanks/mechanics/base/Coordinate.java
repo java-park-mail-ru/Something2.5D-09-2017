@@ -14,6 +14,16 @@ public class Coordinate {
         this.valY = valY;
     }
 
+    public String X(){
+        Double value = valX;
+        return value.toString();
+    }
+
+
+    public String Y(){
+        Double value = valY;
+        return value.toString();
+    }
 
     @Override
     public String toString() {

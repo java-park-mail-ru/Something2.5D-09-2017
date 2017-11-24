@@ -18,7 +18,7 @@ public class TankSnap extends Message {
     private double turretAngle;
 
     private boolean isShoot;
-    private long frameTime;
+//    private long frameTime;
 
 
     @NotNull
@@ -30,13 +30,13 @@ public class TankSnap extends Message {
         this.platform = platform;
     }
 
-    public long getFrameTime() {
-        return frameTime;
-    }
-
-    public void setFrameTime(long frameTime) {
-        this.frameTime = frameTime;
-    }
+//    public long getFrameTime() {
+//        return frameTime;
+//    }
+//
+//    public void setFrameTime(long frameTime) {
+//        this.frameTime = frameTime;
+//    }
 
     @JsonProperty("isShoot")
     public boolean isShoot() {
