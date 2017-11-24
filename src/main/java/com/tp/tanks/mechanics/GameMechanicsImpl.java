@@ -34,6 +34,7 @@ public class GameMechanicsImpl implements GameMechanics {
     @Override
     public void gmStep(long frameTime) {
         while (!tasks.isEmpty()) {
+            LOGGER.info("Task is not empty");
             final Runnable nextTask = tasks.poll();
             if (nextTask != null) {
                 try {
@@ -43,5 +44,7 @@ public class GameMechanicsImpl implements GameMechanics {
                 }
             }
         }
+
+//        LOGGER.info("Task is empty\n");
     }
 }

@@ -72,6 +72,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
 
     @SuppressWarnings("OverlyBroadCatchBlock")
     private void handleMessage(Long userId, TextMessage text) {
+        LOGGER.info("[GameWebSocketHandler.handleMessage] try handle");
         final Message message;
         try {
             message = objectMapper.readValue(text.getPayload(), Message.class);
