@@ -18,6 +18,9 @@ public class TankSnap extends Message {
     private double turretAngle;
 
     private boolean isShoot;
+
+    @NotNull
+    private Long userId;
 //    private long frameTime;
 
 
@@ -64,4 +67,25 @@ public class TankSnap extends Message {
     public void setTurretAngle(double turretAngle) {
         this.turretAngle = turretAngle;
     }
+
+    @NotNull
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "platform=" + platform +
+                ", platformAngle="  + platformAngle +
+                ", turretAngle=" + turretAngle +
+                ", isShoot=" + isShoot +
+                ", userId=" + userId.toString() +
+                "}";
+    }
+
 }

@@ -18,7 +18,6 @@ public class TankSnapshotService {
 
     public void pushTankSnap(@NotNull Long userId, @NotNull TankSnap snap) {
 
-//        LOGGER.info("[pushing TankSnap] {x: " + snap.getPlatform().X() + ", y: " +  snap.getPlatform().Y() + "}");
         this.snapsMap.putIfAbsent(userId, new ArrayList<>());
         final List<TankSnap> clientSnaps = snapsMap.get(userId);
         clientSnaps.add(snap);
@@ -30,7 +29,10 @@ public class TankSnapshotService {
     }
 
 
-    public void processSnapshots() {
+    public List<TankSnap> processSnapshots() {
+
+        List<TankSnap> lastSnapshots = new ArrayList<>();
+
         for (Map.Entry<Long, List<TankSnap>> entry : snapsMap.entrySet()) {
             Long userId = entry.getKey();
             List<TankSnap> snaps = entry.getValue();
@@ -39,40 +41,15 @@ public class TankSnapshotService {
             }
 
             TankSnap lastSnap = snaps.get(snaps.size() - 1);
+            lastSnapshots.add(lastSnap);
             LOGGER.info("[process TankSnap] {userId: " + userId.toString() +
                     ", x: " + lastSnap.getPlatform().X() +
                     ", y: " + lastSnap.getPlatform().Y() +
                     "}");
         }
+
+        return lastSnapshots;
     }
-
-//    public void processSnapshotsFor(@NotNull GameSession gameSession) {
-//        final Collection<GameUser> players = new ArrayList<>();
-//        players.add(gameSession.getFirst());
-//        players.add(gameSession.getSecond());
-//        for (GameUser player : players) {
-//            final List<TankSnap> playerSnaps = getSnapForUser(player.getUserId());
-//            if (playerSnaps.isEmpty()) {
-//                continue;
-//            }
-//
-//            playerSnaps.stream().filter(TankSnap::isFiring).findFirst().ifPresent(snap -> processClick(snap, gameSession, player));
-//
-//            final TankSnap lastSnap = playerSnaps.get(playerSnaps.size() - 1);
-//            processMouseMove(player, lastSnap.getMouse());
-//        }
-//    }
-
-//    private void processClick(@NotNull TankSnap snap, @NotNull GameSession gameSession, @NotNull GameUser gameUser) {
-//        final MechanicPart mechanicPart = gameUser.claimPart(MechanicPart.class);
-//        if (mechanicPart.tryFire()) {
-//            gameSession.getBoard().fireAt(snap.getMouse());
-//        }
-//    }
-//
-//    private void processMouseMove(@NotNull GameUser gameUser, @NotNull Coords mouse) {
-//        gameUser.claimPart(MousePart.class).setMouse(mouse);
-//    }
 
     public void clearForUser(Long userId) {
         snapsMap.remove(userId);

@@ -52,16 +52,28 @@ public class RemotePointService {
     public void sendMessageToUser(@NotNull Long userId, @NotNull Message message) throws IOException {
         final WebSocketSession webSocketSession = sessions.get(userId);
         if (webSocketSession == null) {
+            LOGGER.error("[RemotePointService.sendMessageToUser] webSocketSession is null");
             throw new IOException("no game websocket for user " + userId);
         }
         if (!webSocketSession.isOpen()) {
+            LOGGER.error("[RemotePointService.sendMessageToUser] session is closed or not exsists");
             throw new IOException("session is closed or not exsists");
         }
         //noinspection OverlyBroadCatchBlock
         try {
             //noinspection ConstantConditions
+            LOGGER.info("Try create msgString...");
+
+            String msgString = objectMapper.writeValueAsString(message);
+            LOGGER.info("msgString = " + msgString);
+
+
+            LOGGER.info("Try create msg...");
+            TextMessage msg = new TextMessage(msgString);
+            LOGGER.info("Try send msg = " + msg.toString());
             webSocketSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
         } catch (IOException e) {
+            LOGGER.error("[RemotePointService.sendMessageToUser] Unnable to send message");
             throw new IOException("Unnable to send message", e);
         }
     }

@@ -1,13 +1,12 @@
 package com.tp.tanks.mechanics;
 
 import com.tp.tanks.mechanics.base.TankSnap;
+import com.tp.tanks.mechanics.internal.ServerSnapshotService;
 import com.tp.tanks.mechanics.internal.TankSnapshotService;
-import com.tp.tanks.websocket.RemotePointService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.CloseStatus;
 
 
 import java.util.*;
@@ -22,15 +21,18 @@ public class GameMechanicsImpl implements GameMechanics {
     @NotNull
     private final TankSnapshotService tankSnapshotsService;
 
+
     @NotNull
     private final Queue<Runnable> tasks = new ConcurrentLinkedQueue<>();
+    private final ServerSnapshotService serverSnapshotService;
 
     @NotNull
     private ConcurrentLinkedQueue<Long> waiters = new ConcurrentLinkedQueue<>();
 
-
-    public GameMechanicsImpl(@NotNull TankSnapshotService tankSnapshotsService) {
+    public GameMechanicsImpl(@NotNull TankSnapshotService tankSnapshotsService,
+                             @NotNull ServerSnapshotService serverSnapshotService) {
         this.tankSnapshotsService = tankSnapshotsService;
+        this.serverSnapshotService = serverSnapshotService;
     }
 
 
@@ -59,7 +61,8 @@ public class GameMechanicsImpl implements GameMechanics {
             }
         }
 
-        tankSnapshotsService.processSnapshots();
+        List<TankSnap> tankSnapshots = tankSnapshotsService.processSnapshots();
+        serverSnapshotService.send(tankSnapshots);
         tankSnapshotsService.reset();
     }
 }
