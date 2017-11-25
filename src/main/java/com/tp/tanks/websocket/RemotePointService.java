@@ -25,6 +25,7 @@ public class RemotePointService {
     }
 
     public void registerUser(@NotNull Long userId, @NotNull WebSocketSession webSocketSession) {
+        LOGGER.info("[RemotePointService.registerUser] register userID = " + userId.toString());
         sessions.put(userId, webSocketSession);
     }
 
@@ -34,6 +35,7 @@ public class RemotePointService {
 
     public void removeUser(@NotNull Long userId) {
         sessions.remove(userId);
+        LOGGER.info("[RemotePointService.removeUser] unregister userID = " + userId.toString());
     }
 
     public void cutDownConnection(@NotNull Long userId, @NotNull CloseStatus closeStatus) {

@@ -1,6 +1,7 @@
 package com.tp.tanks.mechanics;
 
 import com.tp.tanks.mechanics.base.TankSnap;
+import com.tp.tanks.mechanics.internal.TankSnapshotService;
 import com.tp.tanks.websocket.RemotePointService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -19,22 +20,35 @@ public class GameMechanicsImpl implements GameMechanics {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameMechanicsImpl.class);
 
     @NotNull
+    private final TankSnapshotService tankSnapshotsService;
+
+    @NotNull
     private final Queue<Runnable> tasks = new ConcurrentLinkedQueue<>();
 
-    public GameMechanicsImpl() {
+    @NotNull
+    private ConcurrentLinkedQueue<Long> waiters = new ConcurrentLinkedQueue<>();
+
+
+    public GameMechanicsImpl(@NotNull TankSnapshotService tankSnapshotsService) {
+        this.tankSnapshotsService = tankSnapshotsService;
     }
 
 
     @Override
     public void addTankSnapshot(@NotNull Long userId, @NotNull TankSnap clientSnap) {
-        tasks.add(() -> LOGGER.info("TankSnap = {x: " + clientSnap.getPlatform().X() + ", y: " +  clientSnap.getPlatform().Y() + "}"));
+        tasks.add(() -> tankSnapshotsService.pushTankSnap(userId, clientSnap));
+    }
+
+    @Override
+    public void addUser(@NotNull Long userId) {
+        LOGGER.info("add new user: userId = " + userId.toString());
 
     }
 
     @Override
     public void gmStep(long frameTime) {
+        LOGGER.info("GameMechanics step...");
         while (!tasks.isEmpty()) {
-            LOGGER.info("Task is not empty");
             final Runnable nextTask = tasks.poll();
             if (nextTask != null) {
                 try {
@@ -45,6 +59,7 @@ public class GameMechanicsImpl implements GameMechanics {
             }
         }
 
-//        LOGGER.info("Task is empty\n");
+        tankSnapshotsService.processSnapshots();
+        tankSnapshotsService.reset();
     }
 }

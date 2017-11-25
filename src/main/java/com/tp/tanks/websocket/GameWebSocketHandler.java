@@ -45,13 +45,13 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocketSession) {
-//        final Long userId = (Long) webSocketSession.getAttributes().get("userId");
-//        if (userId == null || userService.getById(userId) == null) {
-//            LOGGER.warn("Can't get user by id = " + userId);
-//            closeSessionSilently(webSocketSession, ACCESS_DENIED);
-//            return;
-//        }
-//        remotePointService.registerUser(userId, webSocketSession);
+        final Long userId = (Long) webSocketSession.getAttributes().get("userId");
+        if (userId == null || userService.getById(userId) == null) {
+            LOGGER.warn("Can't get user by id = " + userId);
+            closeSessionSilently(webSocketSession, ACCESS_DENIED);
+            return;
+        }
+        remotePointService.registerUser(userId, webSocketSession);
     }
 
     @Override
@@ -59,20 +59,20 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
         if (!webSocketSession.isOpen()) {
             return;
         }
-//        final Long userId = (Long) webSocketSession.getAttributes().get("userId");
-//        if (userId == null) {
-//            LOGGER.warn("Can't get userId from webSocketSession");
-//            closeSessionSilently(webSocketSession, ACCESS_DENIED);
-//            return;
-//        }
+        final Long userId = (Long) webSocketSession.getAttributes().get("userId");
+        if (userId == null) {
+            LOGGER.warn("Can't get userId from webSocketSession");
+            closeSessionSilently(webSocketSession, ACCESS_DENIED);
+            return;
+        }
 
-        final Long userId = 100500L;
+//        final Long userId = 100500L;
         handleMessage(userId, message);
     }
 
     @SuppressWarnings("OverlyBroadCatchBlock")
     private void handleMessage(Long userId, TextMessage text) {
-        LOGGER.info("[GameWebSocketHandler.handleMessage] try handle");
+//        LOGGER.info("[GameWebSocketHandler.handleMessage] try handle");
         final Message message;
         try {
             message = objectMapper.readValue(text.getPayload(), Message.class);

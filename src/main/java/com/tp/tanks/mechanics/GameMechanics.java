@@ -8,6 +8,8 @@ public interface GameMechanics {
 
     void addTankSnapshot(@NotNull Long userId, @NotNull TankSnap clientSnap);
 
+    void addUser(@NotNull Long userId);
+
     void gmStep(long frameTime);
 
 }
