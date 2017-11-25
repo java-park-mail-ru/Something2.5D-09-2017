@@ -1,6 +1,7 @@
 package com.tp.tanks.mechanics.internal;
 
 
+import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.base.ServerSnap;
 import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.websocket.RemotePointService;
@@ -38,10 +39,7 @@ public class ServerSnapshotService {
         for (TankSnap tankSnap: tanks) {
 
             try {
-                Long userId = tankSnap.getUserId();
-//                LOGGER.info("[ServerSnapshotService.send] send to userId = " + userId.toString() +
-//                " numb of snapshots = " + serverSnap.getTanks().size());
-                remotePointService.sendMessageToUser(userId, serverSnap);
+                  remotePointService.sendMessageToUser(tankSnap.getUserId(), serverSnap);
             } catch (IOException e) {
                 LOGGER.error("Can't send server snapshot to client: userId = " + tankSnap.getUserId().toString());
             }

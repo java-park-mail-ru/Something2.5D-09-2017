@@ -14,6 +14,14 @@ public class Coordinate {
         this.valY = valY;
     }
 
+    public double getValX() {
+        return valX;
+    }
+
+    public double getValY() {
+        return valY;
+    }
+
     public String X(){
         Double value = valX;
         return value.toString();

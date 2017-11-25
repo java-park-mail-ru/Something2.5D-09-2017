@@ -49,7 +49,7 @@ public class GameMechanicsImpl implements GameMechanics {
 
     @Override
     public void gmStep(long frameTime) {
-        LOGGER.info("GameMechanics step...");
+//        LOGGER.info("GameMechanics step...");
         while (!tasks.isEmpty()) {
             final Runnable nextTask = tasks.poll();
             if (nextTask != null) {

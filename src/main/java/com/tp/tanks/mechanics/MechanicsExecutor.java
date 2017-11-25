@@ -49,7 +49,7 @@ public class MechanicsExecutor implements Runnable {
             try {
                 try {
                     gameMechanics.gmStep(lastFrameMillis);
-                    Thread.sleep(1000);
+                    Thread.sleep(50);
                 } catch (InterruptedException e) {
                     LOGGER.error("Mechanics thread was interrupted", e);
                 }
