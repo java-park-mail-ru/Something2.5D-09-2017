@@ -21,7 +21,6 @@ public class TankSnap extends Message {
 
     @NotNull
     private Long userId;
-//    private long frameTime;
 
 
     @NotNull
@@ -32,14 +31,6 @@ public class TankSnap extends Message {
     public void setPlatform(@NotNull Coordinate platform) {
         this.platform = platform;
     }
-
-//    public long getFrameTime() {
-//        return frameTime;
-//    }
-//
-//    public void setFrameTime(long frameTime) {
-//        this.frameTime = frameTime;
-//    }
 
     @JsonProperty("isShoot")
     public boolean isShoot() {
@@ -79,13 +70,13 @@ public class TankSnap extends Message {
 
     @Override
     public String toString() {
-        return "{" +
-                "platform=" + platform +
-                ", platformAngle="  + platformAngle +
-                ", turretAngle=" + turretAngle +
-                ", isShoot=" + isShoot +
-                ", userId=" + userId.toString() +
-                "}";
+        return '{'
+                + "platform: " + platform.toString()
+                + ", platformAngle: "  + platformAngle
+                + ", turretAngle: " + turretAngle
+                + ", isShoot: " + isShoot
+                + ", userId: " + userId.toString()
+                + '}';
     }
 
 }

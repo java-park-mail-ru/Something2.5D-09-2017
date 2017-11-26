@@ -49,7 +49,6 @@ public class GameMechanicsImpl implements GameMechanics {
 
     @Override
     public void gmStep(long frameTime) {
-//        LOGGER.info("GameMechanics step...");
         while (!tasks.isEmpty()) {
             final Runnable nextTask = tasks.poll();
             if (nextTask != null) {
@@ -61,7 +60,7 @@ public class GameMechanicsImpl implements GameMechanics {
             }
         }
 
-        List<TankSnap> tankSnapshots = tankSnapshotsService.processSnapshots();
+        final List<TankSnap> tankSnapshots = tankSnapshotsService.processSnapshots();
         serverSnapshotService.send(tankSnapshots);
         tankSnapshotsService.reset();
     }

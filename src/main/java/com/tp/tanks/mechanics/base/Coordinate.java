@@ -22,20 +22,9 @@ public class Coordinate {
         return valY;
     }
 
-    public String X(){
-        Double value = valX;
-        return value.toString();
-    }
-
-
-    public String Y(){
-        Double value = valY;
-        return value.toString();
-    }
-
     @Override
     public String toString() {
-        return '{' + "valX=" + valX + ", valY=" + valY + '}';
+        return '{' + "x: " + valX + ", y: " + valY + '}';
     }
 
     @SuppressWarnings("NewMethodNamingConvention")

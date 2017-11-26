@@ -1,7 +1,5 @@
 package com.tp.tanks.mechanics.internal;
 
-
-import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.base.ServerSnap;
 import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.websocket.RemotePointService;

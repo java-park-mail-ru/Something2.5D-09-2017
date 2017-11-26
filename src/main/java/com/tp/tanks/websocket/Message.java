@@ -11,7 +11,6 @@ import com.tp.tanks.mechanics.requests.JoinGame;
 @JsonSubTypes({
         @Type(TankSnap.class),
         @Type(JoinGame.Request.class),
-//        @Type(InitGame.Request.class),
         @Type(ServerSnap.class)
         })
 public abstract class Message {

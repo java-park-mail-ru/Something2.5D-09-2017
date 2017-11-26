@@ -45,11 +45,10 @@ public class MechanicsExecutor implements Runnable {
     private void mainCycle() {
         long lastFrameMillis = STEP_TIME;
         while (true) {
-//            LOGGER.info("In main cycle");
             try {
                 try {
                     gameMechanics.gmStep(lastFrameMillis);
-                    Thread.sleep(50);
+                    Thread.sleep(STEP_TIME);
                 } catch (InterruptedException e) {
                     LOGGER.error("Mechanics thread was interrupted", e);
                 }

@@ -34,18 +34,14 @@ public class TankSnapshotService {
         List<TankSnap> lastSnapshots = new ArrayList<>();
 
         for (Map.Entry<Long, List<TankSnap>> entry : snapsMap.entrySet()) {
-            Long userId = entry.getKey();
-            List<TankSnap> snaps = entry.getValue();
+            final List<TankSnap> snaps = entry.getValue();
             if (snaps.isEmpty()) {
                 continue;
             }
 
-            TankSnap lastSnap = snaps.get(snaps.size() - 1);
+            final TankSnap lastSnap = snaps.get(snaps.size() - 1);
             lastSnapshots.add(lastSnap);
-            LOGGER.info("[process TankSnap] {userId: " + userId.toString() +
-                    ", x: " + lastSnap.getPlatform().X() +
-                    ", y: " + lastSnap.getPlatform().Y() +
-                    "}");
+            LOGGER.info("[process TankSnap] " + lastSnap.toString());
         }
 
         return lastSnapshots;

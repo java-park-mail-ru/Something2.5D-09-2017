@@ -66,13 +66,11 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             return;
         }
 
-//        final Long userId = 100500L;
         handleMessage(userId, message);
     }
 
     @SuppressWarnings("OverlyBroadCatchBlock")
     private void handleMessage(Long userId, TextMessage text) {
-//        LOGGER.info("[GameWebSocketHandler.handleMessage] try handle");
         final Message message;
         try {
             message = objectMapper.readValue(text.getPayload(), Message.class);
