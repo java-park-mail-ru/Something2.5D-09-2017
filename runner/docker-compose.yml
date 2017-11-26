@@ -7,13 +7,12 @@ services:
     networks:
       - backend
     ports:
-      - "3306:3306"
+      - "33060:3306"
     environment:
     - MYSQL_DATABASE=tanksdb
     - MYSQL_USER=tanks-admin
     - MYSQL_PASSWORD=tanks-password
     - MYSQL_ROOT_PASSWORD=tanks-password
-
 
   api:
     restart: always
@@ -26,7 +25,7 @@ services:
     ports:
       - "8080:8080"
 
-    command: bash -c "sleep 15 && cd /server && /usr/bin/java -jar target/tanks-0.0.1-SNAPSHOT.jar"
+    command: bash -c "sleep 15 && cd /server/target && /usr/bin/java -jar tanks-1.5.6.RELEASE.jar"
 
 
 networks:
