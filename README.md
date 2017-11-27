@@ -2,16 +2,16 @@
 
 [![Travis](https://api.travis-ci.org/java-park-mail-ru/Something2.5D-09-2017.svg?branch=developer&style=flat)]()
 
-#### Requirements
+### Requirements
 * Docker
 * Docker Compose https://docs.docker.com/compose/install/
 * Maven https://maven.apache.org/download.cgi
 
-#### Build
+### Build
 
     mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
     
-#### Deploy
+### Deploy
 Сhange the directory to *runner* and run command
 
     ./start
@@ -27,7 +27,7 @@ When you first start you must make the scripts executable
 
     chmod +x ./start && chmod +x ./stop && chmod +x ./restart
     
-#### Manage
+### Manage
 
 For managing server use next scripts:
 
@@ -38,7 +38,7 @@ For managing server use next scripts:
 | restart       | Restart only api container. Database container isn't restart | 
 
 
-#### Test
+### Test
     docker pull mariadb:latest
     docker run --name testdb -e MYSQL_ROOT_PASSWORD=tanks-password -e MYSQL_DATABASE=tanksdb_test -e MYSQL_USER=tanks-admin -e MYSQL_PASSWORD=tanks-password -p 52000:3306 -d mariadb
     mvn test -B
