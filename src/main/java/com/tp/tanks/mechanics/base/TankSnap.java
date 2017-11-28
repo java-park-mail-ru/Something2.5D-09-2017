@@ -17,6 +17,9 @@ public class TankSnap extends Message {
     @NotNull
     private double turretAngle;
 
+
+    private String username;
+
     private boolean isShoot;
 
     @NotNull
@@ -68,6 +71,14 @@ public class TankSnap extends Message {
         this.userId = userId;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public String toString() {
         return '{'
@@ -76,7 +87,9 @@ public class TankSnap extends Message {
                 + ", turretAngle: " + turretAngle
                 + ", isShoot: " + isShoot
                 + ", userId: " + userId.toString()
+                + ", username: " + username
                 + '}';
     }
+
 
 }
