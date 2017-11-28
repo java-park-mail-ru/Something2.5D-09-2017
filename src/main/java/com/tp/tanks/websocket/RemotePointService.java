@@ -12,12 +12,15 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @Service
 public class RemotePointService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RemotePointService.class);
     private Map<Long, WebSocketSession> sessions = new ConcurrentHashMap<>();
+    private Set<Long> players = new ConcurrentSkipListSet<>();
     private final ObjectMapper objectMapper;
 
     public RemotePointService(ObjectMapper objectMapper) {
@@ -27,14 +30,20 @@ public class RemotePointService {
     public void registerUser(@NotNull Long userId, @NotNull WebSocketSession webSocketSession) {
         LOGGER.info("[RemotePointService.registerUser] register userID = " + userId.toString());
         sessions.put(userId, webSocketSession);
+        players.add(userId);
     }
 
     public boolean isConnected(@NotNull Long userId) {
-        return sessions.containsKey(userId) && sessions.get(userId).isOpen();
+        return sessions.containsKey(userId) && sessions.get(userId).isOpen() && players.contains(userId);
+    }
+
+    public Set<Long> getPlayers() {
+        return players;
     }
 
     public void removeUser(@NotNull Long userId) {
         sessions.remove(userId);
+        players.remove(userId);
         LOGGER.info("[RemotePointService.removeUser] unregister userID = " + userId.toString());
     }
 
