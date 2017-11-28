@@ -46,9 +46,16 @@ public class MechanicsExecutor implements Runnable {
         long lastFrameMillis = STEP_TIME;
         while (true) {
             try {
+
+                final long before = clock.millis();
+
+                gameMechanics.gmStep(lastFrameMillis);
+
+                final long after = clock.millis();
+
                 try {
-                    gameMechanics.gmStep(lastFrameMillis);
-                    Thread.sleep(STEP_TIME);
+                    final long sleepingTime = Math.max(0, STEP_TIME - (after - before));
+                    Thread.sleep(sleepingTime);
                 } catch (InterruptedException e) {
                     LOGGER.error("Mechanics thread was interrupted", e);
                 }
@@ -57,6 +64,9 @@ public class MechanicsExecutor implements Runnable {
                     LOGGER.error("Mechanics thread was interrupted");
                     return;
                 }
+
+                final long afterSleep = clock.millis();
+                lastFrameMillis = afterSleep - before;
 
             } catch (RuntimeException e) {
                 LOGGER.error("Mechanics executor was reseted due to exception", e);
