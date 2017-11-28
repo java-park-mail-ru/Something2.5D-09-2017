@@ -32,6 +32,7 @@ public class ServerSnapshotService {
 
         final ServerSnap serverSnap = new ServerSnap();
         serverSnap.setTanks(tanks);
+        serverSnap.setPlayers(remotePointService.getPlayers());
 
 
         for (TankSnap tankSnap: tanks) {
