@@ -1,7 +1,7 @@
 package com.tp.tanks.repository;
 
-import com.tp.tanks.model.User;
-import com.tp.tanks.service.UserMapper;
+import com.tp.tanks.models.User;
+import com.tp.tanks.services.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;

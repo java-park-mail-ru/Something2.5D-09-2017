@@ -1,6 +1,6 @@
-package com.tp.tanks.service;
+package com.tp.tanks.services;
 
-import com.tp.tanks.model.User;
+import com.tp.tanks.models.User;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
