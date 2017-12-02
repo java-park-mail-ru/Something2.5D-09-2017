@@ -1,4 +1,4 @@
-package com.tp.tanks.stubs;
+package com.tp.tanks.factories;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;

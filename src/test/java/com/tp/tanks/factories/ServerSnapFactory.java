@@ -1,4 +1,4 @@
-package com.tp.tanks.stubs;
+package com.tp.tanks.factories;
 
 import com.tp.tanks.mechanics.base.ServerSnap;
 import com.tp.tanks.mechanics.base.TankSnap;
