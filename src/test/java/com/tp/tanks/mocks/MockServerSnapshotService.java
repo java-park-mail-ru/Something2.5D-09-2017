@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MockServerSnapshotService extends ServerSnapshotService {
 
-    private int numbProcessedSnapshots;
+    private int numbSendSnapshots;
 
     public MockServerSnapshotService(@NotNull RemotePointService remotePointService) {
         super(remotePointService);
@@ -18,10 +18,10 @@ public class MockServerSnapshotService extends ServerSnapshotService {
 
     @Override
     public void send(List<TankSnap> tanks) {
-        numbProcessedSnapshots = tanks.size();
+        numbSendSnapshots = tanks.size();
     }
 
-    public int getNumbProcessedSnapshots() {
-        return numbProcessedSnapshots;
+    public int getNumbSendSnapshots() {
+        return numbSendSnapshots;
     }
 }
