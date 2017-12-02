@@ -3,9 +3,9 @@ package com.tp.tanks.game;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tp.tanks.mechanics.base.ServerSnap;
 import com.tp.tanks.mechanics.base.TankSnap;
-import com.tp.tanks.stubs.Generators;
-import com.tp.tanks.stubs.ServerSnapFactory;
-import com.tp.tanks.stubs.TankSnapFactory;
+import com.tp.tanks.factories.Generators;
+import com.tp.tanks.factories.ServerSnapFactory;
+import com.tp.tanks.factories.TankSnapFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,8 +19,8 @@ public class MessageSerializationTest {
     @Test
     public void tankSnapTest() throws IOException {
 
-        Long userId = Generators.generateLong();
-        TankSnap snap = TankSnapFactory.createOneForUser(userId);
+        final Long userId = Generators.generateLong();
+        final TankSnap snap = TankSnapFactory.createOneForUser(userId);
         final String tankSnapString = objectMapper.writeValueAsString(snap);
         final TankSnap mappedSnap = objectMapper.readValue(tankSnapString, TankSnap.class);
 
@@ -33,8 +33,8 @@ public class MessageSerializationTest {
     }
 
     @Test
-    public void serverSnapSnapTest() throws IOException {
-        ServerSnap snap = ServerSnapFactory.create();
+    public void serverSnapTest() throws IOException {
+        final ServerSnap snap = ServerSnapFactory.create();
         final String serverSnapString = objectMapper.writeValueAsString(snap);
         final ServerSnap mappedSnap = objectMapper.readValue(serverSnapString, ServerSnap.class);
 
