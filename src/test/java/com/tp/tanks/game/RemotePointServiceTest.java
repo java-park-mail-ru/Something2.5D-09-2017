@@ -1,6 +1,5 @@
 package com.tp.tanks.game;
 
-
 import com.tp.tanks.factories.Generators;
 import com.tp.tanks.factories.TankSnapFactory;
 import com.tp.tanks.mechanics.GameMechanics;
@@ -11,7 +10,6 @@ import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.mechanics.internal.ServerSnapshotService;
 import com.tp.tanks.mechanics.internal.TankSnapshotService;
 import com.tp.tanks.mocks.MockRemotePointService;
-import com.tp.tanks.mocks.MockServerSnapshotService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+
 
 @SuppressWarnings({"MagicNumber", "NullableProblems", "SpringJavaAutowiredMembersInspection"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
