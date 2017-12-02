@@ -1,7 +1,7 @@
 package com.tp.tanks.services;
 
 import com.tp.tanks.models.User;
-import com.tp.tanks.stubs.StringGenerator;
+import com.tp.tanks.stubs.Generators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +73,7 @@ public class UserServiceTest {
         User user = UserFactory.create();
         service.save(user);
 
-        user.setPassword(StringGenerator.generate(10));
+        user.setPassword(Generators.generateString(10));
         User detectedUser = service.signIn(user);
 
         assertNull(detectedUser);

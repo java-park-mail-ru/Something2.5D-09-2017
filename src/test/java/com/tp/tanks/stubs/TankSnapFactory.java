@@ -4,7 +4,7 @@ import com.tp.tanks.mechanics.base.TankSnap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
 
 public class TankSnapFactory {
 
@@ -17,28 +17,15 @@ public class TankSnapFactory {
     }
 
     public static TankSnap createOneForUser(Long userId) {
-        double startVal = 0;
-        double endVal = 10000;
-
         TankSnap tankSnap = new TankSnap();
 
         tankSnap.setPlatform(CoordinateFactory.create());
-
-        double randomDouble = new Random().nextDouble();
-        double val = startVal + (randomDouble * (endVal - startVal));
-        tankSnap.setPlatformAngle(val);
-
-        randomDouble = new Random().nextDouble();
-        val = startVal + (randomDouble * (endVal - startVal));
-        tankSnap.setTurretAngle(val);
-
-        String username = StringGenerator.generate(15);
-        tankSnap.setUsername(username);
-
-        Boolean randomBoolean = new Random().nextBoolean();
-        tankSnap.setShoot(randomBoolean);
-
+        tankSnap.setPlatformAngle(Generators.generateDouble());
+        tankSnap.setTurretAngle(Generators.generateDouble());
+        tankSnap.setUsername(Generators.generateString(15));
+        tankSnap.setShoot(Generators.generateBoolean());
         tankSnap.setUserId(userId);
+
         return tankSnap;
     }
 }
