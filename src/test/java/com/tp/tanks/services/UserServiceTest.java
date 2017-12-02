@@ -1,7 +1,7 @@
 package com.tp.tanks.services;
 
 import com.tp.tanks.models.User;
-import com.tp.tanks.stubs.StringGenerator;
+import com.tp.tanks.factories.Generators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +9,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.tp.tanks.stubs.UserFactory;
+import com.tp.tanks.factories.UserFactory;
+
+import javax.transaction.Transactional;
 
 import static org.junit.Assert.*;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(webEnvironment = NONE)
+@Transactional
 @ActiveProfiles("test")
 public class UserServiceTest {
 
@@ -70,7 +73,7 @@ public class UserServiceTest {
         User user = UserFactory.create();
         service.save(user);
 
-        user.setPassword(StringGenerator.generate(10));
+        user.setPassword(Generators.generateString(10));
         User detectedUser = service.signIn(user);
 
         assertNull(detectedUser);

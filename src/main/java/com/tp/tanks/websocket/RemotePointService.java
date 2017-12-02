@@ -47,6 +47,11 @@ public class RemotePointService {
         LOGGER.info("[RemotePointService.removeUser] unregister userID = " + userId.toString());
     }
 
+    public void removeAlluses() {
+        sessions.clear();
+        players.clear();
+    }
+
     public void cutDownConnection(@NotNull Long userId, @NotNull CloseStatus closeStatus) {
         final WebSocketSession webSocketSession = sessions.get(userId);
         if (webSocketSession != null && webSocketSession.isOpen()) {
