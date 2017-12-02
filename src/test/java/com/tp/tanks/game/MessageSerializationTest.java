@@ -1,10 +1,8 @@
 package com.tp.tanks.game;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.base.ServerSnap;
 import com.tp.tanks.mechanics.base.TankSnap;
-import com.tp.tanks.models.User;
 import com.tp.tanks.stubs.Generators;
 import com.tp.tanks.stubs.ServerSnapFactory;
 import com.tp.tanks.stubs.TankSnapFactory;
@@ -43,21 +41,4 @@ public class MessageSerializationTest {
         Assert.assertEquals(snap.getPlayers(), mappedSnap.getPlayers());
         Assert.assertEquals(snap.getTanks().size(), mappedSnap.getTanks().size());
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

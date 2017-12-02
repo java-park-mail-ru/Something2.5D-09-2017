@@ -15,16 +15,17 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Service
 public class GameMechanicsImpl implements GameMechanics {
-    @NotNull
+
     private static final Logger LOGGER = LoggerFactory.getLogger(GameMechanicsImpl.class);
 
     @NotNull
     private final TankSnapshotService tankSnapshotsService;
 
+    @NotNull
+    private final ServerSnapshotService serverSnapshotService;
 
     @NotNull
     private final Queue<Runnable> tasks = new ConcurrentLinkedQueue<>();
-    private final ServerSnapshotService serverSnapshotService;
 
     @NotNull
     private ConcurrentLinkedQueue<Long> waiters = new ConcurrentLinkedQueue<>();
@@ -39,6 +40,7 @@ public class GameMechanicsImpl implements GameMechanics {
     @Override
     public void addTankSnapshot(@NotNull Long userId, @NotNull TankSnap clientSnap) {
         tasks.add(() -> tankSnapshotsService.pushTankSnap(userId, clientSnap));
+        LOGGER.info("" + tasks.size());
     }
 
     @Override

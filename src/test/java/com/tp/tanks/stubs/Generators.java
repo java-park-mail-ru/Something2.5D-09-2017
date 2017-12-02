@@ -1,7 +1,5 @@
 package com.tp.tanks.stubs;
 
-import com.tp.tanks.mechanics.base.Coordinate;
-
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
