@@ -40,14 +40,13 @@ public class GameMechanicsImpl implements GameMechanics {
     @Override
     public void addTankSnapshot(@NotNull Long userId, @NotNull TankSnap clientSnap) {
         tasks.add(() -> tankSnapshotsService.pushTankSnap(userId, clientSnap));
-        LOGGER.info("" + tasks.size());
     }
 
     @Override
     public void addUser(@NotNull Long userId) {
         LOGGER.info("add new user: userId = " + userId.toString());
-
     }
+
 
     @Override
     public void gmStep(long frameTime) {
