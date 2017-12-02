@@ -1,7 +1,7 @@
 package com.tp.tanks.services;
 
 import com.tp.tanks.models.User;
-import com.tp.tanks.stubs.Generators;
+import com.tp.tanks.factories.Generators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.tp.tanks.stubs.UserFactory;
+import com.tp.tanks.factories.UserFactory;
 
 import javax.transaction.Transactional;
 
