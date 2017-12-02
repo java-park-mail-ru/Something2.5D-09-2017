@@ -41,7 +41,6 @@ public class TankSnapshotService {
 
             final TankSnap lastSnap = snaps.get(snaps.size() - 1);
             lastSnapshots.add(lastSnap);
-            LOGGER.info("[process TankSnap] " + lastSnap.toString());
         }
 
         return lastSnapshots;

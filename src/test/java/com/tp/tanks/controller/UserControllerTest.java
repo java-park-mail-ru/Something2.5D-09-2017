@@ -1,7 +1,7 @@
 package com.tp.tanks.controller;
 
 import com.tp.tanks.models.User;
-import com.tp.tanks.stubs.UserFactory;
+import com.tp.tanks.factories.UserFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
