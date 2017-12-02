@@ -17,7 +17,6 @@ public class TankSnap extends Message {
     @NotNull
     private double turretAngle;
 
-
     private String username;
 
     private boolean isShoot;
