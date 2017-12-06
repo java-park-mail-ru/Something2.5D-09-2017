@@ -25,7 +25,7 @@ public class CalcAngleTest {
     public void angleMustBe0() {
 
         Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(1.D, 0.D);
+        Coordinate second = new Coordinate(1000.D, 0.D);
 
         Double angle = shootingService.calcAngle(first, second);
         Assert.assertEquals(Math.toRadians(0), angle, DELTA);
@@ -35,7 +35,7 @@ public class CalcAngleTest {
     public void angleMustBe45() {
 
         Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(1.D, 1.D);
+        Coordinate second = new Coordinate(1000.D, 1000.D);
 
         Double angle = shootingService.calcAngle(first, second);
         Assert.assertEquals(Math.toRadians(45.D), angle, DELTA);
@@ -45,7 +45,7 @@ public class CalcAngleTest {
     public void angleMustBe90() {
 
         Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(0.D, 1.D);
+        Coordinate second = new Coordinate(0.D, 1000.D);
 
         Double angle = shootingService.calcAngle(first, second);
         Assert.assertEquals(Math.toRadians(90.D), angle, DELTA);
@@ -55,7 +55,7 @@ public class CalcAngleTest {
     public void angleMustBe135() {
 
         Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(-1.D, 1.D);
+        Coordinate second = new Coordinate(-1000.D, 1000.D);
 
         Double angle = shootingService.calcAngle(first, second);
         Assert.assertEquals(Math.toRadians(135.D), angle, DELTA);
@@ -65,7 +65,7 @@ public class CalcAngleTest {
     public void angleMustBe180() {
 
         Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(-1.D, 0.D);
+        Coordinate second = new Coordinate(-1000.D, 0.D);
 
         Double angle = shootingService.calcAngle(first, second);
         Assert.assertEquals(Math.toRadians(180.D), angle, DELTA);
@@ -75,7 +75,7 @@ public class CalcAngleTest {
     public void angleMustBe225() {
 
         Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(-1.D, -1.D);
+        Coordinate second = new Coordinate(-1000.D, -1000.D);
 
         Double angle = shootingService.calcAngle(first, second);
         Assert.assertEquals(Math.toRadians(225.D), angle, DELTA);
@@ -85,7 +85,7 @@ public class CalcAngleTest {
     public void angleMustBe270() {
 
         Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(0.D, -1.D);
+        Coordinate second = new Coordinate(0.D, -1000.D);
 
         Double angle = shootingService.calcAngle(first, second);
         Assert.assertEquals(Math.toRadians(270.D), angle, DELTA);
@@ -95,7 +95,7 @@ public class CalcAngleTest {
     public void angleMustBe315() {
 
         Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(1.D, -1.D);
+        Coordinate second = new Coordinate(1000.D, -1000.D);
 
         Double angle = shootingService.calcAngle(first, second);
         Assert.assertEquals(Math.toRadians(315.D), angle, DELTA);
