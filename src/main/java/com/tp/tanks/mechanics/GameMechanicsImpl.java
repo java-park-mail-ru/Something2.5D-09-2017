@@ -59,14 +59,14 @@ public class GameMechanicsImpl implements GameMechanics {
                 try {
                     nextTask.run();
                 } catch (RuntimeException ex) {
-                    LOGGER.error("Can't handle game task", ex);
+                    LOGGER.error("Can't process game task", ex);
                 }
             }
         }
 
         List<TankSnap> tankSnapshots = tankSnapshotsService.processSnapshots();
         List<Line> shootingLines = tankSnapshotsService.shootingLines();
-//        shootingService.handle(tankSnapshots, shootingLines);
+        shootingService.process(tankSnapshots, shootingLines);
         serverSnapshotService.send(tankSnapshots);
 
 

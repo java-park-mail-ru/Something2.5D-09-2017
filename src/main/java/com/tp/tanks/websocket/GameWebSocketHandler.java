@@ -89,7 +89,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             //noinspection ConstantConditions
             messageHandlerContainer.handle(message, userId);
         } catch (HandleException e) {
-            LOGGER.error("Can't handle message of type " + message.getClass().getName() + " with content: " + text, e);
+            LOGGER.error("Can't process message of type " + message.getClass().getName() + " with content: " + text, e);
         }
     }
 

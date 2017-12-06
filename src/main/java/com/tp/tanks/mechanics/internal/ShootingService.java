@@ -16,10 +16,10 @@ public class ShootingService {
     @NotNull
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ShootingService.class);
 
-    public List<TankSnap> handle(List<TankSnap> snaps, List<Line> lines) {
+    public void process(List<TankSnap> snaps, List<Line> lines) {
 
         if (lines.size() == 0) {
-            return snaps;
+            return;
         }
 
         for (Line line: lines) {
@@ -30,12 +30,13 @@ public class ShootingService {
                     continue;
                 }
 
-
+                if (isIntersect(line, snap)) {
+                    if (snap.getHealth() != null) {
+                        snap.setHealth(snap.getHealth() - 10);
+                    }
+                }
             }
         }
-
-        return snaps;
-
     }
 
     public Double calcDistance(Coordinate first, Coordinate second) {
