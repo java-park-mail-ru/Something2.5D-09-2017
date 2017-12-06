@@ -3,18 +3,18 @@ package com.tp.tanks.mechanics.base;
 class Line {
 
     private Long userId;
-    private Coordinate startDot;
-    private Double turretAngle;
+    private Coordinate dot;
+    private Double angle;
 
     private Double koefK;
     private Double koefB;
 
-    Line(Long userId, Coordinate startDot, double turretAngle) {
+    Line(Long userId, Coordinate dot, double angle) {
         this.userId = userId;
-        this.startDot = startDot;
-        this.turretAngle = turretAngle;
-        this.koefK = Math.tan(turretAngle);
-        this.koefB = startDot.getValY() - koefK * startDot.getValX();
+        this.dot = dot;
+        this.angle = angle;
+        this.koefK = Math.tan(angle);
+        this.koefB = dot.getValY() - koefK * dot.getValX();
     }
 
     public Long getUserId() {
@@ -25,20 +25,20 @@ class Line {
         this.userId = userId;
     }
 
-    public Coordinate getStartDot() {
-        return startDot;
+    public Coordinate getDot() {
+        return dot;
     }
 
-    public void setStartDot(Coordinate startDot) {
-        this.startDot = startDot;
+    public void setDot(Coordinate dot) {
+        this.dot = dot;
     }
 
-    public double getTurretAngle() {
-        return turretAngle;
+    public double getAngle() {
+        return angle;
     }
 
-    public void setTurretAngle(Double turretAngle) {
-        this.turretAngle = turretAngle;
+    public void setAngle(Double angle) {
+        this.angle = angle;
     }
 
     public Double getKoefK() {
