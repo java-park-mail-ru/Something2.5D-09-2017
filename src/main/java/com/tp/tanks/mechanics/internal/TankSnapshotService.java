@@ -55,8 +55,14 @@ public class TankSnapshotService {
                 continue;
             }
 
-//            final TankSnap lastSnap = snaps.parallelStream().filter(snap -> snap.isShoot() == true);
-//            shootingSnapshots.add(lastSnap);
+            final TankSnap shootingSnap = snaps.parallelStream()
+                    .filter(snap -> snap.isShoot().equals(Boolean.valueOf(true)))
+                    .findAny()
+                    .orElse(null);
+
+            if (shootingSnap != null) {
+                shootingSnapshots.add(shootingSnap);
+            }
         }
 
         return shootingSnapshots;
