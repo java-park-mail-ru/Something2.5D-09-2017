@@ -46,6 +46,22 @@ public class TankSnapshotService {
         return lastSnapshots;
     }
 
+    public List<TankSnap> shootingSnapshots() {
+        List<TankSnap> shootingSnapshots = new ArrayList<>();
+
+        for (Map.Entry<Long, List<TankSnap>> entry : snapsMap.entrySet()) {
+            final List<TankSnap> snaps = entry.getValue();
+            if (snaps.isEmpty()) {
+                continue;
+            }
+
+//            final TankSnap lastSnap = snaps.parallelStream().filter(snap -> snap.isShoot() == true);
+//            shootingSnapshots.add(lastSnap);
+        }
+
+        return shootingSnapshots;
+    }
+
     public void clearForUser(Long userId) {
         snapsMap.remove(userId);
     }
