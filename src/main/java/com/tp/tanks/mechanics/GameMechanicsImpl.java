@@ -3,6 +3,7 @@ package com.tp.tanks.mechanics;
 import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.mechanics.internal.ServerSnapshotService;
+import com.tp.tanks.mechanics.internal.ShootingService;
 import com.tp.tanks.mechanics.internal.TankSnapshotService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -26,15 +27,16 @@ public class GameMechanicsImpl implements GameMechanics {
     private final ServerSnapshotService serverSnapshotService;
 
     @NotNull
-    private final Queue<Runnable> tasks = new ConcurrentLinkedQueue<>();
+    private final ShootingService shootingService;
 
     @NotNull
-    private ConcurrentLinkedQueue<Long> waiters = new ConcurrentLinkedQueue<>();
+    private final Queue<Runnable> tasks = new ConcurrentLinkedQueue<>();
 
     public GameMechanicsImpl(@NotNull TankSnapshotService tankSnapshotsService,
                              @NotNull ServerSnapshotService serverSnapshotService) {
         this.tankSnapshotsService = tankSnapshotsService;
         this.serverSnapshotService = serverSnapshotService;
+        this.shootingService = new ShootingService();
     }
 
 
@@ -46,14 +48,6 @@ public class GameMechanicsImpl implements GameMechanics {
     @Override
     public void addUser(@NotNull Long userId) {
         LOGGER.info("add new user: userId = " + userId.toString());
-    }
-
-
-    public List<TankSnap> handleShooting() {
-        List<TankSnap> tankSnapshots = tankSnapshotsService.processSnapshots();
-        List<Line> shootingLines = tankSnapshotsService.shootingLines();
-
-        return tankSnapshots;
     }
 
 
@@ -70,8 +64,12 @@ public class GameMechanicsImpl implements GameMechanics {
             }
         }
 
-        List<TankSnap> tankSnapshots = handleShooting();
+        List<TankSnap> tankSnapshots = tankSnapshotsService.processSnapshots();
+        List<Line> shootingLines = tankSnapshotsService.shootingLines();
+//        shootingService.handle(tankSnapshots, shootingLines);
         serverSnapshotService.send(tankSnapshots);
+
+
         tankSnapshotsService.reset();
     }
 }

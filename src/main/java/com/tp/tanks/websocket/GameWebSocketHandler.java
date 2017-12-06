@@ -34,7 +34,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
 
     @NotNull
-    private WorldSnapService mapSnapService;
+    private WorldSnapService worldSnapService;
 
 
     public GameWebSocketHandler(@NotNull MessageHandlerContainer messageHandlerContainer,
@@ -45,7 +45,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
         this.userService = userService;
         this.remotePointService = remotePointService;
         this.objectMapper = objectMapper;
-        this.mapSnapService = new WorldSnapService(remotePointService);
+        this.worldSnapService = new WorldSnapService(remotePointService);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             return;
         }
         remotePointService.registerUser(userId, webSocketSession);
-        mapSnapService.send(userId);
+        worldSnapService.send(userId);
     }
 
     @Override
