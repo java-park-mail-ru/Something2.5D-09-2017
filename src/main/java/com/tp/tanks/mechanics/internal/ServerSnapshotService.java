@@ -36,7 +36,7 @@ public class ServerSnapshotService {
 
 
         for (TankSnap tankSnap: tanks) {
-
+//            LOGGER.info("[ServerSnapshotService; send] turretAngle: " + tankSnap.getTurretAngle());
             try {
                   remotePointService.sendMessageToUser(tankSnap.getUserId(), serverSnap);
             } catch (IOException e) {
