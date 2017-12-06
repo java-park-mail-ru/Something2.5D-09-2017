@@ -9,6 +9,8 @@ import java.util.Objects;
 
 public class ShootingService {
 
+    private static final double DELTA = 1e-15;
+
     public List<TankSnap> handle(List<TankSnap> snaps, List<Line> lines) {
 
         if (lines.size() == 0) {
@@ -31,13 +33,50 @@ public class ShootingService {
 
     }
 
+    public Double caclDistance(Coordinate a, Coordinate b) {
+        return Math.sqrt(Math.pow((a.getValX() - b.getValX()), 2) + Math.pow((a.getValY() - b.getValY()), 2));
+    }
+
+    public Double calcDeltaPhi(Double distance, Double radius) {
+        return Math.atan(radius / distance);
+    }
+
+    public Double calcAngle(Coordinate a, Coordinate b) {
+        Double dx = b.getValX() - a.getValX();
+        Double dy = b.getValY() - a.getValY();
+
+        if (Math.abs(dx) <= DELTA) {
+            if (dy >= 0) {
+                return Math.PI / 2;
+            } else {
+                return  3 * Math.PI / 2;
+            }
+        }
+
+        if (dx >= 0.D && dy >= 0.D) {
+            return  Math.atan(dy / dx);
+
+        } else if (dx >= 0.D && dy <= 0.D) {
+            return 2 * Math.PI + Math.atan(dy / dx);
+
+        } else if (dx <= 0.D && dy >= 0.D) {
+            return Math.PI + Math.atan(dy / dx);
+
+        } else {
+            return Math.PI + Math.atan(dy / dx);
+        }
+    }
+
+
 //    private double getВiscriminant(Double k, Double b, Double r) {
 //        return (1 + k * k) - (b * b - r * r);
 //    }
 //
 //
-//    public boolean isIntersect() {
-//        return false;
+//    public boolean isIntersect(TankSnap snap, Line line) {
+//        Double distance = caclDistance(snap.getPlatform(), line.getDot());
+//        Double dpdhi = calcDeltaPhi(distance, 100.D);
+//        if (line.getAngle() <= )
 //    }
 //
 //
