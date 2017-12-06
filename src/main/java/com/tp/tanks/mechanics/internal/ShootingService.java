@@ -41,9 +41,9 @@ public class ShootingService {
         return Math.atan(radius / distance);
     }
 
-    public Double calcAngle(Coordinate a, Coordinate b) {
-        Double dx = b.getValX() - a.getValX();
-        Double dy = b.getValY() - a.getValY();
+    public Double calcAngle(Coordinate first, Coordinate second) {
+        Double dx = second.getValX() - first.getValX();
+        Double dy = second.getValY() - first.getValY();
 
         if (Math.abs(dx) <= DELTA) {
             if (dy >= 0) {
@@ -67,20 +67,10 @@ public class ShootingService {
         }
     }
 
-
-//    private double getВiscriminant(Double k, Double b, Double r) {
-//        return (1 + k * k) - (b * b - r * r);
-//    }
-//
-//
-//    public boolean isIntersect(TankSnap snap, Line line) {
-//        Double distance = caclDistance(snap.getPlatform(), line.getDot());
-//        Double dpdhi = calcDeltaPhi(distance, 100.D);
-//        if (line.getAngle() <= )
-//    }
-//
-//
-//    private Double getNormalizedKoefB(Double b, Coordinate dot) {
-//        Double norm_b = b - (dot.getValY());
-//    }
+    public Boolean isIntersect(TankSnap snap, Line line) {
+        Double distance = caclDistance(snap.getPlatform(), line.getDot());
+        Double dpdhi = calcDeltaPhi(distance, 100.D);
+        Double phi = calcAngle(snap.getPlatform(), line.getDot());
+        return line.getAngle() <= phi + dpdhi && line.getAngle() >= phi - dpdhi;
+    }
 }
