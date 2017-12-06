@@ -3,6 +3,8 @@ package com.tp.tanks.mechanics.internal;
 import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,6 +12,9 @@ import java.util.Objects;
 public class ShootingService {
 
     private static final double DELTA = 1e-15;
+
+    @NotNull
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ShootingService.class);
 
     public List<TankSnap> handle(List<TankSnap> snaps, List<Line> lines) {
 
@@ -33,8 +38,8 @@ public class ShootingService {
 
     }
 
-    public Double caclDistance(Coordinate a, Coordinate b) {
-        return Math.sqrt(Math.pow((a.getValX() - b.getValX()), 2) + Math.pow((a.getValY() - b.getValY()), 2));
+    public Double calcDistance(Coordinate first, Coordinate second) {
+        return Math.sqrt(Math.pow((first.getValX() - second.getValX()), 2) + Math.pow((first.getValY() - second.getValY()), 2));
     }
 
     public Double calcDeltaPhi(Double distance, Double radius) {
@@ -67,10 +72,18 @@ public class ShootingService {
         }
     }
 
-    public Boolean isIntersect(TankSnap snap, Line line) {
-        Double distance = caclDistance(snap.getPlatform(), line.getDot());
+    public Boolean isIntersect(Line line, TankSnap snap) {
+        Double distance = calcDistance(snap.getPlatform(), line.getDot());
         Double dpdhi = calcDeltaPhi(distance, 100.D);
-        Double phi = calcAngle(snap.getPlatform(), line.getDot());
+        Double phi = calcAngle(line.getDot(), snap.getPlatform());
+
+
+        LOGGER.info("Distance = " + distance.toString());
+        LOGGER.info("dPhi = " + dpdhi.toString());
+        LOGGER.info("phi = " + phi.toString());
+        LOGGER.info("line angle = " + line.getAngle().toString());
+
+
         return line.getAngle() <= phi + dpdhi && line.getAngle() >= phi - dpdhi;
     }
 }

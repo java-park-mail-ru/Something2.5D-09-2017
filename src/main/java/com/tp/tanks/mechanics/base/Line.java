@@ -33,7 +33,7 @@ public class Line {
         this.dot = dot;
     }
 
-    public double getAngle() {
+    public Double getAngle() {
         return angle;
     }
 
