@@ -21,6 +21,8 @@ public class TankSnap extends Message {
 
     private Boolean isShoot;
 
+    private Integer health;
+
     @NotNull
     private Long userId;
 
@@ -76,6 +78,14 @@ public class TankSnap extends Message {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Integer getHealth() {
+        return health;
+    }
+
+    public void setHealth(Integer health) {
+        this.health = health;
     }
 
     public Line toLine() {
