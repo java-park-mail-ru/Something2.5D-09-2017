@@ -1,18 +1,21 @@
 package com.tp.tanks.mechanics.base;
 
+import com.tp.tanks.mechanics.Map.Box;
 import com.tp.tanks.websocket.Message;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 
 public class MapSnap extends Message {
 
-    @NotNull Coordinate box;
+    @NotNull ArrayList<Box> boxes;
 
-    public Coordinate getBox() {
-        return box;
-    }
+    @NotNull Coordinate startTankPosition;
 
-    public void setBox(Coordinate box) {
-        this.box = box;
-    }
+    public Coordinate getStartTankPosition() { return startTankPosition; }
+    public void setStartTankPosition(Coordinate startTankPosition) { this.startTankPosition = startTankPosition; }
+
+    public ArrayList<Box> getBoxes() { return boxes; }
+    public void setBoxes(ArrayList<Box> boxes) { this.boxes = boxes; }
 }

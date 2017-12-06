@@ -1,4 +1,4 @@
-package com.tp.tanks.mechanics;
+package com.tp.tanks.mechanics.Map;
 
 import com.tp.tanks.mechanics.base.Coordinate;
 

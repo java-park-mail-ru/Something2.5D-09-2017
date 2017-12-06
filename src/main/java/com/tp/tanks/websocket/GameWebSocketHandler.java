@@ -51,6 +51,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocketSession) {
         final Long userId = (Long) webSocketSession.getAttributes().get("userId");
+        LOGGER.info("[GameWebSocketHandler: afterConnectionEstablished] userId: " + userId);
         if (userId == null || userService.getById(userId) == null) {
             LOGGER.warn("Can't get user by id = " + userId);
             closeSessionSilently(webSocketSession, ACCESS_DENIED);
