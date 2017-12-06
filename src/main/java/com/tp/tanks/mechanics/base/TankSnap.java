@@ -78,6 +78,10 @@ public class TankSnap extends Message {
         this.username = username;
     }
 
+    public Line toLine() {
+        return new Line(userId, platform, turretAngle);
+    }
+
     @Override
     public String toString() {
         return '{'

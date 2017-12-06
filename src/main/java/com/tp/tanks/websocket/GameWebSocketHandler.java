@@ -1,6 +1,7 @@
 package com.tp.tanks.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tp.tanks.mechanics.internal.MapSnapService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -32,6 +33,9 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
 
     private final ObjectMapper objectMapper;
 
+    @NotNull
+    private MapSnapService mapSnapService;
+
 
     public GameWebSocketHandler(@NotNull MessageHandlerContainer messageHandlerContainer,
                                 @NotNull UserService userService,
@@ -41,17 +45,20 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
         this.userService = userService;
         this.remotePointService = remotePointService;
         this.objectMapper = objectMapper;
+        this.mapSnapService = new MapSnapService(remotePointService);
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocketSession) {
         final Long userId = (Long) webSocketSession.getAttributes().get("userId");
+        LOGGER.info("[GameWebSocketHandler: afterConnectionEstablished] userId: " + userId);
         if (userId == null || userService.getById(userId) == null) {
             LOGGER.warn("Can't get user by id = " + userId);
             closeSessionSilently(webSocketSession, ACCESS_DENIED);
             return;
         }
         remotePointService.registerUser(userId, webSocketSession);
+        mapSnapService.send(userId);
     }
 
     @Override

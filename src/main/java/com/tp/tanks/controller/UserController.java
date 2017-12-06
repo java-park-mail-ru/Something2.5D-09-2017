@@ -29,6 +29,7 @@ public class UserController {
     @RequestMapping(value = "/signUp", method = RequestMethod.POST,
             consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> signUp(@RequestBody User user, HttpSession session) {
+        LOGGER.info("[signUp] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail());
         LOGGER.debug("[signUp] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail());
         final User saveUser = userService.save(user);
 
@@ -47,7 +48,7 @@ public class UserController {
     @RequestMapping(value = "/signIn", method = RequestMethod.POST,
             consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> signIn(@RequestBody User user, HttpSession session) {
-
+        LOGGER.info("[signIn] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail());
         LOGGER.debug("[signIn] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail());
 
         final User loginUser = userService.signIn(user);
@@ -79,7 +80,7 @@ public class UserController {
     @CrossOrigin
     @RequestMapping(value = "/profile", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getProfile(HttpSession session) {
-
+        LOGGER.info("profile");
         try {
             final Object sessionObject = session.getAttribute("userId");
 
