@@ -4,19 +4,15 @@ class Line {
 
     private Long userId;
     private Coordinate startDot;
-    private double turretAngle;
+    private Double turretAngle;
 
-    private double koefK;
-    private double koefB;
+    private Double koefK;
+    private Double koefB;
 
     Line(Long userId, Coordinate startDot, double turretAngle) {
         this.userId = userId;
         this.startDot = startDot;
         this.turretAngle = turretAngle;
-        estimateLine(startDot, turretAngle);
-    }
-
-    private void estimateLine(Coordinate startDot, double turretAngle) {
         this.koefK = Math.tan(turretAngle);
         this.koefB = startDot.getValY() - koefK * startDot.getValX();
     }
@@ -41,15 +37,15 @@ class Line {
         return turretAngle;
     }
 
-    public void setTurretAngle(double turretAngle) {
+    public void setTurretAngle(Double turretAngle) {
         this.turretAngle = turretAngle;
     }
 
-    public double getKoefK() {
+    public Double getKoefK() {
         return koefK;
     }
 
-    public void setKoefK(double koefK) {
+    public void setKoefK(Double koefK) {
         this.koefK = koefK;
     }
 
@@ -57,7 +53,7 @@ class Line {
         return koefB;
     }
 
-    public void setKoefB(double koefB) {
+    public void setKoefB(Double koefB) {
         this.koefB = koefB;
     }
 }
