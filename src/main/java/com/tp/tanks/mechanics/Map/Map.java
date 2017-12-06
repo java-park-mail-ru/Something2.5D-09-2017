@@ -13,7 +13,6 @@ public class Map {
     private final int amountOfBoxes = 9;
     private final int amountOfTankPositions = 4;
 
-
     public Map() {
         this.boxes = new ArrayList<>();
         this.spawnPositionsForTanks = new ArrayList<>();
