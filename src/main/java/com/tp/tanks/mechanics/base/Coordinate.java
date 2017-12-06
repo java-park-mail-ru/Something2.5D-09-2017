@@ -6,30 +6,30 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("PublicField")
 public class Coordinate {
 
-    private final double valX;
-    private final double valY;
+    private final Double valX;
+    private final Double valY;
 
-    public Coordinate(@JsonProperty("valX") double valX, @JsonProperty("valY") double valY) {
+    public Coordinate(@JsonProperty("valX") Double valX, @JsonProperty("valY") Double valY) {
         this.valX = valX;
         this.valY = valY;
     }
 
-    public double getValX() {
+    public Double getValX() {
         return valX;
     }
 
-    public double getValY() {
+    public Double getValY() {
         return valY;
     }
 
     @Override
     public String toString() {
-        return '{' + "x: " + valX + ", y: " + valY + '}';
+        return '{' + "x: " + valX.toString() + ", y: " + valY.toString() + '}';
     }
 
     @SuppressWarnings("NewMethodNamingConvention")
     @NotNull
-    public static Coordinate of(double valX, double valY) {
+    public static Coordinate of(Double valX, Double valY) {
         return new Coordinate(valX, valY);
     }
 }
