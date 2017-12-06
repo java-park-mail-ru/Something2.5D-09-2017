@@ -1,5 +1,6 @@
 package com.tp.tanks.mechanics;
 
+import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.mechanics.internal.ServerSnapshotService;
 import com.tp.tanks.mechanics.internal.TankSnapshotService;
@@ -48,6 +49,14 @@ public class GameMechanicsImpl implements GameMechanics {
     }
 
 
+    public List<TankSnap> handleShooting() {
+        List<TankSnap> tankSnapshots = tankSnapshotsService.processSnapshots();
+        List<Line> shootingLines = tankSnapshotsService.shootingLines();
+
+        return tankSnapshots;
+    }
+
+
     @Override
     public void gmStep(long frameTime) {
         while (!tasks.isEmpty()) {
@@ -61,7 +70,7 @@ public class GameMechanicsImpl implements GameMechanics {
             }
         }
 
-        final List<TankSnap> tankSnapshots = tankSnapshotsService.processSnapshots();
+        List<TankSnap> tankSnapshots = handleShooting();
         serverSnapshotService.send(tankSnapshots);
         tankSnapshotsService.reset();
     }
