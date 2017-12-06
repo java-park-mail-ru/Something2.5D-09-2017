@@ -1,16 +1,47 @@
-# tanks-backend
+# Tanks-backend
 
-## requirements
-Install MariaDB from official website: 
+[![Travis](https://api.travis-ci.org/java-park-mail-ru/Something2.5D-09-2017.svg?branch=developer&style=flat)]()
 
-    https://downloads.mariadb.org/mariadb/repositories/#mirror=mephi
+### Requirements
+* Docker
+* Docker Compose https://docs.docker.com/compose/install/
+* Maven https://maven.apache.org/download.cgi
 
-Next create database and user:
+### Build
+
+    mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
     
-    CREATE DATABASE IF NOT EXISTS tanksdb;
-    CREATE USER 'tanks-admin' IDENTIFIED BY 'tanks-password';
-    GRANT ALL PRIVILEGES ON tanksdb. * TO 'tanks-admin';
-    FLUSH PRIVILEGES;
+### Deploy
+Сhange the directory to *runner* and run command
+
+    ./start
+    
+The following parameters are supported:
+
+| Parameter     | Description          |
+| ------------- | :------------------- |
+| -d            | Run server as daemon | 
+
+    
+When you first start you must make the scripts executable
+
+    chmod +x ./start && chmod +x ./stop && chmod +x ./restart
+    
+### Manage
+
+For managing server use next scripts:
+
+| Command       | Description                                                  |
+| ------------- | :----------------------------------------------------------- |
+| start         | Build all containers and run                                 | 
+| stop          | Stop all containers                                          | 
+| restart       | Restart only api container. Database container isn't restart | 
+
+
+### Test
+    docker pull mariadb:latest
+    docker run --name testdb -e MYSQL_ROOT_PASSWORD=tanks-password -e MYSQL_DATABASE=tanksdb_test -e MYSQL_USER=tanks-admin -e MYSQL_PASSWORD=tanks-password -p 52000:3306 -d mariadb
+    mvn test -B
 
     
 

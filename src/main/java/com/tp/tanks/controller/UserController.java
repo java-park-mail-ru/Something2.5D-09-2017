@@ -1,7 +1,7 @@
 package com.tp.tanks.controller;
 
-import com.tp.tanks.model.User;
-import com.tp.tanks.service.UserService;
+import com.tp.tanks.models.User;
+import com.tp.tanks.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping(value = "/api")
 public class UserController {
 
     private final UserService userService;
@@ -86,7 +87,7 @@ public class UserController {
                 LOGGER.debug("[getProfile] Can't find user in session");
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-            final User user = userService.getByid((Long) sessionObject);
+            final User user = userService.getById((Long) sessionObject);
             LOGGER.debug("[getProfile] OUTPUT: username = " + user.getUsername() + " email = " + user.getEmail());
 
             return new ResponseEntity<>(user, HttpStatus.OK);

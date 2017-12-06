@@ -1,7 +1,7 @@
 package com.tp.tanks.controller;
 
-import com.tp.tanks.model.User;
-import com.tp.tanks.stubs.UserFactory;
+import com.tp.tanks.models.User;
+import com.tp.tanks.factories.UserFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,11 +45,11 @@ public class UserControllerTest {
     }
 
     private ResponseEntity<User> signUp(User user) {
-        return restTemplate.postForEntity("/signUp", generateMap(user), User.class);
+        return restTemplate.postForEntity("/api/signUp", generateMap(user), User.class);
     }
 
     private ResponseEntity<User> signIn(User user) {
-        return restTemplate.postForEntity("/signIn", generateMap(user), User.class);
+        return restTemplate.postForEntity("/api/signIn", generateMap(user), User.class);
     }
 
     private HttpEntity getEntity(List<String> cookie) {
@@ -60,11 +60,11 @@ public class UserControllerTest {
     }
 
     private ResponseEntity<User> logout(List<String> cookie) {
-        return restTemplate.exchange("/logout", HttpMethod.GET, getEntity(cookie), User.class);
+        return restTemplate.exchange("/api/logout", HttpMethod.GET, getEntity(cookie), User.class);
     }
 
     private ResponseEntity<User> getProfile(List<String> cookie) {
-        return restTemplate.exchange("/profile", HttpMethod.GET, getEntity(cookie), User.class);
+        return restTemplate.exchange("/api/profile", HttpMethod.GET, getEntity(cookie), User.class);
     }
 
     @Test
