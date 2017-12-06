@@ -9,10 +9,10 @@ public class Line {
     private Double koefK;
     private Double koefB;
 
-    public Line(Long userId, Coordinate dot, double angle) {
+    public Line(Long userId, Coordinate dot, double degree) {
         this.userId = userId;
         this.dot = dot;
-        this.angle = convert(angle);
+        this.angle = toRadian(degree);
         this.koefK = Math.tan(this.angle);
         this.koefB = dot.getValY() - koefK * dot.getValX();
     }
@@ -58,12 +58,12 @@ public class Line {
     }
 
 
-    private double convert(double angle) {
+    private double toRadian(double degree) {
         double result;
-        if (angle >= 0) {
-            result = Math.toRadians(angle);
+        if (degree >= 0) {
+            result = Math.toRadians(degree);
         } else {
-            result = 2 * Math.PI + Math.toRadians(angle);
+            result = 2 * Math.PI + Math.toRadians(degree);
         }
         return result;
     }
