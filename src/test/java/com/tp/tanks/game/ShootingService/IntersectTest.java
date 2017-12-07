@@ -60,7 +60,7 @@ public class IntersectTest {
         shooter.setTurretAngle(45.d);
 
         Line line = shooter.toLine();
-        line.setAngle(line.getAngle() + dphi);
+        line.setAngleRad(line.getAngleRad() + dphi);
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(true, ok);
@@ -84,7 +84,7 @@ public class IntersectTest {
         shooter.setTurretAngle(45.d);
 
         Line line = shooter.toLine();
-        line.setAngle(line.getAngle() - dphi);
+        line.setAngleRad(line.getAngleRad() - dphi);
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(true, ok);
@@ -109,7 +109,7 @@ public class IntersectTest {
         shooter.setTurretAngle(45.d);
 
         Line line = shooter.toLine();
-        line.setAngle(line.getAngle() + dphi + STEP);
+        line.setAngleRad(line.getAngleRad() + dphi + STEP);
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(false, ok);
@@ -133,7 +133,7 @@ public class IntersectTest {
         shooter.setTurretAngle(45.d);
 
         Line line = shooter.toLine();
-        line.setAngle(line.getAngle() - dphi - STEP);
+        line.setAngleRad(line.getAngleRad() - dphi - STEP);
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(false, ok);

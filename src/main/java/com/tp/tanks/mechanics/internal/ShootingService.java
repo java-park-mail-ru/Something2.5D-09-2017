@@ -26,7 +26,10 @@ public class ShootingService {
 
 
             for (TankSnap snap: snaps) {
+
                 if (Objects.equals(line.getUserId(), snap.getUserId())) {
+                    snap.setShoot(true);
+                    snap.setTurretAngle(line.getAngleDeg());
                     continue;
                 }
 
@@ -78,13 +81,13 @@ public class ShootingService {
         Double dpdhi = calcDeltaPhi(distance, 100.D);
         Double phi = calcAngle(line.getDot(), snap.getPlatform());
 
+//
+//        LOGGER.info("Distance = " + distance.toString());
+//        LOGGER.info("dPhi = " + dpdhi.toString());
+//        LOGGER.info("phi = " + phi.toString());
+//        LOGGER.info("line angle = " + line.getAngleRad().toString());
 
-        LOGGER.info("Distance = " + distance.toString());
-        LOGGER.info("dPhi = " + dpdhi.toString());
-        LOGGER.info("phi = " + phi.toString());
-        LOGGER.info("line angle = " + line.getAngle().toString());
 
-
-        return line.getAngle() <= phi + dpdhi && line.getAngle() >= phi - dpdhi;
+        return line.getAngleRad() <= phi + dpdhi && line.getAngleRad() >= phi - dpdhi;
     }
 }

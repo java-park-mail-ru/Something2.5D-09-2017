@@ -4,7 +4,8 @@ public class Line {
 
     private Long userId;
     private Coordinate dot;
-    private Double angle;
+    private Double angleRad;
+    private Double angleDeg;
 
     private Double koefK;
     private Double koefB;
@@ -12,8 +13,9 @@ public class Line {
     public Line(Long userId, Coordinate dot, double degree) {
         this.userId = userId;
         this.dot = dot;
-        this.angle = toRadian(degree);
-        this.koefK = Math.tan(this.angle);
+        this.angleDeg = degree;
+        this.angleRad = toRadian(degree);
+        this.koefK = Math.tan(this.angleRad);
         this.koefB = dot.getValY() - koefK * dot.getValX();
     }
 
@@ -33,12 +35,12 @@ public class Line {
         this.dot = dot;
     }
 
-    public Double getAngle() {
-        return angle;
+    public Double getAngleRad() {
+        return angleRad;
     }
 
-    public void setAngle(Double angle) {
-        this.angle = angle;
+    public void setAngleRad(Double angle) {
+        this.angleRad = angle;
     }
 
     public Double getKoefK() {
@@ -57,6 +59,9 @@ public class Line {
         this.koefB = koefB;
     }
 
+    public Double getAngleDeg() {
+        return angleDeg;
+    }
 
     private double toRadian(double degree) {
         double result;
@@ -66,5 +71,16 @@ public class Line {
             result = 2 * Math.PI + Math.toRadians(degree);
         }
         return result;
+    }
+
+    //NOT TESTED
+    public double toDegree(double radian) {
+        double degree;
+        if (radian >= 0 && radian <= Math.PI) {
+            degree = radian * 180 / Math.PI;
+        } else {
+            degree = (radian * 180 / Math.PI) - 360;
+        }
+        return degree;
     }
 }

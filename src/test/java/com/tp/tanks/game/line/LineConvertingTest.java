@@ -26,7 +26,7 @@ public class LineConvertingTest {
         snap.setTurretAngle(angle);
         Line line = snap.toLine();
 
-        Assert.assertEquals(Math.toRadians(angle), line.getAngle(), DELTA);
+        Assert.assertEquals(Math.toRadians(angle), line.getAngleRad(), DELTA);
         Assert.assertEquals(1.D, line.getKoefK(), DELTA);
     }
 
@@ -37,7 +37,7 @@ public class LineConvertingTest {
         snap.setTurretAngle(angle);
         Line line = snap.toLine();
 
-        Assert.assertEquals(Math.toRadians(angle), line.getAngle(), DELTA);
+        Assert.assertEquals(Math.toRadians(angle), line.getAngleRad(), DELTA);
         Assert.assertEquals(-1.D, line.getKoefK(), DELTA);
     }
 
@@ -49,7 +49,7 @@ public class LineConvertingTest {
         snap.setTurretAngle(angle);
         Line line = snap.toLine();
 
-        Assert.assertEquals(Math.toRadians(absoluteAngle), line.getAngle(), DELTA);
+        Assert.assertEquals(Math.toRadians(absoluteAngle), line.getAngleRad(), DELTA);
         Assert.assertEquals(1.D, line.getKoefK(), DELTA);
     }
 
@@ -62,7 +62,7 @@ public class LineConvertingTest {
         snap.setTurretAngle(angle);
         Line line = snap.toLine();
 
-        Assert.assertEquals(Math.toRadians(absoluteAngle), line.getAngle(), DELTA);
+        Assert.assertEquals(Math.toRadians(absoluteAngle), line.getAngleRad(), DELTA);
         Assert.assertEquals(-1.D, line.getKoefK(), DELTA);
     }
 }
