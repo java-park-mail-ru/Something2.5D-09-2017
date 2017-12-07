@@ -46,15 +46,24 @@ public class ShootingService {
         }
     }
 
-//    public TankSnap getClosestTank(ArrayList<TankSnap> snaps) {
-//
-//        Collections.sort(snaps, new Comparator<TankSnap>() {
-//            int compare(TankSnap left, TankSnap right)  {
-//                Double distLeft = calcDistanceBetweenDots();
-//            }
-//        });
-//        TankSnap closestTankSnap;
-//    }
+    public TankSnap getClosestTank(ArrayList<TankSnap> snaps, Line line1) {
+        if(snaps.size() == 0) {
+            return null;
+        }
+        Comparator<TankSnap> distanceComparator = new Comparator<TankSnap>() {
+            @Override
+            public int compare(TankSnap snap1, TankSnap snap2) {
+                double distance1 = calcDistanceBetweenDots(line1.getDot(), snap1.getPlatform());
+                double distance2 = calcDistanceBetweenDots(line1.getDot(), snap2.getPlatform());
+                return (int)distance1 - (int)distance2;
+            }
+        };
+
+        snaps.sort(distanceComparator);
+        return snaps.get(0);
+    }
+
+
 
     public Double calcDistanceBetweenDots(Coordinate first, Coordinate second) {
         return Math.sqrt(Math.pow((first.getValX() - second.getValX()), 2) + Math.pow((first.getValY() - second.getValY()), 2));
