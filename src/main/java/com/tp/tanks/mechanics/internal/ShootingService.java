@@ -59,8 +59,10 @@ public class ShootingService {
             }
         };
 
-        snaps.sort(distanceComparator);
-        return snaps.get(0);
+        return snaps.stream().min(distanceComparator).get();
+
+//        snaps.sort(distanceComparator);
+//        return snaps.get(0);
     }
 
 
