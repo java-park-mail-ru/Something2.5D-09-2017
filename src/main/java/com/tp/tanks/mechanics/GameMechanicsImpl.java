@@ -65,19 +65,9 @@ public class GameMechanicsImpl implements GameMechanics {
         }
 
         List<TankSnap> tankSnapshots = tankSnapshotsService.processSnapshots();
-//        LOGGER.info("[GMSTEP] START");
-//        for(int i = 0; i < tankSnapshots.size(); ++i) {
-//            LOGGER.info("[gmStep BEFORE]: player number: " + tankSnapshots.get(i).getUserId() + "  health: " + tankSnapshots.get(i).getHealth());
-//        }
         List<Line> shootingLines = tankSnapshotsService.shootingLines();
         shootingService.process(tankSnapshots, shootingLines);
         serverSnapshotService.send(tankSnapshots);
-
-//        for(int i = 0; i < tankSnapshots.size(); ++i) {
-//            LOGGER.info("[gmStep AFTER]: player number: " + tankSnapshots.get(i).getUserId() + "  health: " + tankSnapshots.get(i).getHealth());
-//        }
-//        LOGGER.info("[GMSTEP] END");
-
         tankSnapshotsService.reset();
     }
 }

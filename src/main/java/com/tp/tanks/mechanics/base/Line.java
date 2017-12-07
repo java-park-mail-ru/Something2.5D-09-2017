@@ -100,6 +100,7 @@ public class Line {
     public String toString() {
         return '('
                 + "userId: " + userId.toString()
+                + ", position: " + dot.toString()
                 + ", clientAngleDeg: " + clientAngleDeg.toString()
                 + ", serverAngleDeg: " + serverAngleDeg.toString()
                 + ", absoluteAngleDeg: " + Math.toDegrees(absoluteAngleRad)

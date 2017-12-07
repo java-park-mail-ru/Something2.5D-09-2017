@@ -6,8 +6,7 @@ import com.tp.tanks.mechanics.base.TankSnap;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ShootingService {
 
@@ -38,6 +37,7 @@ public class ShootingService {
 
                 if (isIntersect(line, snap)) {
                     LOGGER.info("[ShootingService.process] isIntersect == true");
+
                     if (snap.getHealth() != null) {
                         snap.setHealth(snap.getHealth() - 10);
                     }
@@ -45,6 +45,16 @@ public class ShootingService {
             }
         }
     }
+
+//    public TankSnap getClosestTank(ArrayList<TankSnap> snaps) {
+//
+//        Collections.sort(snaps, new Comparator<TankSnap>() {
+//            int compare(TankSnap left, TankSnap right)  {
+//                Double distLeft = calcDistanceBetweenDots();
+//            }
+//        });
+//        TankSnap closestTankSnap;
+//    }
 
     public Double calcDistanceBetweenDots(Coordinate first, Coordinate second) {
         return Math.sqrt(Math.pow((first.getValX() - second.getValX()), 2) + Math.pow((first.getValY() - second.getValY()), 2));
@@ -82,14 +92,16 @@ public class ShootingService {
 
     public Boolean isIntersect(Line line, TankSnap snap) {
         Double distance = calcDistanceBetweenDots(snap.getPlatform(), line.getDot());
-        Double dpdhi = calcDeltaPhi(distance, 100.D);
+        Double dpdhi = calcDeltaPhi(distance, 32.D);
 
         Coordinate serverLineDot = toServerCoordinate(line.getDot());
         Coordinate serverPlatform = toServerCoordinate(snap.getPlatform());
 
         Double angleBetweenDots = calcAngleBetweenDots(serverLineDot, serverPlatform);
 
-//
+
+        LOGGER.info("serverLineDot = " + serverLineDot.toString());
+        LOGGER.info("serverPlatform = " + serverPlatform.toString());
         LOGGER.info("Distance = " + distance.toString());
         LOGGER.info("dPhi = " + dpdhi.toString() + " [rad]");
         LOGGER.info("angleBetweenDots = " + angleBetweenDots.toString() + " [rad]");
