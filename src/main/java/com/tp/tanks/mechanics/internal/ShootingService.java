@@ -34,6 +34,8 @@ public class ShootingService {
                     continue;
                 }
 
+                LOGGER.info("[ShootingService.process] snap: " +  snap.toString());
+
                 if (isIntersect(line, snap)) {
                     LOGGER.info("[ShootingService.process] isIntersect == true");
                     if (snap.getHealth() != null) {
