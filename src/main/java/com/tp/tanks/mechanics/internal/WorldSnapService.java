@@ -28,8 +28,8 @@ public class WorldSnapService {
     public void send(Long userId) {
         WorldSnap snap = new WorldSnap();
         snap.setBoxes(world.getBoxes());
-        snap.setStartTankPosition(world.getTanksPosition());
         snap.setSpawnPoints(world.getSpawnPoints());
+        snap.setStartTankPosition(world.getTanksPosition());
 
         try {
             LOGGER.info("[WorldSnapService: send]: trying to send coordinate to user = " + userId);
