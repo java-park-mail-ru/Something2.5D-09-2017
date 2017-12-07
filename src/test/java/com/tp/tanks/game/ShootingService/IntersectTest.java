@@ -34,7 +34,7 @@ public class IntersectTest {
 
         shooter.setPlatform(new Coordinate(0.D, 0.D));
         enemy.setPlatform(new Coordinate(1000.D, 1000.D));
-        Double clientTurretAngle = -45.D;
+        Double clientTurretAngle = 45.D;
 
         shooter.setTurretAngle(clientTurretAngle);
         Line line = shooter.toLine();
@@ -49,7 +49,7 @@ public class IntersectTest {
 
         Coordinate shooterCoord = new Coordinate(0.D, 0.D);
         Coordinate enemyCoord = new Coordinate(1000.D, 1000.D);
-        Double clientTurretAngle = -45.D;
+        Double clientTurretAngle = 45.D;
 
         TankSnap shooter = TankSnapFactory.createOneForUser(null);
         TankSnap enemy = TankSnapFactory.createOneForUser(null);
@@ -74,7 +74,7 @@ public class IntersectTest {
 
         Coordinate shooterCoord = new Coordinate(0.D, 0.D);
         Coordinate enemyCoord = new Coordinate(1000.D, 1000.D);
-        Double clientTurretAngle = -45.D;
+        Double clientTurretAngle = 45.D;
 
         TankSnap shooter = TankSnapFactory.createOneForUser(null);
         TankSnap enemy = TankSnapFactory.createOneForUser(null);
@@ -100,7 +100,7 @@ public class IntersectTest {
 
         Coordinate shooterCoord = new Coordinate(0.D, 0.D);
         Coordinate enemyCoord = new Coordinate(1000.D, 1000.D);
-        Double clientTurretAngle = -45.D;
+        Double clientTurretAngle = 45.D;
 
         TankSnap shooter = TankSnapFactory.createOneForUser(null);
         TankSnap enemy = TankSnapFactory.createOneForUser(null);
@@ -125,7 +125,7 @@ public class IntersectTest {
 
         Coordinate shooterCoord = new Coordinate(0.D, 0.D);
         Coordinate enemyCoord = new Coordinate(1000.D, 1000.D);
-        Double clientTurretAngle = -45.D;
+        Double clientTurretAngle = 45.D;
 
         TankSnap shooter = TankSnapFactory.createOneForUser(null);
         TankSnap enemy = TankSnapFactory.createOneForUser(null);

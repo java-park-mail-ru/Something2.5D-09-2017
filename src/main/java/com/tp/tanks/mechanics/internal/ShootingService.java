@@ -83,7 +83,11 @@ public class ShootingService {
     public Boolean isIntersect(Line line, TankSnap snap) {
         Double distance = calcDistanceBetweenDots(snap.getPlatform(), line.getDot());
         Double dpdhi = calcDeltaPhi(distance, 100.D);
-        Double angleBetweenDots = calcAngleBetweenDots(line.getDot(), snap.getPlatform());
+
+        Coordinate serverLineDot = toServerCoordinate(line.getDot());
+        Coordinate serverPlatform = toServerCoordinate(snap.getPlatform());
+
+        Double angleBetweenDots = calcAngleBetweenDots(serverLineDot, serverPlatform);
 
 //
         LOGGER.info("Distance = " + distance.toString());
@@ -93,5 +97,9 @@ public class ShootingService {
 
 
         return line.getAbsoluteAngleRad() <= angleBetweenDots + dpdhi && line.getAbsoluteAngleRad() >= angleBetweenDots - dpdhi;
+    }
+
+    private Coordinate toServerCoordinate(Coordinate clientCoordinate) {
+        return new Coordinate(clientCoordinate.getValX(), - clientCoordinate.getValY());
     }
 }
