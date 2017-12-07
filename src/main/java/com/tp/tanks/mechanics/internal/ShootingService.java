@@ -79,15 +79,15 @@ public class ShootingService {
     public Boolean isIntersect(Line line, TankSnap snap) {
         Double distance = calcDistanceBetweenDots(snap.getPlatform(), line.getDot());
         Double dpdhi = calcDeltaPhi(distance, 100.D);
-        Double phi = calcAngleBetweenDots(line.getDot(), snap.getPlatform());
+        Double angleBetweenDots = calcAngleBetweenDots(line.getDot(), snap.getPlatform());
 
 //
-//        LOGGER.info("Distance = " + distance.toString());
-//        LOGGER.info("dPhi = " + dpdhi.toString());
-//        LOGGER.info("phi = " + phi.toString());
-//        LOGGER.info("line angle = " + line.getAbsoluteAngleRad().toString());
+        LOGGER.info("Distance = " + distance.toString());
+        LOGGER.info("dPhi = " + dpdhi.toString() + " [rad]");
+        LOGGER.info("angleBetweenDots = " + angleBetweenDots.toString() + " [rad]");
+        LOGGER.info("absolute angle line = " + line.getAbsoluteAngleRad().toString() + " [rad]");
 
 
-        return line.getAbsoluteAngleRad() <= phi + dpdhi && line.getAbsoluteAngleRad() >= phi - dpdhi;
+        return line.getAbsoluteAngleRad() <= angleBetweenDots + dpdhi && line.getAbsoluteAngleRad() >= angleBetweenDots - dpdhi;
     }
 }
