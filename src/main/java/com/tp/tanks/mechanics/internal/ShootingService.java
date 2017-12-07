@@ -29,7 +29,7 @@ public class ShootingService {
 
                 if (Objects.equals(line.getUserId(), snap.getUserId())) {
                     snap.setShoot(true);
-                    snap.setTurretAngle(line.getAngleDeg());
+                    snap.setTurretAngle(line.getClientAngleDeg());
                     continue;
                 }
 
@@ -42,7 +42,7 @@ public class ShootingService {
         }
     }
 
-    public Double calcDistance(Coordinate first, Coordinate second) {
+    public Double calcDistanceBetweenDots(Coordinate first, Coordinate second) {
         return Math.sqrt(Math.pow((first.getValX() - second.getValX()), 2) + Math.pow((first.getValY() - second.getValY()), 2));
     }
 
@@ -50,9 +50,9 @@ public class ShootingService {
         return Math.atan(radius / distance);
     }
 
-    public Double calcAngle(Coordinate first, Coordinate second) {
-        Double dx = second.getValX() - first.getValX();
-        Double dy = second.getValY() - first.getValY();
+    public Double calcAngleBetweenDots(Coordinate left, Coordinate right) {
+        Double dx = right.getValX() - left.getValX();
+        Double dy = right.getValY() - left.getValY();
 
         if (Math.abs(dx) <= DELTA) {
             if (dy >= 0) {
@@ -77,17 +77,17 @@ public class ShootingService {
     }
 
     public Boolean isIntersect(Line line, TankSnap snap) {
-        Double distance = calcDistance(snap.getPlatform(), line.getDot());
+        Double distance = calcDistanceBetweenDots(snap.getPlatform(), line.getDot());
         Double dpdhi = calcDeltaPhi(distance, 100.D);
-        Double phi = calcAngle(line.getDot(), snap.getPlatform());
+        Double phi = calcAngleBetweenDots(line.getDot(), snap.getPlatform());
 
 //
 //        LOGGER.info("Distance = " + distance.toString());
 //        LOGGER.info("dPhi = " + dpdhi.toString());
 //        LOGGER.info("phi = " + phi.toString());
-//        LOGGER.info("line angle = " + line.getAngleRad().toString());
+//        LOGGER.info("line angle = " + line.getAbsoluteAngleRad().toString());
 
 
-        return line.getAngleRad() <= phi + dpdhi && line.getAngleRad() >= phi - dpdhi;
+        return line.getAbsoluteAngleRad() <= phi + dpdhi && line.getAbsoluteAngleRad() >= phi - dpdhi;
     }
 }

@@ -4,18 +4,23 @@ public class Line {
 
     private Long userId;
     private Coordinate dot;
-    private Double angleRad;
-    private Double angleDeg;
+    private Double clientAngleDeg;
+    private Double serverAngleDeg;
+
+    private Double absoluteAngleRad;
 
     private Double koefK;
     private Double koefB;
 
-    public Line(Long userId, Coordinate dot, double degree) {
+    public Line(Long userId, Coordinate dot, double clientDegree) {
         this.userId = userId;
         this.dot = dot;
-        this.angleDeg = degree;
-        this.angleRad = toRadian(degree);
-        this.koefK = Math.tan(this.angleRad);
+        this.clientAngleDeg = clientDegree;
+
+        initServerAngleDegree();
+        initServerAngleRadian();
+
+        this.koefK = Math.tan(this.absoluteAngleRad);
         this.koefB = dot.getValY() - koefK * dot.getValX();
     }
 
@@ -35,12 +40,12 @@ public class Line {
         this.dot = dot;
     }
 
-    public Double getAngleRad() {
-        return angleRad;
+    public Double getAbsoluteAngleRad() {
+        return absoluteAngleRad;
     }
 
-    public void setAngleRad(Double angle) {
-        this.angleRad = angle;
+    public void setAbsoluteAngleRad(Double angle) {
+        this.absoluteAngleRad = angle;
     }
 
     public Double getKoefK() {
@@ -59,18 +64,25 @@ public class Line {
         this.koefB = koefB;
     }
 
-    public Double getAngleDeg() {
-        return angleDeg;
+    public Double getClientAngleDeg() {
+        return clientAngleDeg;
     }
 
-    private double toRadian(double degree) {
-        double result;
-        if (degree >= 0) {
-            result = Math.toRadians(degree);
+    public Double getServerAngleDeg() {
+        return serverAngleDeg;
+    }
+
+
+    private void initServerAngleDegree() {
+        serverAngleDeg = clientAngleDeg * -1;
+    }
+
+    private void initServerAngleRadian() {
+        if (serverAngleDeg >= 0) {
+            absoluteAngleRad = Math.toRadians(serverAngleDeg);
         } else {
-            result = 2 * Math.PI + Math.toRadians(degree);
+            absoluteAngleRad = 2 * Math.PI + Math.toRadians(serverAngleDeg);
         }
-        return result;
     }
 
     //NOT TESTED
@@ -83,4 +95,6 @@ public class Line {
         }
         return degree;
     }
+
+
 }

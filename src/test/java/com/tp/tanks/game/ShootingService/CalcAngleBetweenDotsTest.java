@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
-public class CalcAngleTest {
+public class CalcAngleBetweenDotsTest {
 
     private final ShootingService shootingService = new ShootingService();
 
@@ -27,7 +27,7 @@ public class CalcAngleTest {
         Coordinate first = new Coordinate(0.D, 0.D);
         Coordinate second = new Coordinate(1000.D, 0.D);
 
-        Double angle = shootingService.calcAngle(first, second);
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
         Assert.assertEquals(Math.toRadians(0), angle, DELTA);
     }
 
@@ -37,7 +37,7 @@ public class CalcAngleTest {
         Coordinate first = new Coordinate(0.D, 0.D);
         Coordinate second = new Coordinate(1000.D, 1000.D);
 
-        Double angle = shootingService.calcAngle(first, second);
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
         Assert.assertEquals(Math.toRadians(45.D), angle, DELTA);
     }
 
@@ -47,7 +47,7 @@ public class CalcAngleTest {
         Coordinate first = new Coordinate(0.D, 0.D);
         Coordinate second = new Coordinate(0.D, 1000.D);
 
-        Double angle = shootingService.calcAngle(first, second);
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
         Assert.assertEquals(Math.toRadians(90.D), angle, DELTA);
     }
 
@@ -57,7 +57,7 @@ public class CalcAngleTest {
         Coordinate first = new Coordinate(0.D, 0.D);
         Coordinate second = new Coordinate(-1000.D, 1000.D);
 
-        Double angle = shootingService.calcAngle(first, second);
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
         Assert.assertEquals(Math.toRadians(135.D), angle, DELTA);
     }
 
@@ -67,7 +67,7 @@ public class CalcAngleTest {
         Coordinate first = new Coordinate(0.D, 0.D);
         Coordinate second = new Coordinate(-1000.D, 0.D);
 
-        Double angle = shootingService.calcAngle(first, second);
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
         Assert.assertEquals(Math.toRadians(180.D), angle, DELTA);
     }
 
@@ -77,7 +77,7 @@ public class CalcAngleTest {
         Coordinate first = new Coordinate(0.D, 0.D);
         Coordinate second = new Coordinate(-1000.D, -1000.D);
 
-        Double angle = shootingService.calcAngle(first, second);
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
         Assert.assertEquals(Math.toRadians(225.D), angle, DELTA);
     }
 
@@ -87,7 +87,7 @@ public class CalcAngleTest {
         Coordinate first = new Coordinate(0.D, 0.D);
         Coordinate second = new Coordinate(0.D, -1000.D);
 
-        Double angle = shootingService.calcAngle(first, second);
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
         Assert.assertEquals(Math.toRadians(270.D), angle, DELTA);
     }
 
@@ -97,7 +97,7 @@ public class CalcAngleTest {
         Coordinate first = new Coordinate(0.D, 0.D);
         Coordinate second = new Coordinate(1000.D, -1000.D);
 
-        Double angle = shootingService.calcAngle(first, second);
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
         Assert.assertEquals(Math.toRadians(315.D), angle, DELTA);
     }
 

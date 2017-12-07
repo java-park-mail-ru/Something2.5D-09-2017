@@ -51,7 +51,7 @@ public class IntersectTest {
         TankSnap shooter = TankSnapFactory.createOneForUser(null);
         TankSnap enemy = TankSnapFactory.createOneForUser(null);
 
-        Double distance = shootingService.calcDistance(shooterCoord, enemyCoord);
+        Double distance = shootingService.calcDistanceBetweenDots(shooterCoord, enemyCoord);
         Double dphi = shootingService.calcDeltaPhi(distance, 100.D);
 
         shooter.setPlatform(shooterCoord);
@@ -60,7 +60,7 @@ public class IntersectTest {
         shooter.setTurretAngle(45.d);
 
         Line line = shooter.toLine();
-        line.setAngleRad(line.getAngleRad() + dphi);
+        line.setAbsoluteAngleRad(line.getAbsoluteAngleRad() + dphi);
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(true, ok);
@@ -75,7 +75,7 @@ public class IntersectTest {
         TankSnap shooter = TankSnapFactory.createOneForUser(null);
         TankSnap enemy = TankSnapFactory.createOneForUser(null);
 
-        Double distance = shootingService.calcDistance(shooterCoord, enemyCoord);
+        Double distance = shootingService.calcDistanceBetweenDots(shooterCoord, enemyCoord);
         Double dphi = shootingService.calcDeltaPhi(distance, 100.D);
 
         shooter.setPlatform(shooterCoord);
@@ -84,7 +84,7 @@ public class IntersectTest {
         shooter.setTurretAngle(45.d);
 
         Line line = shooter.toLine();
-        line.setAngleRad(line.getAngleRad() - dphi);
+        line.setAbsoluteAngleRad(line.getAbsoluteAngleRad() - dphi);
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(true, ok);
@@ -100,7 +100,7 @@ public class IntersectTest {
         TankSnap shooter = TankSnapFactory.createOneForUser(null);
         TankSnap enemy = TankSnapFactory.createOneForUser(null);
 
-        Double distance = shootingService.calcDistance(shooterCoord, enemyCoord);
+        Double distance = shootingService.calcDistanceBetweenDots(shooterCoord, enemyCoord);
         Double dphi = shootingService.calcDeltaPhi(distance, 100.D);
 
         shooter.setPlatform(shooterCoord);
@@ -109,7 +109,7 @@ public class IntersectTest {
         shooter.setTurretAngle(45.d);
 
         Line line = shooter.toLine();
-        line.setAngleRad(line.getAngleRad() + dphi + STEP);
+        line.setAbsoluteAngleRad(line.getAbsoluteAngleRad() + dphi + STEP);
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(false, ok);
@@ -124,7 +124,7 @@ public class IntersectTest {
         TankSnap shooter = TankSnapFactory.createOneForUser(null);
         TankSnap enemy = TankSnapFactory.createOneForUser(null);
 
-        Double distance = shootingService.calcDistance(shooterCoord, enemyCoord);
+        Double distance = shootingService.calcDistanceBetweenDots(shooterCoord, enemyCoord);
         Double dphi = shootingService.calcDeltaPhi(distance, 100.D);
 
         shooter.setPlatform(shooterCoord);
@@ -133,7 +133,7 @@ public class IntersectTest {
         shooter.setTurretAngle(45.d);
 
         Line line = shooter.toLine();
-        line.setAngleRad(line.getAngleRad() - dphi - STEP);
+        line.setAbsoluteAngleRad(line.getAbsoluteAngleRad() - dphi - STEP);
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(false, ok);
