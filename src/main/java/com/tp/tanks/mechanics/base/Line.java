@@ -96,5 +96,16 @@ public class Line {
         return degree;
     }
 
+    @Override
+    public String toString() {
+        return '('
+                + "userId: " + userId.toString()
+                + ", clientAngleDeg: " + clientAngleDeg.toString()
+                + ", serverAngleDeg: " + serverAngleDeg.toString()
+                + ", absoluteAngleDeg: " + Math.toDegrees(absoluteAngleRad)
+                + ", absoluteAngleRad: " + absoluteAngleRad.toString()
+                + '}';
+    }
+
 
 }

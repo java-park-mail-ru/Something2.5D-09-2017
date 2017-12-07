@@ -24,6 +24,7 @@ public class ShootingService {
 
         for (Line line: lines) {
 
+            LOGGER.info("[ShootingService.process] line: " +  line.toString());
 
             for (TankSnap snap: snaps) {
 
@@ -34,6 +35,7 @@ public class ShootingService {
                 }
 
                 if (isIntersect(line, snap)) {
+                    LOGGER.info("[ShootingService.process] isIntersect == true");
                     if (snap.getHealth() != null) {
                         snap.setHealth(snap.getHealth() - 10);
                     }
