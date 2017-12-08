@@ -18,22 +18,26 @@ public class WorldSnapService {
     private final World world;
 
     @NotNull
+    private WorldSnap worldSnap;
+
+    @NotNull
     private static final Logger LOGGER = LoggerFactory.getLogger(WorldSnapService.class);
 
     public WorldSnapService(@NotNull RemotePointService remotePointService) {
         this.remotePointService = remotePointService;
         this.world = new World();
+
+        this.worldSnap = new WorldSnap();
+        worldSnap.setBoxes(world.getBoxes());
+        worldSnap.setSpawnPoints(world.getSpawnPoints());
     }
 
     public void send(Long userId) {
-        WorldSnap snap = new WorldSnap();
-        snap.setBoxes(world.getBoxes());
-        snap.setSpawnPoints(world.getSpawnPoints());
-        snap.setStartTankPosition(world.getTanksPosition());
+        worldSnap.setStartTankPosition(world.getTanksPosition());
 
         try {
             LOGGER.info("[WorldSnapService: send]: trying to send coordinate to user = " + userId);
-            remotePointService.sendMessageToUser(userId, snap);
+            remotePointService.sendMessageToUser(userId, worldSnap);
             LOGGER.info("[WorldSnapService: send]: sended coordinate to user = " + userId);
         } catch (IOException e) {
             LOGGER.error("[WorldSnapService: send]Can't send server WorldSnap to client: userId = " + userId);
