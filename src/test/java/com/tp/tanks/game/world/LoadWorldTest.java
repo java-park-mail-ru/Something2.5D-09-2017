@@ -45,7 +45,7 @@ public class LoadWorldTest {
         Assert.assertNotEquals(0, spawnPoints.size());
 
         for(Coordinate coordinate: spawnPoints) {
-            LOGGER.info("SpawnPoint = " + coordinate.toString());
+            LOGGER.info("SpawnRequest = " + coordinate.toString());
         }
     }
 }

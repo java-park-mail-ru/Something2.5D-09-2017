@@ -5,7 +5,7 @@ import com.tp.tanks.websocket.Message;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("PublicField")
-public class Coordinate extends Message {
+public class Coordinate {
 
     private final Double valX;
     private final Double valY;

@@ -45,7 +45,7 @@ public class ServerSnapshotServiceTest {
     public void setUp() {
         mechanicsExecutor.lock();
         mockServerSnapshotService = new MockServerSnapshotService(remotePointService);
-        gameMechanics = new GameMechanicsImpl(tankSnapshotsService, mockServerSnapshotService);
+        gameMechanics = new GameMechanicsImpl(tankSnapshotsService, mockServerSnapshotService, remotePointService);
     }
 
     @After
