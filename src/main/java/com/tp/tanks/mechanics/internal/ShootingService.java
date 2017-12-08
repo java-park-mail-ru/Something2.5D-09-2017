@@ -23,6 +23,7 @@ public class ShootingService {
 
         for (Line line: lines) {
 
+            ArrayList<TankSnap> intersectSnaps = new ArrayList<>();
             LOGGER.info("[ShootingService.process] line: " +  line.toString());
 
             for (TankSnap snap: snaps) {
@@ -37,12 +38,15 @@ public class ShootingService {
 
                 if (isIntersect(line, snap)) {
                     LOGGER.info("[ShootingService.process] isIntersect == true");
-
-                    if (snap.getHealth() != null) {
-                        snap.setHealth(snap.getHealth() - 10);
-                    }
+                    intersectSnaps.add(snap);
                 }
             }
+
+            TankSnap closestSnap = getClosestTank(intersectSnaps, line);
+            if (closestSnap.getHealth() != null) {
+                closestSnap.setHealth(closestSnap.getHealth() - 10);
+            }
+
         }
     }
 
