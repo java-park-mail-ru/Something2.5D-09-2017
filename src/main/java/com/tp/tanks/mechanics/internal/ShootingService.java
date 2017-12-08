@@ -5,6 +5,7 @@ import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.*;
 
@@ -13,7 +14,7 @@ public class ShootingService {
     private static final double DELTA = 1e-15;
 
     @NotNull
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ShootingService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShootingService.class);
 
     public void process(List<TankSnap> snaps, List<Line> lines) {
 
