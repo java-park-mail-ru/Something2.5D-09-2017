@@ -55,19 +55,13 @@ public class ShootingService {
         if(snaps.size() == 0) {
             return null;
         }
-        Comparator<TankSnap> distanceComparator = new Comparator<TankSnap>() {
-            @Override
-            public int compare(TankSnap snap1, TankSnap snap2) {
-                double distance1 = calcDistanceBetweenDots(line1.getDot(), snap1.getPlatform());
-                double distance2 = calcDistanceBetweenDots(line1.getDot(), snap2.getPlatform());
-                return (int)(distance1 - distance2);
-            }
+        Comparator<TankSnap> distanceComparator = (snap1, snap2) -> {
+            double distance1 = calcDistanceBetweenDots(line1.getDot(), snap1.getPlatform());
+            double distance2 = calcDistanceBetweenDots(line1.getDot(), snap2.getPlatform());
+            return (int)(distance1 - distance2);
         };
 
         return snaps.stream().min(distanceComparator).get();
-
-//        snaps.sort(distanceComparator);
-//        return snaps.get(0);
     }
 
 
