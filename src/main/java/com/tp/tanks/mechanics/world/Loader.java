@@ -9,7 +9,7 @@ import com.tp.tanks.mechanics.base.Coordinate;
 
 public class Loader {
     private static final int AMOUNT_OF_MAPS = 2;
-    private static int CURRENT_MAP;
+    private static Integer CURRENT_MAP;
 
     public static ArrayList<Box> loadBoxes() {
 
@@ -18,8 +18,8 @@ public class Loader {
         try {
             CURRENT_MAP = ThreadLocalRandom.current().nextInt(1, AMOUNT_OF_MAPS);
             ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-//            File file = new File(classLoader.getResource("world/map" + CURRENT_MAP.toString() + "/boxes.csv").getFile());
-            File file = new File(classLoader.getResource("world/map1/boxes.csv").getFile());
+            File file = new File(classLoader.getResource("world/map" + CURRENT_MAP.toString() + "/boxes.csv").getFile());
+//            File file = new File(classLoader.getResource("world/map1/boxes.csv").getFile());
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
             String line;
@@ -62,8 +62,8 @@ public class Loader {
 
         try {
             ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-            File file = new File(classLoader.getResource("world/map1/spawnPoints.csv").getFile());
-//            File file = new File(classLoader.getResource("world/map"  + CURRENT_MAP.toString() + "/spawnPoints.csv").getFile());
+//            File file = new File(classLoader.getResource("world/map1/spawnPoints.csv").getFile());
+            File file = new File(classLoader.getResource("world/map"  + CURRENT_MAP.toString() + "/spawnPoints.csv").getFile());
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
             String line;
