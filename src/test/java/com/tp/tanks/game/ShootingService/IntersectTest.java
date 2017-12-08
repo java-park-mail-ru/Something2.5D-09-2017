@@ -22,8 +22,6 @@ public class IntersectTest {
 
     private final ShootingService shootingService = new ShootingService();
 
-    private static final double DELTA = 1e-15;
-
     private static final double STEP = 0.01;
 
     private final Coordinate shooterCoordinate = new Coordinate(0.D, 0.D);

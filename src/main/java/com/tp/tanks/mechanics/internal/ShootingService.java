@@ -51,13 +51,13 @@ public class ShootingService {
     }
 
     public TankSnap getClosestTank(ArrayList<TankSnap> snaps, Line line) {
-        if(snaps.size() == 0) {
+        if (snaps.size() == 0) {
             return null;
         }
         Comparator<TankSnap> distanceComparator = (snap1, snap2) -> {
             double distance1 = calcDistanceBetweenDots(line.getDot(), snap1.getPlatform());
             double distance2 = calcDistanceBetweenDots(line.getDot(), snap2.getPlatform());
-            return (int)(distance1 - distance2);
+            return (int) (distance1 - distance2);
         };
 
         return snaps.stream().min(distanceComparator).get();
