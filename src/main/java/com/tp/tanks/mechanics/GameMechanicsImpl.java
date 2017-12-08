@@ -67,7 +67,6 @@ public class GameMechanicsImpl implements GameMechanics {
 
     @Override
     public void getNewSpawnPoint(@NotNull Long userId, SpawnRequest request) {
-        LOGGER.info("[GameMechanicsImpl: getNewSpawnPoint] START serId: " + userId);
 
         SpawnSnap spawnSnap = new SpawnSnap();
         Coordinate coordinate = this.world.getTanksPosition();
@@ -82,16 +81,14 @@ public class GameMechanicsImpl implements GameMechanics {
         tankSnap.setHealth(100);
         tankSnap.setPlatform(coordinate);
 
+        remotePointService.spawnUser(userId);
         addTankSnapshot(userId, tankSnap);
 
         try {
             this.remotePointService.sendMessageToUser(userId, spawnSnap);
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             LOGGER.error("[GameMechanicsImpl: getNewSpawnPoint] IOException: ", ex);
-        } catch (Exception ex) {
-            LOGGER.error("[GameMechanicsImpl: getNewSpawnPoint] Exception: ", ex);
         }
-        LOGGER.info("[GameMechanicsImpl: getNewSpawnPoint] END: " + userId);
     }
 
     @Override
@@ -110,7 +107,18 @@ public class GameMechanicsImpl implements GameMechanics {
         List<TankSnap> tankSnapshots = tankSnapshotsService.processSnapshots();
         List<Line> shootingLines = tankSnapshotsService.shootingLines();
         shootingService.process(tankSnapshots, shootingLines);
+
+        removeDeadTanksFromSession(tankSnapshots);
+
         serverSnapshotService.send(tankSnapshots);
         tankSnapshotsService.reset();
+    }
+
+    private void removeDeadTanksFromSession(List<TankSnap> tankSnapshots) {
+        for (TankSnap snap: tankSnapshots) {
+            if (snap.getHealth() <= 0) {
+                remotePointService.killUser(snap.getUserId());
+            }
+        }
     }
 }

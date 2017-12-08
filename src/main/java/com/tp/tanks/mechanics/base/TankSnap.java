@@ -21,6 +21,7 @@ public class TankSnap extends Message {
 
     private Boolean isShoot;
 
+    @NotNull
     private Integer health;
 
     @NotNull

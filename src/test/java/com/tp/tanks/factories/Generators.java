@@ -36,6 +36,10 @@ public class Generators {
         return new Random().nextBoolean();
     }
 
+    public static Integer geterateInteger() {
+        return new Random().nextInt();
+    }
+
     public static Long generateLong() {
         return new Random().nextLong();
     }

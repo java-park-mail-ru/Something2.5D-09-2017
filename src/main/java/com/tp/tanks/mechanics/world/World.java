@@ -3,7 +3,6 @@ package com.tp.tanks.mechanics.world;
 import com.tp.tanks.mechanics.base.Coordinate;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -27,7 +26,7 @@ public class World {
     }
 
     public Coordinate getTanksPosition() {
-        if(currentSpawnPoints.size() == 0) {
+        if (currentSpawnPoints.size() == 0) {
             this.currentSpawnPoints = new ArrayList<>(this.allSpawnPoints);
         }
 

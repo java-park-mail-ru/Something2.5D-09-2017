@@ -47,6 +47,16 @@ public class RemotePointService {
         LOGGER.info("[RemotePointService.removeUser] unregister userID = " + userId.toString());
     }
 
+    public void killUser(@NotNull Long userId) {
+        players.remove(userId);
+        LOGGER.info("[RemotePointService.killUser] userID = " + userId.toString());
+    }
+
+    public void spawnUser(@NotNull Long userId) {
+        players.add(userId);
+        LOGGER.info("[RemotePointService.spawnUser] userID = " + userId.toString());
+    }
+
     public void removeAlluses() {
         sessions.clear();
         players.clear();

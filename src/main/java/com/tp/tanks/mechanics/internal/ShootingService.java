@@ -53,7 +53,7 @@ public class ShootingService {
             }
 
             ArrayList<Box> intersectBoxes = new ArrayList<>();
-            for(Box box: this.boxes) {
+            for (Box box: this.boxes) {
                 if (isIntersect(line, box.getPosition())) {
                     intersectBoxes.add(box);
                 }
@@ -62,8 +62,8 @@ public class ShootingService {
             TankSnap closestSnap = getClosestTank(intersectSnaps, line);
             Box closestBox = getClosestBox(intersectBoxes, line);
             if (closestSnap != null) {
-                if(closestBox != null) {
-                    if(compareTankAndBox(closestSnap, closestBox, line)) { ;
+                if (closestBox != null) {
+                    if (compareTankAndBox(closestSnap, closestBox, line)) {
                         closestSnap.setHealth(closestSnap.getHealth() - 10);
                     }
                 } else {
@@ -81,7 +81,7 @@ public class ShootingService {
     }
 
     private Box getClosestBox(ArrayList<Box> boxesToCompare, Line line) {
-        if(boxesToCompare.size() == 0) {
+        if (boxesToCompare.size() == 0) {
             return null;
         }
         Comparator<Box> distanceComparator = (box1, box2) -> {
@@ -105,7 +105,6 @@ public class ShootingService {
 
         return snaps.stream().min(distanceComparator).get();
     }
-
 
     public Double calcDistanceBetweenDots(Coordinate first, Coordinate second) {
         return Math.sqrt(Math.pow((first.getValY() - second.getValY()), 2)
@@ -148,13 +147,6 @@ public class ShootingService {
         Double dpdhi = calcDeltaPhi(distance, 32.D);
 
         Double angleBetweenDots = calcAngleBetweenDots(line.getDot(), coordinate);
-//
-//        LOGGER.info("line = " + line.toString());
-//        LOGGER.info("Distance = " + distance.toString());
-//        LOGGER.info("dPhi = " + dpdhi.toString() + " [rad]");
-//        LOGGER.info("angleBetweenDots = " + angleBetweenDots.toString() + " [rad]");
-//        LOGGER.info("absolute angle line = " + line.getServerAngleRad().toString() + " [rad]");
-
 
         return line.getServerAngleRad() <= angleBetweenDots + dpdhi && line.getServerAngleRad() >= angleBetweenDots - dpdhi;
     }
