@@ -24,8 +24,8 @@ public class ShootingService {
     @NotNull
     private ArrayList<Box> boxes;
 
-    public ShootingService() {
-        this.world = new World();
+    public ShootingService(World world) {
+        this.world = world;
         this.boxes = world.getBoxes();
     }
 

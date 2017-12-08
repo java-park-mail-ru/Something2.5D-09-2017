@@ -1,10 +1,11 @@
 package com.tp.tanks.mechanics.base;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tp.tanks.websocket.Message;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("PublicField")
-public class Coordinate {
+public class Coordinate extends Message {
 
     private final Double valX;
     private final Double valY;

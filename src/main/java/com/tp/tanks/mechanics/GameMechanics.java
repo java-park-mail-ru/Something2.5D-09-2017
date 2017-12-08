@@ -13,4 +13,5 @@ public interface GameMechanics {
 
     void gmStep(long frameTime);
 
+    void getNewSpawnPoint(@NotNull Long userId);
 }
