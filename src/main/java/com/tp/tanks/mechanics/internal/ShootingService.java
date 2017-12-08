@@ -148,12 +148,12 @@ public class ShootingService {
         Double dpdhi = calcDeltaPhi(distance, 32.D);
 
         Double angleBetweenDots = calcAngleBetweenDots(line.getDot(), coordinate);
-
-        LOGGER.info("line = " + line.toString());
-        LOGGER.info("Distance = " + distance.toString());
-        LOGGER.info("dPhi = " + dpdhi.toString() + " [rad]");
-        LOGGER.info("angleBetweenDots = " + angleBetweenDots.toString() + " [rad]");
-        LOGGER.info("absolute angle line = " + line.getServerAngleRad().toString() + " [rad]");
+//
+//        LOGGER.info("line = " + line.toString());
+//        LOGGER.info("Distance = " + distance.toString());
+//        LOGGER.info("dPhi = " + dpdhi.toString() + " [rad]");
+//        LOGGER.info("angleBetweenDots = " + angleBetweenDots.toString() + " [rad]");
+//        LOGGER.info("absolute angle line = " + line.getServerAngleRad().toString() + " [rad]");
 
 
         return line.getServerAngleRad() <= angleBetweenDots + dpdhi && line.getServerAngleRad() >= angleBetweenDots - dpdhi;

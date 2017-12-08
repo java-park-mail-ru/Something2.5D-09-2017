@@ -67,6 +67,8 @@ public class GameMechanicsImpl implements GameMechanics {
 
     @Override
     public void getNewSpawnPoint(@NotNull Long userId, SpawnRequest request) {
+        LOGGER.info("[GameMechanicsImpl: getNewSpawnPoint] START serId: " + userId);
+
         SpawnSnap spawnSnap = new SpawnSnap();
         Coordinate coordinate = this.world.getTanksPosition();
         spawnSnap.setPosition(coordinate);
@@ -79,13 +81,17 @@ public class GameMechanicsImpl implements GameMechanics {
         tankSnap.setUsername(request.getUsername());
         tankSnap.setHealth(100);
         tankSnap.setPlatform(coordinate);
+
         addTankSnapshot(userId, tankSnap);
 
         try {
             this.remotePointService.sendMessageToUser(userId, spawnSnap);
         } catch(IOException ex) {
             LOGGER.error("[GameMechanicsImpl: getNewSpawnPoint] IOException: ", ex);
+        } catch (Exception ex) {
+            LOGGER.error("[GameMechanicsImpl: getNewSpawnPoint] Exception: ", ex);
         }
+        LOGGER.info("[GameMechanicsImpl: getNewSpawnPoint] END: " + userId);
     }
 
     @Override
