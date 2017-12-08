@@ -1,6 +1,5 @@
 package com.tp.tanks.game.ShootingService;
 
-import com.tp.tanks.TanksApplication;
 import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
@@ -20,6 +19,8 @@ import java.util.ArrayList;
 @ActiveProfiles("test")
 public class GetClosestTankTest {
     private final ShootingService shootingService = new ShootingService();
+
+    private static final double DELTA = 1e-15;
 
     @Test
     public void closestTankRightDirection() {
@@ -41,7 +42,8 @@ public class GetClosestTankTest {
         snaps.add(first);
 
         TankSnap closestSnap = shootingService.getClosestTank(snaps, line);
-        Assert.assertEquals(closestSnap, first);
+        Assert.assertEquals(closestSnap.getPlatform().getValX(), first.getPlatform().getValX(), DELTA);
+        Assert.assertEquals(closestSnap.getPlatform().getValY(), first.getPlatform().getValY(), DELTA);
     }
 
     @Test
@@ -64,7 +66,8 @@ public class GetClosestTankTest {
         snaps.add(first);
 
         TankSnap closestSnap = shootingService.getClosestTank(snaps, line);
-        Assert.assertEquals(closestSnap, first);
+        Assert.assertEquals(closestSnap.getPlatform().getValX(), first.getPlatform().getValX(), DELTA);
+        Assert.assertEquals(closestSnap.getPlatform().getValY(), first.getPlatform().getValY(), DELTA);
     }
 
     @Test
@@ -87,7 +90,8 @@ public class GetClosestTankTest {
         snaps.add(first);
 
         TankSnap closestSnap = shootingService.getClosestTank(snaps, line);
-        Assert.assertEquals(closestSnap, first);
+        Assert.assertEquals(closestSnap.getPlatform().getValX(), first.getPlatform().getValX(), DELTA);
+        Assert.assertEquals(closestSnap.getPlatform().getValY(), first.getPlatform().getValY(), DELTA);
     }
 
     @Test
@@ -110,6 +114,7 @@ public class GetClosestTankTest {
         snaps.add(first);
 
         TankSnap closestSnap = shootingService.getClosestTank(snaps, line);
-        Assert.assertEquals(closestSnap, first);
+        Assert.assertEquals(closestSnap.getPlatform().getValX(), first.getPlatform().getValX(), DELTA);
+        Assert.assertEquals(closestSnap.getPlatform().getValY(), first.getPlatform().getValY(), DELTA);
     }
 }
