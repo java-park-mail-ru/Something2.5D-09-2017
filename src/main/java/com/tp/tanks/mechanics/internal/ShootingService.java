@@ -3,6 +3,8 @@ package com.tp.tanks.mechanics.internal;
 import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
+import com.tp.tanks.mechanics.world.Box;
+import com.tp.tanks.mechanics.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -15,6 +17,18 @@ public class ShootingService {
 
     @NotNull
     private static final Logger LOGGER = LoggerFactory.getLogger(ShootingService.class);
+
+    @NotNull
+    private World world;
+
+    @NotNull
+    private ArrayList<Box> boxes;
+
+    public ShootingService() {
+        this.world = new World();
+        this.boxes = world.getBoxes();
+    }
+
 
     public void process(List<TankSnap> snaps, List<Line> lines) {
 
@@ -37,17 +51,48 @@ public class ShootingService {
 
                 LOGGER.info("[ShootingService.process] snap: " +  snap.toString());
 
-                if (isIntersect(line, snap)) {
+                if (isIntersect(line, snap.getPlatform())) {
                     LOGGER.info("[ShootingService.process] isIntersect == true");
                     intersectSnaps.add(snap);
                 }
             }
 
+            ArrayList<Box> intersectBoxes = new ArrayList<>();
+            for(Box box: boxes) {
+                if (isIntersect(line, box.getPosition())) {
+                    LOGGER.info("[ShootingService.process] isIntersect == true");
+                    intersectBoxes.add(box);
+                }
+            }
+
             TankSnap closestSnap = getClosestTank(intersectSnaps, line);
+            Box closestBox = getClosestBox(this.boxes, line);
             if (closestSnap != null) {
-                closestSnap.setHealth(closestSnap.getHealth() - 10);
+                if(closestBox != null) {
+                    if(compareTankAndBox(closestSnap, closestBox, line)) {
+                        closestSnap.setHealth(closestSnap.getHealth() - 10);
+                    }
+                } else {
+                    closestSnap.setHealth(closestSnap.getHealth() - 10);
+                }
             }
         }
+    }
+
+    private boolean compareTankAndBox(TankSnap tankSnap, Box box, Line line) {
+        Double tankDist = calcDistanceBetweenDots(tankSnap.getPlatform(), line.getDot());
+        Double boxDist = calcDistanceBetweenDots(box.getPosition(), line.getDot());
+        return tankDist < boxDist;
+    }
+
+    public Box getClosestBox(ArrayList<Box> boxesToCompare, Line line) {
+        Comparator<Box> distanceComparator = (box1, box2) -> {
+            double distance1 = calcDistanceBetweenDots(line.getDot(), box1.getPosition());
+            double distance2 = calcDistanceBetweenDots(line.getDot(), box2.getPosition());
+            return (int) (distance1 - distance2);
+        };
+
+        return boxesToCompare.stream().min(distanceComparator).get();
     }
 
     public TankSnap getClosestTank(ArrayList<TankSnap> snaps, Line line) {
@@ -100,11 +145,11 @@ public class ShootingService {
         }
     }
 
-    public Boolean isIntersect(Line line, TankSnap snap) {
-        Double distance = calcDistanceBetweenDots(snap.getPlatform(), line.getDot());
+    public Boolean isIntersect(Line line, Coordinate coordinate) {
+        Double distance = calcDistanceBetweenDots(coordinate, line.getDot());
         Double dpdhi = calcDeltaPhi(distance, 32.D);
 
-        Double angleBetweenDots = calcAngleBetweenDots(line.getDot(), snap.getPlatform());
+        Double angleBetweenDots = calcAngleBetweenDots(line.getDot(), coordinate);
 
         LOGGER.info("line = " + line.toString());
         LOGGER.info("Distance = " + distance.toString());
