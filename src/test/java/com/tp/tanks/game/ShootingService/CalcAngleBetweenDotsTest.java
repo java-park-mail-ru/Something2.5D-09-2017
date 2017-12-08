@@ -22,83 +22,107 @@ public class CalcAngleBetweenDotsTest {
 
 
     @Test
-    public void angleMustBe0() {
+    public void serverAngleMustBe0() {
 
         Coordinate first = new Coordinate(0.D, 0.D);
         Coordinate second = new Coordinate(1000.D, 0.D);
 
+        Double serverAngleDeg = 0.D;
+        Double serverAngleRad = Math.toRadians(serverAngleDeg);
+
         Double angle = shootingService.calcAngleBetweenDots(first, second);
-        Assert.assertEquals(Math.toRadians(0), angle, DELTA);
+        Assert.assertEquals(serverAngleRad, angle, DELTA);
     }
 
     @Test
-    public void angleMustBe45() {
-
-        Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(1000.D, 1000.D);
-
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
-        Assert.assertEquals(Math.toRadians(45.D), angle, DELTA);
-    }
-
-    @Test
-    public void angleMustBe90() {
-
-        Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(0.D, 1000.D);
-
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
-        Assert.assertEquals(Math.toRadians(90.D), angle, DELTA);
-    }
-
-    @Test
-    public void angleMustBe135() {
-
-        Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(-1000.D, 1000.D);
-
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
-        Assert.assertEquals(Math.toRadians(135.D), angle, DELTA);
-    }
-
-    @Test
-    public void angleMustBe180() {
-
-        Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(-1000.D, 0.D);
-
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
-        Assert.assertEquals(Math.toRadians(180.D), angle, DELTA);
-    }
-
-    @Test
-    public void angleMustBe225() {
-
-        Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(-1000.D, -1000.D);
-
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
-        Assert.assertEquals(Math.toRadians(225.D), angle, DELTA);
-    }
-
-    @Test
-    public void angleMustBe270() {
-
-        Coordinate first = new Coordinate(0.D, 0.D);
-        Coordinate second = new Coordinate(0.D, -1000.D);
-
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
-        Assert.assertEquals(Math.toRadians(270.D), angle, DELTA);
-    }
-
-    @Test
-    public void angleMustBe315() {
+    public void serverAngleMustBe45() {
 
         Coordinate first = new Coordinate(0.D, 0.D);
         Coordinate second = new Coordinate(1000.D, -1000.D);
 
+        Double serverAngleDeg = 45.D;
+        Double serverAngleRad = Math.toRadians(serverAngleDeg);
+
         Double angle = shootingService.calcAngleBetweenDots(first, second);
-        Assert.assertEquals(Math.toRadians(315.D), angle, DELTA);
+        Assert.assertEquals(serverAngleRad, angle, DELTA);
+    }
+
+    @Test
+    public void serverAngleMustBe90() {
+
+        Coordinate first = new Coordinate(0.D, 0.D);
+        Coordinate second = new Coordinate(0.D, -1000.D);
+
+        Double serverAngleDeg = 90.D;
+        Double serverAngleRad = Math.toRadians(serverAngleDeg);
+
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Assert.assertEquals(serverAngleRad, angle, DELTA);
+    }
+
+    @Test
+    public void serverAngleMustBe135() {
+
+        Coordinate first = new Coordinate(0.D, 0.D);
+        Coordinate second = new Coordinate(-1000.D, -1000.D);
+
+        Double serverAngleDeg = 135.D;
+        Double serverAngleRad = Math.toRadians(serverAngleDeg);
+
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Assert.assertEquals(serverAngleRad, angle, DELTA);
+    }
+
+    @Test
+    public void serverAngleMustBe180() {
+
+        Coordinate first = new Coordinate(0.D, 0.D);
+        Coordinate second = new Coordinate(-1000.D, 0.D);
+
+        Double serverAngleDeg = 180.D;
+        Double serverAngleRad = Math.toRadians(serverAngleDeg);
+
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Assert.assertEquals(serverAngleRad, angle, DELTA);
+    }
+
+    @Test
+    public void serverAngleMustBe225() {
+
+        Coordinate first = new Coordinate(0.D, 0.D);
+        Coordinate second = new Coordinate(-1000.D, 1000.D);
+
+        Double serverAngleDeg = 225.D;
+        Double serverAngleRad = Math.toRadians(serverAngleDeg);
+
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Assert.assertEquals(serverAngleRad, angle, DELTA);
+    }
+
+    @Test
+    public void serverAngleMustBe270() {
+
+        Coordinate first = new Coordinate(0.D, 0.D);
+        Coordinate second = new Coordinate(0.D, 1000.D);
+
+        Double serverAngleDeg = 270.D;
+        Double serverAngleRad = Math.toRadians(serverAngleDeg);
+
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Assert.assertEquals(serverAngleRad, angle, DELTA);
+    }
+
+    @Test
+    public void serverAngleMustBe315() {
+
+        Coordinate first = new Coordinate(0.D, 0.D);
+        Coordinate second = new Coordinate(1000.D, 1000.D);
+
+        Double serverAngleDeg = 315.D;
+        Double serverAngleRad = Math.toRadians(serverAngleDeg);
+
+        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Assert.assertEquals(serverAngleRad, angle, DELTA);
     }
 
 }

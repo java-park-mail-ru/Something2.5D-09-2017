@@ -44,20 +44,19 @@ public class ShootingService {
             }
 
             TankSnap closestSnap = getClosestTank(intersectSnaps, line);
-            if (closestSnap.getHealth() != null) {
+            if (closestSnap != null) {
                 closestSnap.setHealth(closestSnap.getHealth() - 10);
             }
-
         }
     }
 
-    public TankSnap getClosestTank(ArrayList<TankSnap> snaps, Line line1) {
+    public TankSnap getClosestTank(ArrayList<TankSnap> snaps, Line line) {
         if(snaps.size() == 0) {
             return null;
         }
         Comparator<TankSnap> distanceComparator = (snap1, snap2) -> {
-            double distance1 = calcDistanceBetweenDots(line1.getDot(), snap1.getPlatform());
-            double distance2 = calcDistanceBetweenDots(line1.getDot(), snap2.getPlatform());
+            double distance1 = calcDistanceBetweenDots(line.getDot(), snap1.getPlatform());
+            double distance2 = calcDistanceBetweenDots(line.getDot(), snap2.getPlatform());
             return (int)(distance1 - distance2);
         };
 
@@ -65,9 +64,9 @@ public class ShootingService {
     }
 
 
-
     public Double calcDistanceBetweenDots(Coordinate first, Coordinate second) {
-        return Math.sqrt(Math.pow((first.getValX() - second.getValX()), 2) + Math.pow((first.getValY() - second.getValY()), 2));
+        return Math.sqrt(Math.pow((first.getValY() - second.getValY()), 2)
+                + Math.pow((first.getValX() - second.getValX()), 2));
     }
 
     public Double calcDeltaPhi(Double distance, Double radius) {
@@ -77,6 +76,7 @@ public class ShootingService {
     public Double calcAngleBetweenDots(Coordinate left, Coordinate right) {
         Double dx = right.getValX() - left.getValX();
         Double dy = right.getValY() - left.getValY();
+        dy = changeSign(dy);    // for X-axis reflection, client have negative Y-axis
 
         if (Math.abs(dx) <= DELTA) {
             if (dy >= 0) {
@@ -104,24 +104,19 @@ public class ShootingService {
         Double distance = calcDistanceBetweenDots(snap.getPlatform(), line.getDot());
         Double dpdhi = calcDeltaPhi(distance, 32.D);
 
-        Coordinate serverLineDot = toServerCoordinate(line.getDot());
-        Coordinate serverPlatform = toServerCoordinate(snap.getPlatform());
+        Double angleBetweenDots = calcAngleBetweenDots(line.getDot(), snap.getPlatform());
 
-        Double angleBetweenDots = calcAngleBetweenDots(serverLineDot, serverPlatform);
-
-
-        LOGGER.info("serverLineDot = " + serverLineDot.toString());
-        LOGGER.info("serverPlatform = " + serverPlatform.toString());
+        LOGGER.info("line = " + line.toString());
         LOGGER.info("Distance = " + distance.toString());
         LOGGER.info("dPhi = " + dpdhi.toString() + " [rad]");
         LOGGER.info("angleBetweenDots = " + angleBetweenDots.toString() + " [rad]");
-        LOGGER.info("absolute angle line = " + line.getAbsoluteAngleRad().toString() + " [rad]");
+        LOGGER.info("absolute angle line = " + line.getServerAngleRad().toString() + " [rad]");
 
 
-        return line.getAbsoluteAngleRad() <= angleBetweenDots + dpdhi && line.getAbsoluteAngleRad() >= angleBetweenDots - dpdhi;
+        return line.getServerAngleRad() <= angleBetweenDots + dpdhi && line.getServerAngleRad() >= angleBetweenDots - dpdhi;
     }
 
-    private Coordinate toServerCoordinate(Coordinate clientCoordinate) {
-        return new Coordinate(clientCoordinate.getValX(), - clientCoordinate.getValY());
+    private Double changeSign(Double var) {
+        return var * -1;
     }
 }
