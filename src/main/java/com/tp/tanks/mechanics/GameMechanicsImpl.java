@@ -5,12 +5,15 @@ import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.mechanics.internal.ServerSnapshotService;
 import com.tp.tanks.mechanics.internal.ShootingService;
 import com.tp.tanks.mechanics.internal.TankSnapshotService;
+import com.tp.tanks.mechanics.world.World;
+import com.tp.tanks.websocket.RemotePointService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -32,11 +35,20 @@ public class GameMechanicsImpl implements GameMechanics {
     @NotNull
     private final Queue<Runnable> tasks = new ConcurrentLinkedQueue<>();
 
+    @NotNull
+    private RemotePointService remotePointService;
+
+    @NotNull
+    private World world;
+
     public GameMechanicsImpl(@NotNull TankSnapshotService tankSnapshotsService,
-                             @NotNull ServerSnapshotService serverSnapshotService) {
+                             @NotNull ServerSnapshotService serverSnapshotService,
+                             @NotNull RemotePointService remotePointService) {
         this.tankSnapshotsService = tankSnapshotsService;
         this.serverSnapshotService = serverSnapshotService;
-        this.shootingService = new ShootingService();
+        this.remotePointService = remotePointService;
+        this.world = new World();
+        this.shootingService = new ShootingService(this.world);
     }
 
 
@@ -50,6 +62,14 @@ public class GameMechanicsImpl implements GameMechanics {
         LOGGER.info("add new user: userId = " + userId.toString());
     }
 
+    @Override
+    public void getNewSpawnPoint(@NotNull Long userId) {
+        try {
+            this.remotePointService.sendMessageToUser(userId, this.world.getTanksPosition());
+        } catch(IOException ex) {
+            LOGGER.error("[GameMechanicsImpl: getNewSpawnPoint] IOException: ", ex);
+        }
+    }
 
     @Override
     public void gmStep(long frameTime) {

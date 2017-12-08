@@ -47,7 +47,7 @@ public class IntersectTest {
     @Test
     public void IntersectMustInCenter() {
 
-        Boolean ok = shootingService.isIntersect(line, enemy);
+        Boolean ok = shootingService.isIntersect(line, enemy.getPlatform());
         Assert.assertEquals(true, ok);
     }
 
@@ -56,7 +56,7 @@ public class IntersectTest {
 
         line.setServerAngleRad(line.getServerAngleRad() + dPhi);
 
-        Boolean ok = shootingService.isIntersect(line, enemy);
+        Boolean ok = shootingService.isIntersect(line, enemy.getPlatform());
         Assert.assertEquals(true, ok);
     }
 
@@ -65,7 +65,7 @@ public class IntersectTest {
 
         line.setServerAngleRad(line.getServerAngleRad() - dPhi);
 
-        Boolean ok = shootingService.isIntersect(line, enemy);
+        Boolean ok = shootingService.isIntersect(line, enemy.getPlatform());
         Assert.assertEquals(true, ok);
     }
 
@@ -75,7 +75,7 @@ public class IntersectTest {
 
         line.setServerAngleRad(line.getServerAngleRad() + dPhi + STEP);
 
-        Boolean ok = shootingService.isIntersect(line, enemy);
+        Boolean ok = shootingService.isIntersect(line, enemy.getPlatform());
         Assert.assertEquals(false, ok);
     }
 
@@ -84,7 +84,7 @@ public class IntersectTest {
 
         line.setServerAngleRad(line.getServerAngleRad() - dPhi - STEP);
 
-        Boolean ok = shootingService.isIntersect(line, enemy);
+        Boolean ok = shootingService.isIntersect(line, enemy.getPlatform());
         Assert.assertEquals(false, ok);
     }
 }
