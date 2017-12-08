@@ -39,42 +39,37 @@ public class ShootingService {
         for (Line line: lines) {
 
             ArrayList<TankSnap> intersectSnaps = new ArrayList<>();
-            LOGGER.info("[ShootingService.process] line: " +  line.toString());
 
             for (TankSnap snap: snaps) {
-
                 if (Objects.equals(line.getUserId(), snap.getUserId())) {
                     snap.setShoot(true);
                     snap.setTurretAngle(line.getClientAngleDeg());
                     continue;
                 }
 
-                LOGGER.info("[ShootingService.process] snap: " +  snap.toString());
-
                 if (isIntersect(line, snap.getPlatform())) {
-                    LOGGER.info("[ShootingService.process] isIntersect == true");
                     intersectSnaps.add(snap);
                 }
             }
 
             ArrayList<Box> intersectBoxes = new ArrayList<>();
-            for(Box box: boxes) {
+            for(Box box: this.boxes) {
                 if (isIntersect(line, box.getPosition())) {
-                    LOGGER.info("[ShootingService.process] isIntersect == true");
                     intersectBoxes.add(box);
                 }
             }
 
             TankSnap closestSnap = getClosestTank(intersectSnaps, line);
-            Box closestBox = getClosestBox(this.boxes, line);
+            Box closestBox = getClosestBox(intersectBoxes, line);
             if (closestSnap != null) {
                 if(closestBox != null) {
-                    if(compareTankAndBox(closestSnap, closestBox, line)) {
+                    if(compareTankAndBox(closestSnap, closestBox, line)) { ;
                         closestSnap.setHealth(closestSnap.getHealth() - 10);
                     }
                 } else {
                     closestSnap.setHealth(closestSnap.getHealth() - 10);
                 }
+
             }
         }
     }
@@ -85,7 +80,10 @@ public class ShootingService {
         return tankDist < boxDist;
     }
 
-    public Box getClosestBox(ArrayList<Box> boxesToCompare, Line line) {
+    private Box getClosestBox(ArrayList<Box> boxesToCompare, Line line) {
+        if(boxesToCompare.size() == 0) {
+            return null;
+        }
         Comparator<Box> distanceComparator = (box1, box2) -> {
             double distance1 = calcDistanceBetweenDots(line.getDot(), box1.getPosition());
             double distance2 = calcDistanceBetweenDots(line.getDot(), box2.getPosition());
