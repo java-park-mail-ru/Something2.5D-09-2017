@@ -5,16 +5,16 @@ import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ShootingService {
 
     private static final double DELTA = 1e-15;
 
     @NotNull
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ShootingService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShootingService.class);
 
     public void process(List<TankSnap> snaps, List<Line> lines) {
 
@@ -24,35 +24,59 @@ public class ShootingService {
 
         for (Line line: lines) {
 
+            ArrayList<TankSnap> intersectSnaps = new ArrayList<>();
+            LOGGER.info("[ShootingService.process] line: " +  line.toString());
 
             for (TankSnap snap: snaps) {
 
                 if (Objects.equals(line.getUserId(), snap.getUserId())) {
                     snap.setShoot(true);
-                    snap.setTurretAngle(line.getAngleDeg());
+                    snap.setTurretAngle(line.getClientAngleDeg());
                     continue;
                 }
 
+                LOGGER.info("[ShootingService.process] snap: " +  snap.toString());
+
                 if (isIntersect(line, snap)) {
-                    if (snap.getHealth() != null) {
-                        snap.setHealth(snap.getHealth() - 10);
-                    }
+                    LOGGER.info("[ShootingService.process] isIntersect == true");
+                    intersectSnaps.add(snap);
                 }
+            }
+
+            TankSnap closestSnap = getClosestTank(intersectSnaps, line);
+            if (closestSnap != null) {
+                closestSnap.setHealth(closestSnap.getHealth() - 10);
             }
         }
     }
 
-    public Double calcDistance(Coordinate first, Coordinate second) {
-        return Math.sqrt(Math.pow((first.getValX() - second.getValX()), 2) + Math.pow((first.getValY() - second.getValY()), 2));
+    public TankSnap getClosestTank(ArrayList<TankSnap> snaps, Line line) {
+        if (snaps.size() == 0) {
+            return null;
+        }
+        Comparator<TankSnap> distanceComparator = (snap1, snap2) -> {
+            double distance1 = calcDistanceBetweenDots(line.getDot(), snap1.getPlatform());
+            double distance2 = calcDistanceBetweenDots(line.getDot(), snap2.getPlatform());
+            return (int) (distance1 - distance2);
+        };
+
+        return snaps.stream().min(distanceComparator).get();
+    }
+
+
+    public Double calcDistanceBetweenDots(Coordinate first, Coordinate second) {
+        return Math.sqrt(Math.pow((first.getValY() - second.getValY()), 2)
+                + Math.pow((first.getValX() - second.getValX()), 2));
     }
 
     public Double calcDeltaPhi(Double distance, Double radius) {
         return Math.atan(radius / distance);
     }
 
-    public Double calcAngle(Coordinate first, Coordinate second) {
-        Double dx = second.getValX() - first.getValX();
-        Double dy = second.getValY() - first.getValY();
+    public Double calcAngleBetweenDots(Coordinate left, Coordinate right) {
+        Double dx = right.getValX() - left.getValX();
+        Double dy = right.getValY() - left.getValY();
+        dy = changeSign(dy);    // for X-axis reflection, client have negative Y-axis
 
         if (Math.abs(dx) <= DELTA) {
             if (dy >= 0) {
@@ -77,17 +101,22 @@ public class ShootingService {
     }
 
     public Boolean isIntersect(Line line, TankSnap snap) {
-        Double distance = calcDistance(snap.getPlatform(), line.getDot());
-        Double dpdhi = calcDeltaPhi(distance, 100.D);
-        Double phi = calcAngle(line.getDot(), snap.getPlatform());
+        Double distance = calcDistanceBetweenDots(snap.getPlatform(), line.getDot());
+        Double dpdhi = calcDeltaPhi(distance, 32.D);
 
-//
-//        LOGGER.info("Distance = " + distance.toString());
-//        LOGGER.info("dPhi = " + dpdhi.toString());
-//        LOGGER.info("phi = " + phi.toString());
-//        LOGGER.info("line angle = " + line.getAngleRad().toString());
+        Double angleBetweenDots = calcAngleBetweenDots(line.getDot(), snap.getPlatform());
+
+        LOGGER.info("line = " + line.toString());
+        LOGGER.info("Distance = " + distance.toString());
+        LOGGER.info("dPhi = " + dpdhi.toString() + " [rad]");
+        LOGGER.info("angleBetweenDots = " + angleBetweenDots.toString() + " [rad]");
+        LOGGER.info("absolute angle line = " + line.getServerAngleRad().toString() + " [rad]");
 
 
-        return line.getAngleRad() <= phi + dpdhi && line.getAngleRad() >= phi - dpdhi;
+        return line.getServerAngleRad() <= angleBetweenDots + dpdhi && line.getServerAngleRad() >= angleBetweenDots - dpdhi;
+    }
+
+    private Double changeSign(Double var) {
+        return var * -1;
     }
 }

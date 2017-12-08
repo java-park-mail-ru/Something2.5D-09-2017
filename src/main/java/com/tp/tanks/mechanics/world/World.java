@@ -26,7 +26,7 @@ public class World {
     public Coordinate getTanksPosition() {
         int numberOfPosition = ThreadLocalRandom.current().nextInt(0, spawnPoints.size());
         Coordinate tankPosition = spawnPoints.get(numberOfPosition);
-        spawnPoints.remove(tankPosition);
+        // spawnPoints.remove(tankPosition);
         return tankPosition;
     }
 }

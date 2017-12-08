@@ -22,47 +22,61 @@ public class LineConvertingTest {
     @Test
     public void firstQuarterDegreeAngleTest() {
         TankSnap snap = TankSnapFactory.createOneForUser(null);
-        double angle = 45.D;
-        snap.setTurretAngle(angle);
+
+        Double clientAngleDeg = -45.D;
+        Double serverAngleDeg = 45.D;
+        Double serverAngleRad = Math.toRadians(serverAngleDeg);
+
+        snap.setTurretAngle(clientAngleDeg);
         Line line = snap.toLine();
 
-        Assert.assertEquals(Math.toRadians(angle), line.getAngleRad(), DELTA);
-        Assert.assertEquals(1.D, line.getKoefK(), DELTA);
+        Assert.assertEquals(clientAngleDeg, line.getClientAngleDeg(), DELTA);
+        Assert.assertEquals(serverAngleRad, line.getServerAngleRad(), DELTA);
     }
 
     @Test
     public void secondQuarterDegreeAngleTest() {
         TankSnap snap = TankSnapFactory.createOneForUser(null);
-        double angle = 135;
-        snap.setTurretAngle(angle);
+
+        Double clientAngleDeg = -135.D;
+        Double serverAngleDeg = 135.D;
+        Double serverAngleRad = Math.toRadians(serverAngleDeg);
+
+        snap.setTurretAngle(clientAngleDeg);
         Line line = snap.toLine();
 
-        Assert.assertEquals(Math.toRadians(angle), line.getAngleRad(), DELTA);
-        Assert.assertEquals(-1.D, line.getKoefK(), DELTA);
+        Assert.assertEquals(clientAngleDeg, line.getClientAngleDeg(), DELTA);
+        Assert.assertEquals(serverAngleRad, line.getServerAngleRad(), DELTA);
     }
 
     @Test
     public void thirdQuarterDegreeAngleTest() {
         TankSnap snap = TankSnapFactory.createOneForUser(null);
-        double absoluteAngle = 225;
-        double angle = -135;
-        snap.setTurretAngle(angle);
+
+        Double clientAngleDeg = 135.D;
+        Double serverAngleDeg = 225.D;
+        Double serverAngleRad = Math.toRadians(serverAngleDeg);
+
+        snap.setTurretAngle(clientAngleDeg);
         Line line = snap.toLine();
 
-        Assert.assertEquals(Math.toRadians(absoluteAngle), line.getAngleRad(), DELTA);
-        Assert.assertEquals(1.D, line.getKoefK(), DELTA);
+        Assert.assertEquals(clientAngleDeg, line.getClientAngleDeg(), DELTA);
+        Assert.assertEquals(serverAngleRad, line.getServerAngleRad(), DELTA);
     }
 
 
     @Test
     public void fourthQuarterDegreeAngleTest() {
         TankSnap snap = TankSnapFactory.createOneForUser(null);
-        double absoluteAngle = 315;
-        double angle = -45;
-        snap.setTurretAngle(angle);
+
+        Double clientAngleDeg = 45.D;
+        Double serverAngleDeg = 315.D;
+        Double serverAngleRad = Math.toRadians(serverAngleDeg);
+
+        snap.setTurretAngle(clientAngleDeg);
         Line line = snap.toLine();
 
-        Assert.assertEquals(Math.toRadians(absoluteAngle), line.getAngleRad(), DELTA);
-        Assert.assertEquals(-1.D, line.getKoefK(), DELTA);
+        Assert.assertEquals(clientAngleDeg, line.getClientAngleDeg(), DELTA);
+        Assert.assertEquals(serverAngleRad, line.getServerAngleRad(), DELTA);
     }
 }

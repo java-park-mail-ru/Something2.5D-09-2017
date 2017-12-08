@@ -6,6 +6,7 @@ import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.mechanics.internal.ShootingService;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,22 +22,30 @@ public class IntersectTest {
 
     private final ShootingService shootingService = new ShootingService();
 
-    private static final double DELTA = 1e-15;
-
     private static final double STEP = 0.01;
 
+    private final Coordinate shooterCoordinate = new Coordinate(0.D, 0.D);
+    private final Coordinate enemyCoordinate = new Coordinate(1000.D, 1000.D);
+    private final Double clientAngleBetweenDots = 45.D;
+    private final Double distanceBetweenDots = shootingService.calcDistanceBetweenDots(shooterCoordinate, enemyCoordinate);
+    private final Double dPhi = shootingService.calcDeltaPhi(distanceBetweenDots, 32.D);
+
+    private TankSnap enemy;
+    private Line line;
+
+    @Before
+    public void setUp() {
+        TankSnap shooter = TankSnapFactory.createOneForUser(1L);
+        enemy = TankSnapFactory.createOneForUser(2L);
+        shooter.setPlatform(shooterCoordinate);
+        enemy.setPlatform(enemyCoordinate);
+
+        shooter.setTurretAngle(clientAngleBetweenDots);
+        line = shooter.toLine();
+    }
 
     @Test
     public void IntersectMustInCenter() {
-
-        TankSnap shooter = TankSnapFactory.createOneForUser(null);
-        TankSnap enemy = TankSnapFactory.createOneForUser(null);
-
-        shooter.setPlatform(new Coordinate(0.D, 0.D));
-        shooter.setTurretAngle(45.D);
-        Line line = shooter.toLine();
-
-        enemy.setPlatform(new Coordinate(1000.D, 1000.D));
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(true, ok);
@@ -45,22 +54,7 @@ public class IntersectTest {
     @Test
     public void IntersectMustInRight() {
 
-        Coordinate shooterCoord = new Coordinate(0.D, 0.D);
-        Coordinate enemyCoord = new Coordinate(1000.D, 1000.D);
-
-        TankSnap shooter = TankSnapFactory.createOneForUser(null);
-        TankSnap enemy = TankSnapFactory.createOneForUser(null);
-
-        Double distance = shootingService.calcDistance(shooterCoord, enemyCoord);
-        Double dphi = shootingService.calcDeltaPhi(distance, 100.D);
-
-        shooter.setPlatform(shooterCoord);
-        enemy.setPlatform(enemyCoord);
-
-        shooter.setTurretAngle(45.d);
-
-        Line line = shooter.toLine();
-        line.setAngleRad(line.getAngleRad() + dphi);
+        line.setServerAngleRad(line.getServerAngleRad() + dPhi);
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(true, ok);
@@ -69,22 +63,7 @@ public class IntersectTest {
     @Test
     public void IntersectMustInLeft() {
 
-        Coordinate shooterCoord = new Coordinate(0.D, 0.D);
-        Coordinate enemyCoord = new Coordinate(1000.D, 1000.D);
-
-        TankSnap shooter = TankSnapFactory.createOneForUser(null);
-        TankSnap enemy = TankSnapFactory.createOneForUser(null);
-
-        Double distance = shootingService.calcDistance(shooterCoord, enemyCoord);
-        Double dphi = shootingService.calcDeltaPhi(distance, 100.D);
-
-        shooter.setPlatform(shooterCoord);
-        enemy.setPlatform(enemyCoord);
-
-        shooter.setTurretAngle(45.d);
-
-        Line line = shooter.toLine();
-        line.setAngleRad(line.getAngleRad() - dphi);
+        line.setServerAngleRad(line.getServerAngleRad() - dPhi);
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(true, ok);
@@ -94,22 +73,7 @@ public class IntersectTest {
     @Test
     public void NotRightIntersect() {
 
-        Coordinate shooterCoord = new Coordinate(0.D, 0.D);
-        Coordinate enemyCoord = new Coordinate(1000.D, 1000.D);
-
-        TankSnap shooter = TankSnapFactory.createOneForUser(null);
-        TankSnap enemy = TankSnapFactory.createOneForUser(null);
-
-        Double distance = shootingService.calcDistance(shooterCoord, enemyCoord);
-        Double dphi = shootingService.calcDeltaPhi(distance, 100.D);
-
-        shooter.setPlatform(shooterCoord);
-        enemy.setPlatform(enemyCoord);
-
-        shooter.setTurretAngle(45.d);
-
-        Line line = shooter.toLine();
-        line.setAngleRad(line.getAngleRad() + dphi + STEP);
+        line.setServerAngleRad(line.getServerAngleRad() + dPhi + STEP);
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(false, ok);
@@ -118,22 +82,7 @@ public class IntersectTest {
     @Test
     public void NotLeftIntersect() {
 
-        Coordinate shooterCoord = new Coordinate(0.D, 0.D);
-        Coordinate enemyCoord = new Coordinate(1000.D, 1000.D);
-
-        TankSnap shooter = TankSnapFactory.createOneForUser(null);
-        TankSnap enemy = TankSnapFactory.createOneForUser(null);
-
-        Double distance = shootingService.calcDistance(shooterCoord, enemyCoord);
-        Double dphi = shootingService.calcDeltaPhi(distance, 100.D);
-
-        shooter.setPlatform(shooterCoord);
-        enemy.setPlatform(enemyCoord);
-
-        shooter.setTurretAngle(45.d);
-
-        Line line = shooter.toLine();
-        line.setAngleRad(line.getAngleRad() - dphi - STEP);
+        line.setServerAngleRad(line.getServerAngleRad() - dPhi - STEP);
 
         Boolean ok = shootingService.isIntersect(line, enemy);
         Assert.assertEquals(false, ok);
