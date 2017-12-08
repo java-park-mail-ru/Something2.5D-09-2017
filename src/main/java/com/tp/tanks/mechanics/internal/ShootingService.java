@@ -55,7 +55,7 @@ public class ShootingService {
             public int compare(TankSnap snap1, TankSnap snap2) {
                 double distance1 = calcDistanceBetweenDots(line1.getDot(), snap1.getPlatform());
                 double distance2 = calcDistanceBetweenDots(line1.getDot(), snap2.getPlatform());
-                return (int)distance1 - (int)distance2;
+                return (int)(distance1 - distance2);
             }
         };
 
