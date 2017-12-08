@@ -29,7 +29,7 @@ public class WorldSnapService {
 
         this.worldSnap = new WorldSnap();
         this.worldSnap.setBoxes(world.getBoxes());
-        this.worldSnap.setSpawnPoints(world.getSpawnPoints());
+        this.worldSnap.setSpawnPoints(world.getAllSpawnPoints());
     }
 
     public void send(Long userId) {

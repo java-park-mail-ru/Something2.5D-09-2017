@@ -1,10 +1,13 @@
 package com.tp.tanks.mechanics;
 
+import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.base.Line;
+import com.tp.tanks.mechanics.base.SpawnSnap;
 import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.mechanics.internal.ServerSnapshotService;
 import com.tp.tanks.mechanics.internal.ShootingService;
 import com.tp.tanks.mechanics.internal.TankSnapshotService;
+import com.tp.tanks.mechanics.requests.SpawnRequest;
 import com.tp.tanks.mechanics.world.World;
 import com.tp.tanks.websocket.RemotePointService;
 import org.jetbrains.annotations.NotNull;
@@ -63,10 +66,27 @@ public class GameMechanicsImpl implements GameMechanics {
     }
 
     @Override
-    public void getNewSpawnPoint(@NotNull Long userId) {
+    public void getNewSpawnPoint(@NotNull Long userId, SpawnRequest request) {
+
+        SpawnSnap spawnSnap = new SpawnSnap();
+        Coordinate coordinate = this.world.getTanksPosition();
+        spawnSnap.setPosition(coordinate);
+
+        TankSnap tankSnap = new TankSnap();
+        tankSnap.setTurretAngle(0);
+        tankSnap.setPlatformAngle(0);
+        tankSnap.setShoot(false);
+        tankSnap.setUserId(userId);
+        tankSnap.setUsername(request.getUsername());
+        tankSnap.setHealth(100);
+        tankSnap.setPlatform(coordinate);
+
+        remotePointService.spawnUser(userId);
+        addTankSnapshot(userId, tankSnap);
+
         try {
-            this.remotePointService.sendMessageToUser(userId, this.world.getTanksPosition());
-        } catch(IOException ex) {
+            this.remotePointService.sendMessageToUser(userId, spawnSnap);
+        } catch (IOException ex) {
             LOGGER.error("[GameMechanicsImpl: getNewSpawnPoint] IOException: ", ex);
         }
     }
@@ -87,7 +107,18 @@ public class GameMechanicsImpl implements GameMechanics {
         List<TankSnap> tankSnapshots = tankSnapshotsService.processSnapshots();
         List<Line> shootingLines = tankSnapshotsService.shootingLines();
         shootingService.process(tankSnapshots, shootingLines);
+
+        removeDeadTanksFromSession(tankSnapshots);
+
         serverSnapshotService.send(tankSnapshots);
         tankSnapshotsService.reset();
+    }
+
+    private void removeDeadTanksFromSession(List<TankSnap> tankSnapshots) {
+        for (TankSnap snap: tankSnapshots) {
+            if (snap.getHealth() <= 0) {
+                remotePointService.killUser(snap.getUserId());
+            }
+        }
     }
 }

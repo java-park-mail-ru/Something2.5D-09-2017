@@ -3,6 +3,7 @@ package com.tp.tanks.game.ShootingService;
 
 import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.internal.ShootingService;
+import com.tp.tanks.mechanics.world.World;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("test")
 public class CalcAngleBetweenDotsTest {
 
-    private final ShootingService shootingService = new ShootingService();
+    private final ShootingService shootingService = new ShootingService(new World());
 
     private static final double DELTA = 1e-15;
 

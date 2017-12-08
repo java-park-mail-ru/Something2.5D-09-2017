@@ -5,6 +5,7 @@ import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.mechanics.internal.ShootingService;
+import com.tp.tanks.mechanics.world.World;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("test")
 public class IntersectTest {
 
-    private final ShootingService shootingService = new ShootingService();
+    private final ShootingService shootingService = new ShootingService(new World());
 
     private static final double STEP = 0.01;
 

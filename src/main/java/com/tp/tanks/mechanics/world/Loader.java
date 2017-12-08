@@ -2,10 +2,12 @@ package com.tp.tanks.mechanics.world;
 
 import java.io.*;
 import java.util.ArrayList;
+
 import com.tp.tanks.mechanics.base.Coordinate;
 
 
 public class Loader {
+    private static final Integer CURRENT_MAP = 1;
 
     public static ArrayList<Box> loadBoxes() {
 
@@ -14,7 +16,7 @@ public class Loader {
         try {
 
             ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-            File file = new File(classLoader.getResource("world/boxes.csv").getFile());
+            File file = new File(classLoader.getResource("world/map" + CURRENT_MAP.toString() + "/boxes.csv").getFile());
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
             String line;
@@ -56,9 +58,8 @@ public class Loader {
         ArrayList<Coordinate> data = new ArrayList<>();
 
         try {
-
             ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-            File file = new File(classLoader.getResource("world/spawnPoints.csv").getFile());
+            File file = new File(classLoader.getResource("world/map"  + CURRENT_MAP.toString() + "/spawnPoints.csv").getFile());
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
             String line;
