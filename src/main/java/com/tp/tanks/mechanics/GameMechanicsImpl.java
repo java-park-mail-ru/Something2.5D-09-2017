@@ -115,7 +115,7 @@ public class GameMechanicsImpl implements GameMechanics {
 
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastStatisticSendTime > 2000) {
-            LOGGER.info("try sending statistics Snap;");
+
             lastStatisticSendTime = currentTime;
             List<ScoresToSend> scoresToSend = remotePointService.getTopPlayers(5);
             serverSnapshotService.sendStatistics(scoresToSend);

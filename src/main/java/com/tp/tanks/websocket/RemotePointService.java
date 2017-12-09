@@ -27,7 +27,7 @@ public class RemotePointService {
     private Map<Long, Scores> tanksStats;
     private StatisticsService statisticsService;
 
-    private final Comparator<ScoresToSend> scoresToSendComparator = (score1, score2) -> (int) (score1.getKills() - score2.getKills());
+    private final Comparator<ScoresToSend> scoresToSendComparator = (score1, score2) -> (int) (score2.getKills() - score1.getKills());
 
     public RemotePointService(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;

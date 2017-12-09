@@ -114,7 +114,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             LOGGER.warn("User disconnected but his session was not found (closeStatus=" + closeStatus + ')');
             return;
         }
-//        remotePointService.saveStatistics(userId);
+        remotePointService.saveStatistics(userId);
         remotePointService.removeUser(userId);
     }
 

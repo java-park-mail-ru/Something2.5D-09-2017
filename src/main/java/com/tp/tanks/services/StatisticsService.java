@@ -39,4 +39,13 @@ public class StatisticsService {
         }
     }
 
+    public Statistic getTop(Integer limit) {
+        Statistic response = null;
+        try {
+            response = statisticsRepository.getTop(limit);
+        } catch (Exception ex) {
+            LOGGER.info("[StatisticsService:getTop] database exception: " + ex);
+        }
+        return response;
+    }
 }

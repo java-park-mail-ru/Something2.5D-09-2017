@@ -36,4 +36,9 @@ public class StatisticsRepository {
         String sql = "INSERT INTO statistic_tbl (userId, kills, deaths, maxKills) VALUES (?, ?, ?, ?);";
         jdbcTemplate.update(sql, new Object[]{userId, tankStatistics.getKills(), tankStatistics.getDeaths(), tankStatistics.getMaxKills()});
     }
+
+    public Statistic getTop(Integer limit) {
+        String sql = "SELECT * FROM statistic_tbl ORDER BY kills LIMIT ?;";
+        return jdbcTemplate.queryForObject(sql,  new Object[]{limit}, new StatisticMapper());
+    }
 }
