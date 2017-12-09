@@ -1,12 +1,19 @@
 valX, valY, isBulletproof
-384,856,true
-436,908,true
-436,1012,true
-384,1064,true
+804,332,true
+856,384,true
+908,436,true
+1064,436,true
+1116,384,true
+1168,332,true
 960,488,true
 960,540,true
 960,592,true
+1012,488,true
+1012,540,true
+1012,592,true
 908,644,true
 856,696,true
-1012,644,true
-1064,696,true
+804,748,true
+1064,644,true
+1116,696,true
+1168,748,true
