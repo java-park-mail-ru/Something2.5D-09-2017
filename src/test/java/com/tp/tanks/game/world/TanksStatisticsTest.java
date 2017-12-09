@@ -22,8 +22,9 @@ public class TanksStatisticsTest {
             tankStatistics.incrementKills();
             tankStatistics.incrementDeaths();
         }
-        Assert.assertEquals((long)tankStatistics.getKills(), 9l);
-        Assert.assertEquals((long)tankStatistics.getDeaths(), 9l);
+
+        Assert.assertEquals(tankStatistics.getKills(), Integer.valueOf(9));
+        Assert.assertEquals(tankStatistics.getDeaths(), Integer.valueOf(9));
     }
 
     @Test

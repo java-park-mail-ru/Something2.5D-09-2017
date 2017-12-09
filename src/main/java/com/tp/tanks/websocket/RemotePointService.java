@@ -2,6 +2,7 @@ package com.tp.tanks.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tp.tanks.mechanics.world.TankStatistics;
+import com.tp.tanks.services.StatisticsService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +25,12 @@ public class RemotePointService {
     private Set<Long> players = new ConcurrentSkipListSet<>();
     private final ObjectMapper objectMapper;
     private Map<Long, TankStatistics> tanksStats;
+    private StatisticsService statisticsService;
 
     public RemotePointService(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
         this.tanksStats = new ConcurrentHashMap<>();
+        statisticsService = new StatisticsService();
     }
 
     public void registerUser(@NotNull Long userId, @NotNull WebSocketSession webSocketSession) {
@@ -51,6 +54,10 @@ public class RemotePointService {
 
     public TankStatistics getTanksStatsForUser(Long userId) {
         return tanksStats.get(userId);
+    }
+
+    public void saveStatistics(@NotNull Long userId) {
+        statisticsService.saveStatistics(userId, tanksStats.get(userId));
     }
 
     public void removeUser(@NotNull Long userId) {
