@@ -1,6 +1,7 @@
 package com.tp.tanks.mechanics.internal;
 
 import com.tp.tanks.mechanics.base.ServerSnap;
+import com.tp.tanks.mechanics.base.StatisticsSnap;
 import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.websocket.RemotePointService;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,11 @@ public class ServerSnapshotService {
         serverSnap.setTanks(tanks);
         serverSnap.setPlayers(remotePointService.getPlayers());
 
+        for (TankSnap snap: tanks) {
+            Integer kills = remotePointService.getTanksStatsForUser(snap.getUserId()).getKills();
+            StatisticsSnap statisticsSnap = new StatisticsSnap(snap.getUserId(), snap.getUsername(), kills);
+            serverSnap.addStatistics(statisticsSnap);
+        }
 
         for (TankSnap tankSnap: tanks) {
             try {

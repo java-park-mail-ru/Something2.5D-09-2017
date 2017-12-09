@@ -60,6 +60,7 @@ public class RemotePointServiceTest {
     public void processedOnePlayerTest() {
         final Long userId = Generators.generateLong();
         final TankSnap tankSnapForUser = TankSnapFactory.createOneForUser(userId);
+        mockRemotePointService.pushUser(tankSnapForUser.getUserId());
 
         gameMechanics.addTankSnapshot(userId, tankSnapForUser);
         gameMechanics.gmStep(1000);
@@ -81,6 +82,8 @@ public class RemotePointServiceTest {
 
         final TankSnap tankSnapForUser1 = TankSnapFactory.createOneForUser(userId1);
         final TankSnap tankSnapForUser2 = TankSnapFactory.createOneForUser(userId2);
+        mockRemotePointService.pushUser(tankSnapForUser1.getUserId());
+        mockRemotePointService.pushUser(tankSnapForUser2.getUserId());
 
         gameMechanics.addTankSnapshot(userId1, tankSnapForUser1);
         gameMechanics.addTankSnapshot(userId2, tankSnapForUser2);

@@ -1,6 +1,7 @@
 package com.tp.tanks.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tp.tanks.mechanics.world.TankStatistics;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,15 +23,18 @@ public class RemotePointService {
     private Map<Long, WebSocketSession> sessions = new ConcurrentHashMap<>();
     private Set<Long> players = new ConcurrentSkipListSet<>();
     private final ObjectMapper objectMapper;
+    private Map<Long, TankStatistics> tanksStats;
 
     public RemotePointService(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
+        this.tanksStats = new ConcurrentHashMap<>();
     }
 
     public void registerUser(@NotNull Long userId, @NotNull WebSocketSession webSocketSession) {
         LOGGER.info("[RemotePointService.registerUser] register userID = " + userId.toString());
         sessions.put(userId, webSocketSession);
         players.add(userId);
+        tanksStats.put(userId, new TankStatistics());
     }
 
     public boolean isConnected(@NotNull Long userId) {
@@ -41,15 +45,29 @@ public class RemotePointService {
         return players;
     }
 
+    public Map<Long, TankStatistics> getTanksStats() {
+        return tanksStats;
+    }
+
+    public TankStatistics getTanksStatsForUser(Long userId) {
+        return tanksStats.get(userId);
+    }
+
     public void removeUser(@NotNull Long userId) {
         sessions.remove(userId);
         players.remove(userId);
+        tanksStats.remove(userId);
         LOGGER.info("[RemotePointService.removeUser] unregister userID = " + userId.toString());
     }
 
     public void killUser(@NotNull Long userId) {
         players.remove(userId);
+        this.tanksStats.get(userId).incrementDeaths();
         LOGGER.info("[RemotePointService.killUser] userID = " + userId.toString());
+    }
+
+    public void incrementKills(@NotNull Long userId) {
+        this.tanksStats.get(userId).incrementKills();
     }
 
     public void spawnUser(@NotNull Long userId) {

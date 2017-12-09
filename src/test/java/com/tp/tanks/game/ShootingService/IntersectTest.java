@@ -1,11 +1,14 @@
 package com.tp.tanks.game.ShootingService;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tp.tanks.factories.TankSnapFactory;
 import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.mechanics.internal.ShootingService;
 import com.tp.tanks.mechanics.world.World;
+import com.tp.tanks.mocks.MockRemotePointService;
+import com.tp.tanks.websocket.RemotePointService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +24,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("test")
 public class IntersectTest {
 
-    private final ShootingService shootingService = new ShootingService(new World());
+    private final MockRemotePointService mockRemotePointService = new MockRemotePointService();
+    private final ShootingService shootingService = new ShootingService(new World(), mockRemotePointService);
 
     private static final double STEP = 0.01;
 

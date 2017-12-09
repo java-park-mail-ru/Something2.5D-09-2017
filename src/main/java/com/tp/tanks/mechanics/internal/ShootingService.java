@@ -5,6 +5,7 @@ import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.mechanics.world.Box;
 import com.tp.tanks.mechanics.world.World;
+import com.tp.tanks.websocket.RemotePointService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -22,11 +23,15 @@ public class ShootingService {
     private World world;
 
     @NotNull
+    private RemotePointService remotePointService;
+
+    @NotNull
     private ArrayList<Box> boxes;
 
-    public ShootingService(World world) {
+    public ShootingService(World world, RemotePointService remotePointService) {
         this.world = world;
         this.boxes = world.getBoxes();
+        this.remotePointService = remotePointService;
     }
 
 
@@ -65,11 +70,16 @@ public class ShootingService {
                 if (closestBox != null) {
                     if (compareTankAndBox(closestSnap, closestBox, line)) {
                         closestSnap.setHealth(closestSnap.getHealth() - 10);
+                        if (closestSnap.getHealth() <= 0) {
+                            remotePointService.incrementKills(line.getUserId());
+                        }
                     }
                 } else {
                     closestSnap.setHealth(closestSnap.getHealth() - 10);
+                    if (closestSnap.getHealth() <= 0) {
+                        remotePointService.incrementKills(line.getUserId());
+                    }
                 }
-
             }
         }
     }

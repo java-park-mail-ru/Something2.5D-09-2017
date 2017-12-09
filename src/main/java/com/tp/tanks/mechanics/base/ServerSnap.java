@@ -3,15 +3,21 @@ package com.tp.tanks.mechanics.base;
 import com.tp.tanks.websocket.Message;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings({"NullableProblems"})
 public class ServerSnap extends Message {
 
-    @NotNull private List<TankSnap> tanks;
+    @NotNull
+    private List<TankSnap> tanks;
 
-    @NotNull private Set<Long> players;
+    @NotNull
+    private Set<Long> players;
+
+    @NotNull
+    private List<StatisticsSnap> statistics = new ArrayList<>();
 
     @NotNull
     public List<TankSnap> getTanks() {
@@ -28,5 +34,9 @@ public class ServerSnap extends Message {
 
     public void setPlayers(Set<Long> players) {
         this.players = players;
+    }
+
+    public void addStatistics(StatisticsSnap snap) {
+        statistics.add(snap);
     }
 }
