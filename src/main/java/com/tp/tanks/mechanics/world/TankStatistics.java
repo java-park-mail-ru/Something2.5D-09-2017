@@ -1,12 +1,18 @@
 package com.tp.tanks.mechanics.world;
 
 public class TankStatistics {
+
+
     private Integer kills;
     private Integer deaths;
     private Integer maxKills;
     private Integer currentKills;
 
     public TankStatistics() {
+        kills = 0;
+        deaths = 0;
+        maxKills = 0;
+        currentKills = 0;
     }
 
     public TankStatistics(Integer kills, Integer deaths, Integer maxKills, Integer currentKills) {
@@ -24,6 +30,9 @@ public class TankStatistics {
     public void incrementKills() {
         this.kills++;
         this.currentKills++;
+        if (currentKills > maxKills) {
+            maxKills = currentKills;
+        }
     }
 
     public Integer getKills() {

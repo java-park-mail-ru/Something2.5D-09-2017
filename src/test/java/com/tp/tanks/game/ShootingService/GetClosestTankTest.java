@@ -5,6 +5,7 @@ import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.mechanics.internal.ShootingService;
 import com.tp.tanks.mechanics.world.World;
+import com.tp.tanks.mocks.MockRemotePointService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,9 @@ import java.util.ArrayList;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 public class GetClosestTankTest {
-    private final ShootingService shootingService = new ShootingService(new World());
+
+    private final MockRemotePointService mockRemotePointService = new MockRemotePointService();
+    private final ShootingService shootingService = new ShootingService(new World(), mockRemotePointService);
 
     private static final double DELTA = 1e-15;
 

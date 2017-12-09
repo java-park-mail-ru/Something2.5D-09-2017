@@ -51,7 +51,7 @@ public class GameMechanicsImpl implements GameMechanics {
         this.serverSnapshotService = serverSnapshotService;
         this.remotePointService = remotePointService;
         this.world = new World();
-        this.shootingService = new ShootingService(this.world);
+        this.shootingService = new ShootingService(this.world, remotePointService);
     }
 
 

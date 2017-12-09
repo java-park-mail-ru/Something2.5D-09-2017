@@ -70,17 +70,16 @@ public class ShootingService {
                 if (closestBox != null) {
                     if (compareTankAndBox(closestSnap, closestBox, line)) {
                         closestSnap.setHealth(closestSnap.getHealth() - 10);
-                        if(closestSnap.getHealth() <= 0) {
+                        if (closestSnap.getHealth() <= 0) {
                             remotePointService.incrementKills(line.getUserId());
                         }
                     }
                 } else {
                     closestSnap.setHealth(closestSnap.getHealth() - 10);
-                    if(closestSnap.getHealth() <= 0) {
+                    if (closestSnap.getHealth() <= 0) {
                         remotePointService.incrementKills(line.getUserId());
                     }
                 }
-
             }
         }
     }

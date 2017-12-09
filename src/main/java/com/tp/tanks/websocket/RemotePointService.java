@@ -34,6 +34,7 @@ public class RemotePointService {
         LOGGER.info("[RemotePointService.registerUser] register userID = " + userId.toString());
         sessions.put(userId, webSocketSession);
         players.add(userId);
+        tanksStats.put(userId, new TankStatistics());
     }
 
     public boolean isConnected(@NotNull Long userId) {
@@ -44,9 +45,18 @@ public class RemotePointService {
         return players;
     }
 
+    public Map<Long, TankStatistics> getTanksStats() {
+        return tanksStats;
+    }
+
+    public TankStatistics getTanksStatsForUser(Long userId) {
+        return tanksStats.get(userId);
+    }
+
     public void removeUser(@NotNull Long userId) {
         sessions.remove(userId);
         players.remove(userId);
+        tanksStats.remove(userId);
         LOGGER.info("[RemotePointService.removeUser] unregister userID = " + userId.toString());
     }
 
@@ -58,11 +68,6 @@ public class RemotePointService {
 
     public void incrementKills(@NotNull Long userId) {
         this.tanksStats.get(userId).incrementKills();
-        LOGGER.info("");
-        LOGGER.info("[RemotePointService.incrementKills] userID = " + userId.toString() + " , kills: " + tanksStats.get(userId).getKills());
-        LOGGER.info("[RemotePointService.incrementKills] userID = " + userId.toString() + " , deaths: " + tanksStats.get(userId).getDeaths());
-        LOGGER.info("[RemotePointService.incrementKills] userID = " + userId.toString() + " , kills: " + tanksStats.get(userId).getMaxKills());
-        LOGGER.info("");
     }
 
     public void spawnUser(@NotNull Long userId) {
