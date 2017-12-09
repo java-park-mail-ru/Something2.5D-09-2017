@@ -34,7 +34,6 @@ public class ShootingService {
         this.remotePointService = remotePointService;
     }
 
-
     public void process(List<TankSnap> snaps, List<Line> lines) {
 
         if (lines.size() == 0) {

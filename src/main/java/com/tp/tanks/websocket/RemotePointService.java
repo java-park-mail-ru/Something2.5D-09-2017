@@ -62,7 +62,7 @@ public class RemotePointService {
 
     public void killUser(@NotNull Long userId) {
         players.remove(userId);
-        this.tanksStats.get(userId).incrementDeaths();
+        tanksStats.get(userId).incrementDeaths();
         LOGGER.info("[RemotePointService.killUser] userID = " + userId.toString());
     }
 
