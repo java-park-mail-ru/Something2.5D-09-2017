@@ -1,6 +1,7 @@
 package com.tp.tanks.game.world;
 
-import com.tp.tanks.mechanics.world.TankStatistics;
+import com.tp.tanks.factories.Generators;
+import com.tp.tanks.mechanics.world.Scores;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +17,7 @@ public class TanksStatisticsTest {
 
     @Test
     public void incrementKillsAndDeath() {
-        TankStatistics tankStatistics = new TankStatistics();
+        Scores tankStatistics = new Scores(Generators.generateString(10));
 
         for(int i = 0; i < 9; ++i) {
             tankStatistics.incrementKills();
@@ -29,7 +30,7 @@ public class TanksStatisticsTest {
 
     @Test
     public void maxKillsWithoutDeath() {
-        TankStatistics tankStatistics = new TankStatistics();
+        Scores tankStatistics = new Scores(Generators.generateString(10));
 
         for(int i = 0; i < 5; ++i) {
             tankStatistics.incrementKills();

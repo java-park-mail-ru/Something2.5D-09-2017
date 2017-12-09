@@ -2,6 +2,7 @@ package com.tp.tanks.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tp.tanks.mechanics.internal.WorldSnapService;
+import com.tp.tanks.models.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -52,12 +53,20 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession webSocketSession) {
         final Long userId = (Long) webSocketSession.getAttributes().get("userId");
         LOGGER.info("[GameWebSocketHandler: afterConnectionEstablished] userId: " + userId);
-        if (userId == null || userService.getById(userId) == null) {
-            LOGGER.warn("Can't get user by id = " + userId);
+
+        if (userId == null) {
+            LOGGER.warn("UserId is null");
             closeSessionSilently(webSocketSession, ACCESS_DENIED);
             return;
         }
-        remotePointService.registerUser(userId, webSocketSession);
+
+        User user = userService.getById(userId);
+        if (user == null) {
+            LOGGER.warn("Can't get user by uid = " + userId);
+            closeSessionSilently(webSocketSession, ACCESS_DENIED);
+            return;
+        }
+        remotePointService.registerUser(userId, user.getUsername(), webSocketSession);
         worldSnapService.send(userId);
     }
 
@@ -105,7 +114,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             LOGGER.warn("User disconnected but his session was not found (closeStatus=" + closeStatus + ')');
             return;
         }
-        remotePointService.saveStatistics(userId);
+//        remotePointService.saveStatistics(userId);
         remotePointService.removeUser(userId);
     }
 

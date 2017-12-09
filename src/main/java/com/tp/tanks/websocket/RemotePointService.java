@@ -1,7 +1,8 @@
 package com.tp.tanks.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tp.tanks.mechanics.world.TankStatistics;
+import com.tp.tanks.mechanics.world.Scores;
+import com.tp.tanks.mechanics.world.ScoresToSend;
 import com.tp.tanks.services.StatisticsService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -13,8 +14,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -24,8 +24,10 @@ public class RemotePointService {
     private Map<Long, WebSocketSession> sessions = new ConcurrentHashMap<>();
     private Set<Long> players = new ConcurrentSkipListSet<>();
     private final ObjectMapper objectMapper;
-    private Map<Long, TankStatistics> tanksStats;
+    private Map<Long, Scores> tanksStats;
     private StatisticsService statisticsService;
+
+    private final Comparator<ScoresToSend> scoresToSendComparator = (score1, score2) -> (int) (score1.getKills() - score2.getKills());
 
     public RemotePointService(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -33,26 +35,48 @@ public class RemotePointService {
         statisticsService = new StatisticsService();
     }
 
-    public void registerUser(@NotNull Long userId, @NotNull WebSocketSession webSocketSession) {
+    public void registerUser(@NotNull Long userId, @NotNull String username, @NotNull WebSocketSession webSocketSession) {
         LOGGER.info("[RemotePointService.registerUser] register userID = " + userId.toString());
         sessions.put(userId, webSocketSession);
         players.add(userId);
-        tanksStats.put(userId, new TankStatistics());
+        tanksStats.put(userId, new Scores(username));
     }
 
     public boolean isConnected(@NotNull Long userId) {
         return sessions.containsKey(userId) && sessions.get(userId).isOpen() && players.contains(userId);
     }
 
+    public List<ScoresToSend> getTopPlayers(int amount) {
+        List<ScoresToSend> top = new ArrayList<>();
+
+        for (Map.Entry<Long, Scores> entry : tanksStats.entrySet()) {
+            Long userId = entry.getKey();
+            Scores scores = entry.getValue();
+            if (top.size() <= amount) {
+                ScoresToSend scoresToSend = new ScoresToSend(userId, scores.getUsername(), scores.getKills());
+                top.add(scoresToSend);
+            } else {
+                ScoresToSend min = top.parallelStream().min(scoresToSendComparator).get();
+                if (scores.getKills() > min.getKills()) {
+                    min.setUserId(userId);
+                    min.setUsername(scores.getUsername());
+                    min.setKills(scores.getKills());
+                }
+            }
+        }
+        top.sort(scoresToSendComparator);
+        return top;
+    }
+
     public Set<Long> getPlayers() {
         return players;
     }
 
-    public Map<Long, TankStatistics> getTanksStats() {
+    public Map<Long, Scores> getTanksStats() {
         return tanksStats;
     }
 
-    public TankStatistics getTanksStatsForUser(Long userId) {
+    public Scores getTanksStatsForUser(Long userId) {
         return tanksStats.get(userId);
     }
 

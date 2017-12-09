@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class StatisticMapper implements RowMapper<Statistic>{
+public class StatisticMapper implements RowMapper<Statistic> {
     @Override
     public Statistic mapRow(ResultSet rs, int rowNum) throws SQLException {
         final Statistic statistic = new Statistic();

@@ -1,42 +1,19 @@
 package com.tp.tanks.mechanics.base;
 
-public class StatisticsSnap {
+import com.tp.tanks.mechanics.world.ScoresToSend;
+import com.tp.tanks.websocket.Message;
 
-    private Long userId;
-    private String username;
+import java.util.List;
 
-    private Integer kills;
+public class StatisticsSnap extends Message {
 
-    public StatisticsSnap() {
+    private List<ScoresToSend> leaders;
+
+    public List<ScoresToSend> getLeaders() {
+        return leaders;
     }
 
-    public StatisticsSnap(Long userId, String username, Integer kills) {
-        this.userId = userId;
-        this.username = username;
-        this.kills = kills;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Integer getKills() {
-        return kills;
-    }
-
-    public void setKills(Integer kills) {
-        this.kills = kills;
+    public void setLeaders(List<ScoresToSend> leaders) {
+        this.leaders = leaders;
     }
 }

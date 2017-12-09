@@ -1,13 +1,11 @@
 package com.tp.tanks.mechanics;
 
-import com.tp.tanks.mechanics.base.Coordinate;
-import com.tp.tanks.mechanics.base.Line;
-import com.tp.tanks.mechanics.base.SpawnSnap;
-import com.tp.tanks.mechanics.base.TankSnap;
+import com.tp.tanks.mechanics.base.*;
 import com.tp.tanks.mechanics.internal.ServerSnapshotService;
 import com.tp.tanks.mechanics.internal.ShootingService;
 import com.tp.tanks.mechanics.internal.TankSnapshotService;
 import com.tp.tanks.mechanics.requests.SpawnRequest;
+import com.tp.tanks.mechanics.world.ScoresToSend;
 import com.tp.tanks.mechanics.world.World;
 import com.tp.tanks.websocket.RemotePointService;
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +39,8 @@ public class GameMechanicsImpl implements GameMechanics {
     @NotNull
     private RemotePointService remotePointService;
 
+    private long lastStatisticSendTime;
+
     @NotNull
     private World world;
 
@@ -52,6 +52,7 @@ public class GameMechanicsImpl implements GameMechanics {
         this.remotePointService = remotePointService;
         this.world = new World();
         this.shootingService = new ShootingService(this.world, remotePointService);
+        this.lastStatisticSendTime = System.currentTimeMillis();
     }
 
 
@@ -111,6 +112,15 @@ public class GameMechanicsImpl implements GameMechanics {
         removeDeadTanksFromSession(tankSnapshots);
 
         serverSnapshotService.send(tankSnapshots);
+
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastStatisticSendTime > 2000) {
+            LOGGER.info("try sending statistics Snap;");
+            lastStatisticSendTime = currentTime;
+            List<ScoresToSend> scoresToSend = remotePointService.getTopPlayers(5);
+            serverSnapshotService.sendStatistics(scoresToSend);
+        }
+
         tankSnapshotsService.reset();
     }
 

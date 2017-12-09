@@ -1,17 +1,19 @@
 package com.tp.tanks.mechanics.world;
 
-public class TankStatistics {
+public class Scores {
 
     private Integer kills;
     private Integer deaths;
     private Integer maxKills;
     private Integer currentKills;
+    private String username;
 
-    public TankStatistics() {
+    public Scores(String username) {
         kills = 0;
         deaths = 0;
         maxKills = 0;
         currentKills = 0;
+        this.username = username;
     }
 
     public void incrementDeaths() {
@@ -49,5 +51,13 @@ public class TankStatistics {
 
     public void setMaxKills(Integer maxKills) {
         this.maxKills = maxKills;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

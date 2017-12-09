@@ -1,8 +1,11 @@
 package com.tp.tanks.services;
 
-import com.tp.tanks.mechanics.world.TankStatistics;
+import com.tp.tanks.mechanics.world.Scores;
 import com.tp.tanks.repository.StatisticsRepository;
 import com.tp.tanks.models.Statistic;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +15,13 @@ public class StatisticsService {
     @Autowired
     private StatisticsRepository statisticsRepository;
 
+    @NotNull
+    private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsService.class);
+
     public StatisticsService() {
     }
 
-    public void saveStatistics(Long userId, TankStatistics tankStatistics) {
+    public void saveStatistics(Long userId, Scores tankStatistics) {
         Statistic statistic = statisticsRepository.getById(userId);
         try {
             if (statistic != null) {
@@ -29,6 +35,7 @@ public class StatisticsService {
                 statisticsRepository.insert(userId, tankStatistics);
             }
         } catch (Exception ex) {
+            LOGGER.info("[StatisticsService:saveStatistics] database exception: " + ex);
         }
     }
 
