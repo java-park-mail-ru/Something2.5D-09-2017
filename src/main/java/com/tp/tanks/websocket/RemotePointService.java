@@ -1,6 +1,7 @@
 package com.tp.tanks.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tp.tanks.mechanics.world.TankStatistics;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +23,11 @@ public class RemotePointService {
     private Map<Long, WebSocketSession> sessions = new ConcurrentHashMap<>();
     private Set<Long> players = new ConcurrentSkipListSet<>();
     private final ObjectMapper objectMapper;
+    private Map<Long, TankStatistics> tanksStats;
 
     public RemotePointService(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
+        this.tanksStats = new ConcurrentHashMap<>();
     }
 
     public void registerUser(@NotNull Long userId, @NotNull WebSocketSession webSocketSession) {
@@ -49,7 +52,17 @@ public class RemotePointService {
 
     public void killUser(@NotNull Long userId) {
         players.remove(userId);
+        this.tanksStats.get(userId).incrementDeaths();
         LOGGER.info("[RemotePointService.killUser] userID = " + userId.toString());
+    }
+
+    public void incrementKills(@NotNull Long userId) {
+        this.tanksStats.get(userId).incrementKills();
+        LOGGER.info("");
+        LOGGER.info("[RemotePointService.incrementKills] userID = " + userId.toString() + " , kills: " + tanksStats.get(userId).getKills());
+        LOGGER.info("[RemotePointService.incrementKills] userID = " + userId.toString() + " , deaths: " + tanksStats.get(userId).getDeaths());
+        LOGGER.info("[RemotePointService.incrementKills] userID = " + userId.toString() + " , kills: " + tanksStats.get(userId).getMaxKills());
+        LOGGER.info("");
     }
 
     public void spawnUser(@NotNull Long userId) {
