@@ -7,6 +7,7 @@ import com.tp.tanks.services.StatisticsService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -29,10 +30,11 @@ public class RemotePointService {
 
     private final Comparator<ScoresToSend> scoresToSendComparator = (score1, score2) -> (int) (score2.getKills() - score1.getKills());
 
-    public RemotePointService(ObjectMapper objectMapper) {
+    @Autowired
+    public RemotePointService(ObjectMapper objectMapper, StatisticsService statisticsService) {
         this.objectMapper = objectMapper;
         this.tanksStats = new ConcurrentHashMap<>();
-        statisticsService = new StatisticsService();
+        this.statisticsService = statisticsService;
     }
 
     public void registerUser(@NotNull Long userId, @NotNull String username, @NotNull WebSocketSession webSocketSession) {

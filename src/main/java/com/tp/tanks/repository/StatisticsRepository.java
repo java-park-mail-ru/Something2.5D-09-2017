@@ -18,22 +18,22 @@ public class StatisticsRepository {
     }
 
     public Statistic getById(Long userId) {
-        String sql = "SELECT * FROM statistic_tbl WHERE userId=?;";
+        String sql = "SELECT * FROM statistic_tbl WHERE userid=?;";
         return jdbcTemplate.queryForObject(sql, new Object[]{userId}, new StatisticMapper());
     }
 
     public void update(Long userId, Scores tankStatistics) {
-        String sql = "UPDATE statistic_tbl SET kills=kills+?, deaths=deaths+?, maxKills=? WHERE userId=?;";
+        String sql = "UPDATE statistic_tbl SET kills=kills+?, deaths=deaths+?, maxkills=? WHERE userid=?;";
         jdbcTemplate.update(sql, new Object[]{userId, tankStatistics.getKills(), tankStatistics.getDeaths(), tankStatistics.getMaxKills()});
     }
 
     public void updateWithoutMaxKills(Long userId, Scores tankStatistics) {
-        String sql = "UPDATE statistic_tbl SET kills=kills+?, deaths=deaths+? WHERE userId=?;";
+        String sql = "UPDATE statistic_tbl SET kills=kills+?, deaths=deaths+? WHERE userid=?;";
         jdbcTemplate.update(sql, new Object[]{userId, tankStatistics.getKills(), tankStatistics.getDeaths()});
     }
 
     public void insert(Long userId, Scores tankStatistics) {
-        String sql = "INSERT INTO statistic_tbl (userId, kills, deaths, maxKills) VALUES (?, ?, ?, ?);";
+        String sql = "INSERT INTO statistic_tbl (userid, kills, deaths, maxkills) VALUES (?, ?, ?, ?);";
         jdbcTemplate.update(sql, new Object[]{userId, tankStatistics.getKills(), tankStatistics.getDeaths(), tankStatistics.getMaxKills()});
     }
 

@@ -31,6 +31,7 @@ public class ServerSnapshotServiceTest {
     @Autowired
     private MechanicsExecutor mechanicsExecutor;
 
+    @Autowired
     private MockRemotePointService mockRemotePointService;
 
     @Autowired
@@ -43,7 +44,6 @@ public class ServerSnapshotServiceTest {
     @Before
     public void setUp() {
         mechanicsExecutor.lock();
-        mockRemotePointService = new MockRemotePointService();
         mockServerSnapshotService = new MockServerSnapshotService(mockRemotePointService);
         gameMechanics = new GameMechanicsImpl(tankSnapshotsService, mockServerSnapshotService, mockRemotePointService);
     }

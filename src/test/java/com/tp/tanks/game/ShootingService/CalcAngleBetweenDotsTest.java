@@ -8,6 +8,7 @@ import com.tp.tanks.mocks.MockRemotePointService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -18,8 +19,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("test")
 public class CalcAngleBetweenDotsTest {
 
-    private final MockRemotePointService mockRemotePointService = new MockRemotePointService();
-    private final ShootingService shootingService = new ShootingService(new World(), mockRemotePointService);
+    @Autowired
+    private MockRemotePointService mockRemotePointService;
+
+    private ShootingService shootingService = new ShootingService(new World(), mockRemotePointService);
 
     private static final double DELTA = 1e-15;
 

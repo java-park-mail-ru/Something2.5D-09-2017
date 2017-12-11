@@ -38,6 +38,7 @@ public class RemotePointServiceTest {
 
     private GameMechanics gameMechanics;
 
+    @Autowired
     private MockRemotePointService mockRemotePointService;
 
     private static final double DELTA = 1e-15;
@@ -45,7 +46,6 @@ public class RemotePointServiceTest {
     @Before
     public void setUp() {
         mechanicsExecutor.lock();
-        mockRemotePointService = new MockRemotePointService();
         ServerSnapshotService serverSnapshotService = new ServerSnapshotService(mockRemotePointService);
         gameMechanics = new GameMechanicsImpl(tankSnapshotsService, serverSnapshotService, mockRemotePointService);
     }
