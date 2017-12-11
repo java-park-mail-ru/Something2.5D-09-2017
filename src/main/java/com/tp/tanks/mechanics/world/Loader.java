@@ -2,14 +2,11 @@ package com.tp.tanks.mechanics.world;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 
 import com.tp.tanks.mechanics.base.Coordinate;
 
 
 public class Loader {
-    private final static Integer amountOfMaps = 4;
-//    private static final Integer CURRENT_MAP = ThreadLocalRandom.current().nextInt(0, amountOfMaps);
     private static final Integer CURRENT_MAP = 4;
 
     public static ArrayList<Box> loadBoxes() {
