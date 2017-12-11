@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import static org.springframework.web.socket.CloseStatus.SERVER_ERROR;
 
 
+@Component
 public class GameWebSocketHandler extends TextWebSocketHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameWebSocketHandler.class);
     private static final CloseStatus ACCESS_DENIED = new CloseStatus(4500, "Not logged in. Access denied");
@@ -37,7 +40,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     @NotNull
     private WorldSnapService worldSnapService;
 
-
+    @Autowired
     public GameWebSocketHandler(@NotNull MessageHandlerContainer messageHandlerContainer,
                                 @NotNull UserService userService,
                                 @NotNull RemotePointService remotePointService,
@@ -114,7 +117,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             LOGGER.warn("User disconnected but his session was not found (closeStatus=" + closeStatus + ')');
             return;
         }
-//        remotePointService.saveStatistics(userId);
+        remotePointService.saveStatistics(userId);
         remotePointService.removeUser(userId);
     }
 

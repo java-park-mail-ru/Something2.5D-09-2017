@@ -22,7 +22,12 @@ public class StatisticsService {
     }
 
     public void saveStatistics(Long userId, Scores tankStatistics) {
-        Statistic statistic = statisticsRepository.getById(userId);
+        Statistic statistic = null;
+        try {
+            statistic = statisticsRepository.getById(userId);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
         try {
             if (statistic != null) {
 

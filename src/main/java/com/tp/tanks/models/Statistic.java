@@ -1,5 +1,6 @@
 package com.tp.tanks.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -13,11 +14,16 @@ public class Statistic {
     @JsonIgnore
     private Long id;
 
+    @Column(name="userid")
     private Long userId;
+    @Column(name="kills")
     private Integer kills;
+    @Column(name="deaths")
     private Integer deaths;
+    @Column(name="maxkills")
     private Integer maxKills;
 
+    @JsonCreator
     public Statistic() {
     }
 
