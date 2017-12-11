@@ -1,6 +1,7 @@
 package com.tp.tanks.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ public class Statistic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @Column(name="userid")
@@ -70,10 +72,5 @@ public class Statistic {
 
     public void setMaxKills(Integer maxKills) {
         this.maxKills = maxKills;
-    }
-
-    @Override
-    public String toString() {
-        return "a";
     }
 }
