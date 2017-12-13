@@ -28,6 +28,8 @@ public class Statistic {
     private Integer maxKills;
     @Transient
     private Integer position;
+    @Transient
+    private String username;
 
     @JsonCreator
     public Statistic() {
@@ -88,12 +90,22 @@ public class Statistic {
         this.position = position;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public JSONObject getJson() throws JSONException {
         final JSONObject jsonObject = new JSONObject();
         jsonObject.put("userId", userId);
         jsonObject.put("kills", kills);
         jsonObject.put("deaths", deaths);
         jsonObject.put("maxKills", maxKills);
+        jsonObject.put("username", username);
+        jsonObject.put("position", position);
         return jsonObject;
     }
 

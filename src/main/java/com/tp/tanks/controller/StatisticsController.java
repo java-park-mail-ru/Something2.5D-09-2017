@@ -42,7 +42,7 @@ public class StatisticsController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        return new ResponseEntity<>(responseStatistics, HttpStatus.OK);
+        return new ResponseEntity<>(Statistic.getJsonArray(responseStatistics).toString(), HttpStatus.OK);
     }
 
 
