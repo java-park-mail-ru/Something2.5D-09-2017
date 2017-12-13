@@ -1,7 +1,6 @@
 package com.tp.tanks.controller;
 
 import com.tp.tanks.models.Statistic;
-import com.tp.tanks.models.User;
 import com.tp.tanks.services.StatisticsService;
 import org.json.JSONException;
 import org.slf4j.Logger;
@@ -60,7 +59,7 @@ public class StatisticsController {
 
             Long userId = (Long) sessionObject;
 
-            final Statistic responseStatistics = statisticsService.position(userId);
+            final Statistic responseStatistics = statisticsService.statistic(userId);
             if (responseStatistics == null) {
                 LOGGER.error("[getPosition] responseStatistics == null");
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);

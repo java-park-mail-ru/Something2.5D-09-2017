@@ -40,7 +40,7 @@ public class Box {
     @Override
     public String toString() {
         return '{'
-                + "position: "  + position.toString()
+                + "statistic: "  + position.toString()
                 + ", isBulletProof: " + isBulletProof.toString()
                 + '}';
     }

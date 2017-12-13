@@ -42,6 +42,15 @@ public class Statistic {
         this.maxKills = maxKills;
     }
 
+    public Statistic(Long userId, Integer kills, Integer deaths, Integer maxKills, Integer position, String username) {
+        this.userId = userId;
+        this.kills = kills;
+        this.deaths = deaths;
+        this.maxKills = maxKills;
+        this.position = position;
+        this.username = username;
+    }
+
     public Long getId() {
         return id;
     }
@@ -105,7 +114,7 @@ public class Statistic {
         jsonObject.put("deaths", deaths);
         jsonObject.put("maxKills", maxKills);
         jsonObject.put("username", username);
-        jsonObject.put("position", position);
+        jsonObject.put("statistic", position);
         return jsonObject;
     }
 

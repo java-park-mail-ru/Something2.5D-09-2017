@@ -60,4 +60,12 @@ public class Scores {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public Integer getCurrentKills() {
+        return currentKills;
+    }
+
+    public void setCurrentKills(Integer currentKills) {
+        this.currentKills = currentKills;
+    }
 }

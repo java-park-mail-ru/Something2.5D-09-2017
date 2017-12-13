@@ -56,12 +56,12 @@ public class StatisticsService {
         return response;
     }
 
-    public Statistic position(Long userId) {
+    public Statistic statistic(Long userId) {
         Statistic response = null;
         try {
             response = statisticsRepository.position(userId);
         } catch (Exception ex) {
-            LOGGER.info("[StatisticsService:position] database exception: " + ex);
+            LOGGER.info("[StatisticsService:statistic] database exception: " + ex);
         }
         return response;
     }
