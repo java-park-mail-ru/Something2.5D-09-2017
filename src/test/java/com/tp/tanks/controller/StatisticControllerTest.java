@@ -86,9 +86,7 @@ public class StatisticControllerTest {
 
         for (int i = 0; i < 5; ++i) {
             final User user = UserFactory.create();
-
             ResponseEntity<User> responseUser = signUp(user);
-            assertEquals(HttpStatus.CREATED, responseUser.getStatusCode());
 
             statisticsService.saveStatistics(responseUser.getBody().getId(), ScoreFactory.create());
         }
@@ -105,9 +103,7 @@ public class StatisticControllerTest {
     @Test
     public void getStatisticTest() {
         final User user = UserFactory.create();
-
         ResponseEntity<User> response = signUp(user);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
 
         Scores scores = ScoreFactory.create();
         statisticsService.saveStatistics(response.getBody().getId(), scores);
@@ -120,5 +116,26 @@ public class StatisticControllerTest {
         Assert.assertEquals(scores.getKills(), statistic.getKills());
         Assert.assertEquals(scores.getDeaths(), statistic.getDeaths());
         Assert.assertEquals(scores.getMaxKills(), statistic.getMaxKills());
+    }
+
+    @Test
+    public void getStatisticsNotFound() {
+        final User user = UserFactory.create();
+        ResponseEntity<User> response = signUp(user);
+
+        ResponseEntity<Statistic> responseStatistic = getStatistic(getCookie(response));
+        Statistic statistic = responseStatistic.getBody();
+
+        Assert.assertNull(statistic);
+        Assert.assertEquals(HttpStatus.NOT_FOUND, responseStatistic.getStatusCode());
+    }
+
+    @Test
+    public void getStatisticsEmptySession() {
+        ResponseEntity<Statistic> responseStatistic = getStatistic(new ArrayList<>());
+        Statistic statistic = responseStatistic.getBody();
+
+        Assert.assertNull(statistic);
+        Assert.assertEquals(HttpStatus.UNAUTHORIZED, responseStatistic.getStatusCode());
     }
 }

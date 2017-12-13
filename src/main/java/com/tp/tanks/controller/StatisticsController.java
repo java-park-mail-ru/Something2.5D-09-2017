@@ -20,6 +20,7 @@ public class StatisticsController {
 
     private StatisticsService statisticsService;
     private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsController.class);
+    private static final Integer DEFAULT_LIMIT = 5;
 
     @Autowired
     public StatisticsController(StatisticsService statisticsService) {
@@ -30,7 +31,7 @@ public class StatisticsController {
     @RequestMapping(value = "/top", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> getTop( @RequestParam(value = "limit", required = false) Integer limit) throws JSONException {
         if(limit == null) {
-            limit = 5;
+            limit = DEFAULT_LIMIT;
         }
 
         final List<Statistic> responseStatistics = statisticsService.getTop(limit);
@@ -60,7 +61,7 @@ public class StatisticsController {
             final Statistic responseStatistics = statisticsService.statistic(userId);
             if (responseStatistics == null) {
                 LOGGER.info("[getStatistic] responseStatistics == null");
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
             return new ResponseEntity<>(responseStatistics.getJson().toString(), HttpStatus.OK);
