@@ -37,7 +37,7 @@ public class Generators {
     }
 
     public static Integer geterateInteger() {
-        return new Random().nextInt();
+        return ThreadLocalRandom.current().nextInt(0, 10000);
     }
 
     public static Long generateLong() {

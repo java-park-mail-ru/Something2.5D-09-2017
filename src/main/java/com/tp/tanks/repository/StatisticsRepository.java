@@ -26,12 +26,12 @@ public class StatisticsRepository {
 
     public void update(Long userId, Scores tankStatistics) {
         String sql = "UPDATE statistic_tbl SET kills=kills+?, deaths=deaths+?, maxkills=? WHERE userid=?;";
-        jdbcTemplate.update(sql, new Object[]{userId, tankStatistics.getKills(), tankStatistics.getDeaths(), tankStatistics.getMaxKills()});
+        jdbcTemplate.update(sql, new Object[]{tankStatistics.getKills(), tankStatistics.getDeaths(), tankStatistics.getMaxKills(), userId});
     }
 
     public void updateWithoutMaxKills(Long userId, Scores tankStatistics) {
         String sql = "UPDATE statistic_tbl SET kills=kills+?, deaths=deaths+? WHERE userid=?;";
-        jdbcTemplate.update(sql, new Object[]{userId, tankStatistics.getKills(), tankStatistics.getDeaths()});
+        jdbcTemplate.update(sql, new Object[]{tankStatistics.getKills(), tankStatistics.getDeaths(), userId});
     }
 
     public void insert(Long userId, Scores tankStatistics) {

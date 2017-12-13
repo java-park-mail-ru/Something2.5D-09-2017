@@ -2,6 +2,7 @@ package com.tp.tanks.factories;
 
 import com.tp.tanks.mechanics.world.Scores;
 
+
 public class ScoreFactory {
     public static Scores create() {
 

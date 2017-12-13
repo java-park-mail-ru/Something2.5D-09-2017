@@ -45,4 +45,56 @@ public class StatisticServiceTest {
         Assert.assertEquals(scores.getMaxKills(), statistic.getMaxKills());
         Assert.assertEquals(scores.getUsername(), statistic.getUsername());
     }
+
+    @Test
+    public void updateStatisticWithMaxKillsTest() {
+        User user = UserFactory.create();
+        User savedUser = userService.save(user);
+
+        Scores scores = ScoreFactory.create();
+        scores.setUsername(savedUser.getUsername());
+
+        statisticsService.saveStatistics(savedUser.getId(), scores);
+
+        Scores newScores = ScoreFactory.create();
+        newScores.setUsername(savedUser.getUsername());
+        newScores.setMaxKills(scores.getMaxKills() + 1);
+
+        statisticsService.saveStatistics(savedUser.getId(), newScores);
+        Statistic statistic = statisticsService.statistic(savedUser.getId());
+
+        Integer sumKills = scores.getKills() + newScores.getKills();
+        Integer sumDeaths = scores.getDeaths() + newScores.getDeaths();
+
+        Assert.assertEquals(sumKills, statistic.getKills());
+        Assert.assertEquals(sumDeaths, statistic.getDeaths());
+        Assert.assertEquals(newScores.getMaxKills(), statistic.getMaxKills());
+        Assert.assertEquals(newScores.getUsername(), statistic.getUsername());
+    }
+
+    @Test
+    public void updateStatisticWithoutMaxKillsTest() {
+        User user = UserFactory.create();
+        User savedUser = userService.save(user);
+
+        Scores scores = ScoreFactory.create();
+        scores.setUsername(savedUser.getUsername());
+
+        statisticsService.saveStatistics(savedUser.getId(), scores);
+
+        Scores newScores = ScoreFactory.create();
+        newScores.setMaxKills(scores.getMaxKills() - 1);
+        newScores.setUsername(savedUser.getUsername());
+
+        statisticsService.saveStatistics(savedUser.getId(), newScores);
+        Statistic statistic = statisticsService.statistic(savedUser.getId());
+
+        Integer sumKills = scores.getKills() + newScores.getKills();
+        Integer sumDeaths = scores.getDeaths() + newScores.getDeaths();
+
+        Assert.assertEquals(sumKills, statistic.getKills());
+        Assert.assertEquals(sumDeaths, statistic.getDeaths());
+        Assert.assertEquals(scores.getMaxKills(), statistic.getMaxKills());
+        Assert.assertEquals(scores.getUsername(), statistic.getUsername());
+    }
 }

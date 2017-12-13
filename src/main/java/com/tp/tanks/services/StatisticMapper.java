@@ -15,9 +15,16 @@ public class StatisticMapper implements RowMapper<Statistic> {
         statistic.setKills(rs.getInt("kills"));
         statistic.setDeaths(rs.getInt("deaths"));
         statistic.setMaxKills(rs.getInt("maxKills"));
-        statistic.setPosition(rs.getInt("position"));
-        statistic.setUsername(rs.getString("username"));
-
+        try {
+            statistic.setPosition(rs.getInt("position"));
+        } catch (Exception ex) {
+            statistic.setPosition(null);
+        }
+        try {
+            statistic.setUsername(rs.getString("username"));
+        } catch (Exception ex) {
+            statistic.setUsername(null);
+        }
         return statistic;
     }
 }
