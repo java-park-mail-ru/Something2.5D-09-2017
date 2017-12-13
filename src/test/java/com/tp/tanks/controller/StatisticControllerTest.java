@@ -3,6 +3,7 @@ package com.tp.tanks.controller;
 import com.tp.tanks.factories.Generators;
 import com.tp.tanks.factories.ScoreFactory;
 import com.tp.tanks.factories.UserFactory;
+import com.tp.tanks.mechanics.world.Scores;
 import com.tp.tanks.models.Statistic;
 import com.tp.tanks.models.User;
 import com.tp.tanks.services.StatisticsService;
@@ -14,11 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +46,30 @@ public class StatisticControllerTest {
             cookie = new ArrayList<>();
         }
         return cookie;
+    }
+
+    private HttpEntity getEntity(List<String> cookie) {
+        final HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.put(HttpHeaders.COOKIE, cookie);
+
+        return new HttpEntity(requestHeaders);
+    }
+
+    private Map<String, String> generateUserMap(User user) {
+        final Map<String, String> parts = new HashMap<>();
+        parts.put("username", user.getUsername());
+        parts.put("email", user.getEmail());
+        parts.put("password", user.getPassword());
+        return parts;
+    }
+
+    private ResponseEntity<User> signUp(User user) {
+        return restTemplate.postForEntity("/api/signUp", generateUserMap(user), User.class);
+    }
+
+    private ResponseEntity<Statistic> getStatistic(List<String> cookie) {
+        ResponseEntity<Statistic> response = restTemplate.exchange("/api/statistic", HttpMethod.GET, getEntity(cookie), Statistic.class);
+        return response;
     }
 
     private ResponseEntity<List<Statistic>> getTop(Integer limit) {
@@ -79,15 +102,23 @@ public class StatisticControllerTest {
         Assert.assertTrue(top.size() >= 5);
     }
 
-    private Map<String, String> generateUserMap(User user) {
-        final Map<String, String> parts = new HashMap<>();
-        parts.put("username", user.getUsername());
-        parts.put("email", user.getEmail());
-        parts.put("password", user.getPassword());
-        return parts;
-    }
+    @Test
+    public void getStatisticTest() {
+        final User user = UserFactory.create();
 
-    private ResponseEntity<User> signUp(User user) {
-        return restTemplate.postForEntity("/api/signUp", generateUserMap(user), User.class);
+        ResponseEntity<User> response = signUp(user);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
+        Scores scores = ScoreFactory.create();
+        statisticsService.saveStatistics(response.getBody().getId(), scores);
+
+        ResponseEntity<Statistic> responseStatistic = getStatistic(getCookie(response));
+        Statistic statistic = responseStatistic.getBody();
+
+        Assert.assertNotNull(statistic);
+        Assert.assertEquals(HttpStatus.OK, responseStatistic.getStatusCode());
+        Assert.assertEquals(scores.getKills(), statistic.getKills());
+        Assert.assertEquals(scores.getDeaths(), statistic.getDeaths());
+        Assert.assertEquals(scores.getMaxKills(), statistic.getMaxKills());
     }
 }

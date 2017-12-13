@@ -44,14 +44,14 @@ public class StatisticsController {
 
 
     @CrossOrigin
-    @RequestMapping(value = "/position", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<?> getPosition(HttpSession session) throws JSONException {
+    @RequestMapping(value = "/statistic", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<?> getStatistic(HttpSession session) throws JSONException {
 
         try {
             final Object sessionObject = session.getAttribute("userId");
 
             if (sessionObject == null) {
-                LOGGER.debug("[getPosition] Can't find userId in session");
+                LOGGER.info("[getStatistic] Can't find userId in session");
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
@@ -59,14 +59,14 @@ public class StatisticsController {
 
             final Statistic responseStatistics = statisticsService.statistic(userId);
             if (responseStatistics == null) {
-                LOGGER.error("[getPosition] responseStatistics == null");
+                LOGGER.info("[getStatistic] responseStatistics == null");
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
-            return new ResponseEntity<>(responseStatistics, HttpStatus.OK);
+            return new ResponseEntity<>(responseStatistics.getJson().toString(), HttpStatus.OK);
 
         } catch (ClassCastException ex) {
-            LOGGER.error("[getProfile] ClassCastException exception" + ex);
+            LOGGER.error("[getStatistic] ClassCastException exception" + ex);
             session.removeAttribute("userId");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

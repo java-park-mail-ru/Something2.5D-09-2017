@@ -114,7 +114,7 @@ public class Statistic {
         jsonObject.put("deaths", deaths);
         jsonObject.put("maxKills", maxKills);
         jsonObject.put("username", username);
-        jsonObject.put("statistic", position);
+        jsonObject.put("position", position);
         return jsonObject;
     }
 
