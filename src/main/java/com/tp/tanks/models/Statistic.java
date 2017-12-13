@@ -2,8 +2,12 @@ package com.tp.tanks.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "statistic_tbl")
@@ -22,6 +26,8 @@ public class Statistic {
     private Integer deaths;
     @Column(name="maxkills")
     private Integer maxKills;
+    @Transient
+    private Integer position;
 
     @JsonCreator
     public Statistic() {
@@ -72,5 +78,31 @@ public class Statistic {
 
     public void setMaxKills(Integer maxKills) {
         this.maxKills = maxKills;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public JSONObject getJson() throws JSONException {
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("userId", userId);
+        jsonObject.put("kills", kills);
+        jsonObject.put("deaths", deaths);
+        jsonObject.put("maxKills", maxKills);
+        return jsonObject;
+    }
+
+    public static JSONArray getJsonArray(List<Statistic> statistics) throws JSONException {
+        final JSONArray arr = new JSONArray();
+        for (Statistic s : statistics) {
+            JSONObject obj = s.getJson();
+            arr.put(obj);
+        }
+        return arr;
     }
 }

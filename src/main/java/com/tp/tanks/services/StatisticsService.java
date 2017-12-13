@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StatisticsService {
 
@@ -44,12 +46,22 @@ public class StatisticsService {
         }
     }
 
-    public Statistic getTop(Integer limit) {
-        Statistic response = null;
+    public List<Statistic> getTop(Integer limit) {
+        List<Statistic> response = null;
         try {
             response = statisticsRepository.getTop(limit);
         } catch (Exception ex) {
             LOGGER.info("[StatisticsService:getTop] database exception: " + ex);
+        }
+        return response;
+    }
+
+    public Statistic position(Long userId) {
+        Statistic response = null;
+        try {
+            response = statisticsRepository.position(userId);
+        } catch (Exception ex) {
+            LOGGER.info("[StatisticsService:position] database exception: " + ex);
         }
         return response;
     }

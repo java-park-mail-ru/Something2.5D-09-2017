@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class StatisticsRepository {
 
@@ -37,8 +39,15 @@ public class StatisticsRepository {
         jdbcTemplate.update(sql, new Object[]{userId, tankStatistics.getKills(), tankStatistics.getDeaths(), tankStatistics.getMaxKills()});
     }
 
-    public Statistic getTop(Integer limit) {
+    public List<Statistic> getTop(Integer limit) {
         String sql = "SELECT * FROM statistic_tbl ORDER BY kills LIMIT ?;";
-        return jdbcTemplate.queryForObject(sql,  new Object[]{limit}, new StatisticMapper());
+        return jdbcTemplate.query(sql,  new Object[]{limit}, new StatisticMapper());
+    }
+
+    public Statistic position(Long userId) {
+        String sql = "SELECT userid, kills, deaths, maxkills, ROW_NUMBER() OVER (ORDER BY kills) AS position " +
+                    "FROM statistic_tbl " +
+                    "WHERE userId=?;";
+        return jdbcTemplate.queryForObject(sql,  new Object[]{userId}, new StatisticMapper());
     }
 }
