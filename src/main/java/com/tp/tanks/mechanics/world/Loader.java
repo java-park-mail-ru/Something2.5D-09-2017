@@ -4,10 +4,16 @@ import java.io.*;
 import java.util.ArrayList;
 
 import com.tp.tanks.mechanics.base.Coordinate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 
 public class Loader {
     private static final Integer CURRENT_MAP = 4;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Loader.class);
 
     public static ArrayList<Box> loadBoxes() {
 
@@ -15,9 +21,9 @@ public class Loader {
 
         try {
 
-            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-            File file = new File(classLoader.getResource("world/map" + CURRENT_MAP.toString() + "/boxes.csv").getFile());
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            final Resource resource = new ClassPathResource("world/map" + CURRENT_MAP.toString() + "/boxes.csv");
+            final InputStream resourceinputStream = resource.getInputStream();
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(resourceinputStream));
 
             String line;
             int iteration = 0;
@@ -58,9 +64,10 @@ public class Loader {
         ArrayList<Coordinate> data = new ArrayList<>();
 
         try {
-            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-            File file = new File(classLoader.getResource("world/map"  + CURRENT_MAP.toString() + "/spawnPoints.csv").getFile());
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+
+            final Resource resource = new ClassPathResource("world/map" + CURRENT_MAP.toString() + "/spawnPoints.csv");
+            final InputStream resourceinputStream = resource.getInputStream();
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(resourceinputStream));
 
             String line;
             int iteration = 0;
