@@ -28,12 +28,10 @@ public class StatisticsController {
 
     @CrossOrigin
     @RequestMapping(value = "/top", method = RequestMethod.GET, produces = "application/json")
-//    public ResponseEntity<Statistic> getTop(@PathVariable(name = "limit") Integer limit) {
-    public ResponseEntity<?> getTop() throws JSONException {
-//        if (limit == null) {
-//            limit = 5;
-//        }
-        Integer limit = 5;
+    public ResponseEntity<?> getTop( @RequestParam(value = "limit", required = false) Integer limit) throws JSONException {
+        if(limit == null) {
+            limit = 5;
+        }
 
         final List<Statistic> responseStatistics = statisticsService.getTop(limit);
         if (responseStatistics == null) {
