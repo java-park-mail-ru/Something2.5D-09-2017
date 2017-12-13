@@ -29,8 +29,8 @@ public class StatisticsController {
 
     @CrossOrigin
     @RequestMapping(value = "/top", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<?> getTop( @RequestParam(value = "limit", required = false) Integer limit) throws JSONException {
-        if(limit == null) {
+    public ResponseEntity<?> getTop(@RequestParam(value = "limit", required = false) Integer limit) throws JSONException {
+        if (limit == null) {
             limit = DEFAULT_LIMIT;
         }
 

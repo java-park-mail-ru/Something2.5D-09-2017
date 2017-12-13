@@ -18,13 +18,13 @@ public class Statistic {
     @JsonIgnore
     private Long id;
 
-    @Column(name="userid")
+    @Column(name = "userid")
     private Long userId;
-    @Column(name="kills")
+    @Column(name = "kills")
     private Integer kills;
-    @Column(name="deaths")
+    @Column(name = "deaths")
     private Integer deaths;
-    @Column(name="maxkills")
+    @Column(name = "maxkills")
     private Integer maxKills;
     @Transient
     private Integer position;

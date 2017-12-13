@@ -40,25 +40,25 @@ public class StatisticsRepository {
     }
 
     public List<Statistic> getTop(Integer limit) {
-        String sql = "SELECT s.id, s.userid, s.kills, s.deaths, s.maxkills, " +
-                "ROW_NUMBER() OVER (ORDER BY kills DESC) AS position, u.username " +
-                "FROM statistic_tbl s " +
-                "JOIN user_tbl u ON u.id=s.userid " +
-                "ORDER BY kills DESC LIMIT ?;";
+        String sql = "SELECT s.id, s.userid, s.kills, s.deaths, s.maxkills, "
+                + "ROW_NUMBER() OVER (ORDER BY kills DESC) AS position, u.username "
+                + "FROM statistic_tbl s "
+                + "JOIN user_tbl u ON u.id=s.userid "
+                + "ORDER BY kills DESC LIMIT ?;";
         return jdbcTemplate.query(sql,  new Object[]{limit}, new StatisticMapper());
     }
 
     public Statistic position(Long userId) {
-        String sql = "SELECT s.id, s.userid, s.kills, s.deaths, s.maxkills, u.username, " +
-                "(SELECT tmp.position " +
-                "from (select s.userid, ROW_NUMBER() OVER (ORDER BY kills DESC) AS position " +
-                "from statistic_tbl s " +
-                "ORDER BY s.kills DESC) tmp " +
-                "WHERE tmp.userid=? " +
-                ") AS position " +
-                "FROM statistic_tbl s " +
-                "JOIN user_tbl u ON u.id=s.userid " +
-                "WHERE userId=?;";
+        String sql = "SELECT s.id, s.userid, s.kills, s.deaths, s.maxkills, u.username, "
+                + "(SELECT tmp.position "
+                + "from (select s.userid, ROW_NUMBER() OVER (ORDER BY kills DESC) AS position "
+                + "from statistic_tbl s "
+                + "ORDER BY s.kills DESC) tmp "
+                + "WHERE tmp.userid=? "
+                + ") AS position "
+                + "FROM statistic_tbl s "
+                + "JOIN user_tbl u ON u.id=s.userid "
+                + "WHERE userId=?;";
         return jdbcTemplate.queryForObject(sql,  new Object[]{userId, userId}, new StatisticMapper());
     }
 }
