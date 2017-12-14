@@ -21,6 +21,6 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/public root@82.202.246.5:/root/travis-files
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/target root@82.202.246.5:/root/travis-files
   on:
     branch: developer
