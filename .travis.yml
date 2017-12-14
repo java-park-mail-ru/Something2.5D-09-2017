@@ -2,9 +2,12 @@ sudo: required
 language: java
 services:
 - docker
+addons:
+  ssh_known_hosts: 82.202.246.5
+
 before_install:
 - openssl aes-256-cbc -K $encrypted_35ee943c02f0_key -iv $encrypted_35ee943c02f0_iv
-  -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+  -in id_rsa.enc -out ~/tmp/id_rsa -d
 - docker pull mariadb:latest
 - docker run --name testdb -e MYSQL_ROOT_PASSWORD=tanks-password -e MYSQL_DATABASE=tanksdb_test
   -e MYSQL_USER=tanks-admin -e MYSQL_PASSWORD=tanks-password -p 52000:3306 -d mariadb
