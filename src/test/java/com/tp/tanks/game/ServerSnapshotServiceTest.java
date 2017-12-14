@@ -5,10 +5,10 @@ import com.tp.tanks.mechanics.GameMechanicsImpl;
 import com.tp.tanks.mechanics.MechanicsExecutor;
 import com.tp.tanks.mechanics.base.TankSnap;
 import com.tp.tanks.mechanics.internal.TankSnapshotService;
+import com.tp.tanks.mocks.MockRemotePointService;
 import com.tp.tanks.mocks.MockServerSnapshotService;
 import com.tp.tanks.factories.Generators;
 import com.tp.tanks.factories.TankSnapFactory;
-import com.tp.tanks.websocket.RemotePointService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,7 +32,7 @@ public class ServerSnapshotServiceTest {
     private MechanicsExecutor mechanicsExecutor;
 
     @Autowired
-    private RemotePointService remotePointService;
+    private MockRemotePointService mockRemotePointService;
 
     @Autowired
     private TankSnapshotService tankSnapshotsService;
@@ -44,8 +44,8 @@ public class ServerSnapshotServiceTest {
     @Before
     public void setUp() {
         mechanicsExecutor.lock();
-        mockServerSnapshotService = new MockServerSnapshotService(remotePointService);
-        gameMechanics = new GameMechanicsImpl(tankSnapshotsService, mockServerSnapshotService);
+        mockServerSnapshotService = new MockServerSnapshotService(mockRemotePointService);
+        gameMechanics = new GameMechanicsImpl(tankSnapshotsService, mockServerSnapshotService, mockRemotePointService);
     }
 
     @After
@@ -57,9 +57,10 @@ public class ServerSnapshotServiceTest {
     public void numbSendSnapshotsMustBeOne() {
 
         final Long userId = Generators.generateLong();
+        final String username = Generators.generateString(10);
         final int amount = 10;
         final List<TankSnap> tankSnapsForUser = TankSnapFactory.createManyForUser(userId, amount);
-
+        mockRemotePointService.pushUser(userId, username);
 
         for (TankSnap snap: tankSnapsForUser) {
             gameMechanics.addTankSnapshot(userId, snap);

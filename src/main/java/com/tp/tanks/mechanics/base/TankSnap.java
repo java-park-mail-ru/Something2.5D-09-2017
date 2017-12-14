@@ -19,7 +19,10 @@ public class TankSnap extends Message {
 
     private String username;
 
-    private boolean isShoot;
+    private Boolean isShoot;
+
+    @NotNull
+    private Integer health;
 
     @NotNull
     private Long userId;
@@ -35,11 +38,11 @@ public class TankSnap extends Message {
     }
 
     @JsonProperty("isShoot")
-    public boolean isShoot() {
+    public Boolean isShoot() {
         return isShoot;
     }
 
-    public void setShoot(boolean shoot) {
+    public void setShoot(Boolean shoot) {
         isShoot = shoot;
     }
 
@@ -78,17 +81,27 @@ public class TankSnap extends Message {
         this.username = username;
     }
 
+    public Integer getHealth() {
+        return health;
+    }
+
+    public void setHealth(Integer health) {
+        this.health = health;
+    }
+
+    public Line toLine() {
+        return new Line(userId, platform, turretAngle);
+    }
+
     @Override
     public String toString() {
         return '{'
                 + "platform: " + platform.toString()
                 + ", platformAngle: "  + platformAngle
                 + ", turretAngle: " + turretAngle
-                + ", isShoot: " + isShoot
+                + ", isShoot: " + isShoot.toString()
                 + ", userId: " + userId.toString()
                 + ", username: " + username
                 + '}';
     }
-
-
 }

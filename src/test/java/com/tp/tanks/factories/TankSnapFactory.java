@@ -25,6 +25,7 @@ public class TankSnapFactory {
         tankSnap.setUsername(Generators.generateString(15));
         tankSnap.setShoot(Generators.generateBoolean());
         tankSnap.setUserId(userId);
+        tankSnap.setHealth(Generators.geterateInteger());
 
         return tankSnap;
     }
