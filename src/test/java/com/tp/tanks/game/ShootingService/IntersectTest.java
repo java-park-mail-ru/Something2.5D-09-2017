@@ -1,14 +1,12 @@
 package com.tp.tanks.game.ShootingService;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tp.tanks.factories.TankSnapFactory;
 import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
-import com.tp.tanks.mechanics.internal.ShootingService;
+import com.tp.tanks.mechanics.internal.WorldEngine;
 import com.tp.tanks.mechanics.world.World;
 import com.tp.tanks.mocks.MockRemotePointService;
-import com.tp.tanks.websocket.RemotePointService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,15 +25,15 @@ public class IntersectTest {
 
     @Autowired
     private MockRemotePointService mockRemotePointService;
-    private final ShootingService shootingService = new ShootingService(new World(), mockRemotePointService);
+    private final WorldEngine engine = new WorldEngine(new World(), mockRemotePointService);
 
     private static final double STEP = 0.01;
 
     private final Coordinate shooterCoordinate = new Coordinate(0.D, 0.D);
     private final Coordinate enemyCoordinate = new Coordinate(1000.D, 1000.D);
     private final Double clientAngleBetweenDots = 45.D;
-    private final Double distanceBetweenDots = shootingService.calcDistanceBetweenDots(shooterCoordinate, enemyCoordinate);
-    private final Double dPhi = shootingService.calcDeltaPhi(distanceBetweenDots, 32.D);
+    private final Double distanceBetweenDots = engine.calcDistanceBetweenDots(shooterCoordinate, enemyCoordinate);
+    private final Double dPhi = engine.calcDeltaPhi(distanceBetweenDots, 32.D);
 
     private TankSnap enemy;
     private Line line;
@@ -54,7 +52,7 @@ public class IntersectTest {
     @Test
     public void IntersectMustInCenter() {
 
-        Boolean ok = shootingService.isIntersect(line, enemy.getPlatform());
+        Boolean ok = engine.isIntersect(line, enemy.getPlatform());
         Assert.assertEquals(true, ok);
     }
 
@@ -63,7 +61,7 @@ public class IntersectTest {
 
         line.setServerAngleRad(line.getServerAngleRad() + dPhi);
 
-        Boolean ok = shootingService.isIntersect(line, enemy.getPlatform());
+        Boolean ok = engine.isIntersect(line, enemy.getPlatform());
         Assert.assertEquals(true, ok);
     }
 
@@ -72,7 +70,7 @@ public class IntersectTest {
 
         line.setServerAngleRad(line.getServerAngleRad() - dPhi);
 
-        Boolean ok = shootingService.isIntersect(line, enemy.getPlatform());
+        Boolean ok = engine.isIntersect(line, enemy.getPlatform());
         Assert.assertEquals(true, ok);
     }
 
@@ -82,7 +80,7 @@ public class IntersectTest {
 
         line.setServerAngleRad(line.getServerAngleRad() + dPhi + STEP);
 
-        Boolean ok = shootingService.isIntersect(line, enemy.getPlatform());
+        Boolean ok = engine.isIntersect(line, enemy.getPlatform());
         Assert.assertEquals(false, ok);
     }
 
@@ -91,7 +89,7 @@ public class IntersectTest {
 
         line.setServerAngleRad(line.getServerAngleRad() - dPhi - STEP);
 
-        Boolean ok = shootingService.isIntersect(line, enemy.getPlatform());
+        Boolean ok = engine.isIntersect(line, enemy.getPlatform());
         Assert.assertEquals(false, ok);
     }
 }

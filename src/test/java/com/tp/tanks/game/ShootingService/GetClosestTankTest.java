@@ -3,7 +3,7 @@ package com.tp.tanks.game.ShootingService;
 import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.base.Line;
 import com.tp.tanks.mechanics.base.TankSnap;
-import com.tp.tanks.mechanics.internal.ShootingService;
+import com.tp.tanks.mechanics.internal.WorldEngine;
 import com.tp.tanks.mechanics.world.World;
 import com.tp.tanks.mocks.MockRemotePointService;
 import org.junit.Assert;
@@ -24,7 +24,7 @@ public class GetClosestTankTest {
 
     @Autowired
     private MockRemotePointService mockRemotePointService;
-    private final ShootingService shootingService = new ShootingService(new World(), mockRemotePointService);
+    private final WorldEngine worldEngine = new WorldEngine(new World(), mockRemotePointService);
 
     private static final double DELTA = 1e-15;
 
@@ -47,7 +47,7 @@ public class GetClosestTankTest {
         first.setPlatform(new Coordinate(1060.D, 540.D));
         snaps.add(first);
 
-        TankSnap closestSnap = shootingService.getClosestTank(snaps, line);
+        TankSnap closestSnap = worldEngine.getClosestTank(snaps, line);
         Assert.assertEquals(closestSnap.getPlatform().getValX(), first.getPlatform().getValX(), DELTA);
         Assert.assertEquals(closestSnap.getPlatform().getValY(), first.getPlatform().getValY(), DELTA);
     }
@@ -71,7 +71,7 @@ public class GetClosestTankTest {
         first.setPlatform(new Coordinate(860.D, 540.D));
         snaps.add(first);
 
-        TankSnap closestSnap = shootingService.getClosestTank(snaps, line);
+        TankSnap closestSnap = worldEngine.getClosestTank(snaps, line);
         Assert.assertEquals(closestSnap.getPlatform().getValX(), first.getPlatform().getValX(), DELTA);
         Assert.assertEquals(closestSnap.getPlatform().getValY(), first.getPlatform().getValY(), DELTA);
     }
@@ -95,7 +95,7 @@ public class GetClosestTankTest {
         first.setPlatform(new Coordinate(960.D, 440.D));
         snaps.add(first);
 
-        TankSnap closestSnap = shootingService.getClosestTank(snaps, line);
+        TankSnap closestSnap = worldEngine.getClosestTank(snaps, line);
         Assert.assertEquals(closestSnap.getPlatform().getValX(), first.getPlatform().getValX(), DELTA);
         Assert.assertEquals(closestSnap.getPlatform().getValY(), first.getPlatform().getValY(), DELTA);
     }
@@ -119,7 +119,7 @@ public class GetClosestTankTest {
         first.setPlatform(new Coordinate(960.D, 640.D));
         snaps.add(first);
 
-        TankSnap closestSnap = shootingService.getClosestTank(snaps, line);
+        TankSnap closestSnap = worldEngine.getClosestTank(snaps, line);
         Assert.assertEquals(closestSnap.getPlatform().getValX(), first.getPlatform().getValX(), DELTA);
         Assert.assertEquals(closestSnap.getPlatform().getValY(), first.getPlatform().getValY(), DELTA);
     }
