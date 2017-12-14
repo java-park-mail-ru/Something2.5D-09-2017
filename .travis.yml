@@ -8,6 +8,19 @@ addons:
 before_install:
 - openssl aes-256-cbc -K $encrypted_35ee943c02f0_key -iv $encrypted_35ee943c02f0_iv
   -in id_rsa.enc -out /tmp/id_rsa -d
+- eval "$(ssh-agent -s)"
+- chmod 600 /tmp/id_rsa
+- ssh-add /tmp/id_rsa
+
+
 - docker pull mariadb:latest
 - docker run --name testdb -e MYSQL_ROOT_PASSWORD=tanks-password -e MYSQL_DATABASE=tanksdb_test
   -e MYSQL_USER=tanks-admin -e MYSQL_PASSWORD=tanks-password -p 52000:3306 -d mariadb
+
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/public <ssh-user>@<deploy-host>:/root/travis-files
+  on:
+    branch: developer
