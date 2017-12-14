@@ -1,7 +1,9 @@
 sudo: required
 language: java
+
 services:
 - docker
+
 addons:
   ssh_known_hosts: 82.202.246.5
 
@@ -17,10 +19,9 @@ before_deploy:
 - chmod 600 /tmp/id_rsa
 - ssh-add /tmp/id_rsa
 
-
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/target root@82.202.246.5:/root/travis-files
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/ root@82.202.246.5:/root/travis-files/tanks-backend
   on:
     branch: developer
