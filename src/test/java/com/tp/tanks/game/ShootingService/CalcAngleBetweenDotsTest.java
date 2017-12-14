@@ -2,7 +2,7 @@ package com.tp.tanks.game.ShootingService;
 
 
 import com.tp.tanks.mechanics.base.Coordinate;
-import com.tp.tanks.mechanics.internal.ShootingService;
+import com.tp.tanks.mechanics.internal.WorldEngine;
 import com.tp.tanks.mechanics.world.World;
 import com.tp.tanks.mocks.MockRemotePointService;
 import org.junit.Assert;
@@ -22,7 +22,7 @@ public class CalcAngleBetweenDotsTest {
     @Autowired
     private MockRemotePointService mockRemotePointService;
 
-    private ShootingService shootingService = new ShootingService(new World(), mockRemotePointService);
+    private WorldEngine engine = new WorldEngine(new World(), mockRemotePointService);
 
     private static final double DELTA = 1e-15;
 
@@ -36,7 +36,7 @@ public class CalcAngleBetweenDotsTest {
         Double serverAngleDeg = 0.D;
         Double serverAngleRad = Math.toRadians(serverAngleDeg);
 
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Double angle = engine.calcAngleBetweenDots(first, second);
         Assert.assertEquals(serverAngleRad, angle, DELTA);
     }
 
@@ -49,7 +49,7 @@ public class CalcAngleBetweenDotsTest {
         Double serverAngleDeg = 45.D;
         Double serverAngleRad = Math.toRadians(serverAngleDeg);
 
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Double angle = engine.calcAngleBetweenDots(first, second);
         Assert.assertEquals(serverAngleRad, angle, DELTA);
     }
 
@@ -62,7 +62,7 @@ public class CalcAngleBetweenDotsTest {
         Double serverAngleDeg = 90.D;
         Double serverAngleRad = Math.toRadians(serverAngleDeg);
 
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Double angle = engine.calcAngleBetweenDots(first, second);
         Assert.assertEquals(serverAngleRad, angle, DELTA);
     }
 
@@ -75,7 +75,7 @@ public class CalcAngleBetweenDotsTest {
         Double serverAngleDeg = 135.D;
         Double serverAngleRad = Math.toRadians(serverAngleDeg);
 
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Double angle = engine.calcAngleBetweenDots(first, second);
         Assert.assertEquals(serverAngleRad, angle, DELTA);
     }
 
@@ -88,7 +88,7 @@ public class CalcAngleBetweenDotsTest {
         Double serverAngleDeg = 180.D;
         Double serverAngleRad = Math.toRadians(serverAngleDeg);
 
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Double angle = engine.calcAngleBetweenDots(first, second);
         Assert.assertEquals(serverAngleRad, angle, DELTA);
     }
 
@@ -101,7 +101,7 @@ public class CalcAngleBetweenDotsTest {
         Double serverAngleDeg = 225.D;
         Double serverAngleRad = Math.toRadians(serverAngleDeg);
 
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Double angle = engine.calcAngleBetweenDots(first, second);
         Assert.assertEquals(serverAngleRad, angle, DELTA);
     }
 
@@ -114,7 +114,7 @@ public class CalcAngleBetweenDotsTest {
         Double serverAngleDeg = 270.D;
         Double serverAngleRad = Math.toRadians(serverAngleDeg);
 
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Double angle = engine.calcAngleBetweenDots(first, second);
         Assert.assertEquals(serverAngleRad, angle, DELTA);
     }
 
@@ -127,7 +127,7 @@ public class CalcAngleBetweenDotsTest {
         Double serverAngleDeg = 315.D;
         Double serverAngleRad = Math.toRadians(serverAngleDeg);
 
-        Double angle = shootingService.calcAngleBetweenDots(first, second);
+        Double angle = engine.calcAngleBetweenDots(first, second);
         Assert.assertEquals(serverAngleRad, angle, DELTA);
     }
 

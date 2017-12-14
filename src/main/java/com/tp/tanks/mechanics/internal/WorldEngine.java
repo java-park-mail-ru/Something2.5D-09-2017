@@ -12,12 +12,12 @@ import org.slf4j.Logger;
 
 import java.util.*;
 
-public class ShootingService {
+public class WorldEngine {
 
     private static final double DELTA = 1e-15;
 
     @NotNull
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShootingService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WorldEngine.class);
 
     @NotNull
     private World world;
@@ -28,7 +28,7 @@ public class ShootingService {
     @NotNull
     private ArrayList<Box> boxes;
 
-    public ShootingService(World world, RemotePointService remotePointService) {
+    public WorldEngine(@NotNull World world, @NotNull RemotePointService remotePointService) {
         this.world = world;
         this.boxes = world.getBoxes();
         this.remotePointService = remotePointService;
@@ -71,12 +71,14 @@ public class ShootingService {
                         closestSnap.setHealth(closestSnap.getHealth() - 10);
                         if (closestSnap.getHealth() <= 0) {
                             remotePointService.incrementKills(line.getUserId());
+                            remotePointService.killUser(closestSnap.getUserId());
                         }
                     }
                 } else {
                     closestSnap.setHealth(closestSnap.getHealth() - 10);
                     if (closestSnap.getHealth() <= 0) {
                         remotePointService.incrementKills(line.getUserId());
+                        remotePointService.killUser(closestSnap.getUserId());
                     }
                 }
             }

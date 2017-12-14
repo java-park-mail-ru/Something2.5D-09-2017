@@ -2,7 +2,7 @@ package com.tp.tanks.mechanics;
 
 import com.tp.tanks.mechanics.base.*;
 import com.tp.tanks.mechanics.internal.ServerSnapshotService;
-import com.tp.tanks.mechanics.internal.ShootingService;
+import com.tp.tanks.mechanics.internal.WorldEngine;
 import com.tp.tanks.mechanics.internal.TankSnapshotService;
 import com.tp.tanks.mechanics.requests.SpawnRequest;
 import com.tp.tanks.mechanics.world.ScoresToSend;
@@ -31,7 +31,7 @@ public class GameMechanicsImpl implements GameMechanics {
     private final ServerSnapshotService serverSnapshotService;
 
     @NotNull
-    private final ShootingService shootingService;
+    private final WorldEngine engine;
 
     @NotNull
     private final Queue<Runnable> tasks = new ConcurrentLinkedQueue<>();
@@ -51,7 +51,7 @@ public class GameMechanicsImpl implements GameMechanics {
         this.serverSnapshotService = serverSnapshotService;
         this.remotePointService = remotePointService;
         this.world = new World();
-        this.shootingService = new ShootingService(this.world, remotePointService);
+        this.engine = new WorldEngine(this.world, remotePointService);
         this.lastStatisticSendTime = System.currentTimeMillis();
     }
 
@@ -107,28 +107,19 @@ public class GameMechanicsImpl implements GameMechanics {
 
         List<TankSnap> tankSnapshots = tankSnapshotsService.processSnapshots();
         List<Line> shootingLines = tankSnapshotsService.shootingLines();
-        shootingService.process(tankSnapshots, shootingLines);
 
-        removeDeadTanksFromSession(tankSnapshots);
+        engine.process(tankSnapshots, shootingLines);
 
         serverSnapshotService.send(tankSnapshots);
 
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lastStatisticSendTime > 2000) {
+        long time = System.currentTimeMillis();
+        if (time - lastStatisticSendTime > 2000) {
 
-            lastStatisticSendTime = currentTime;
+            lastStatisticSendTime = time;
             List<ScoresToSend> scoresToSend = remotePointService.getTopPlayers(5);
             serverSnapshotService.sendStatistics(scoresToSend);
         }
 
         tankSnapshotsService.reset();
-    }
-
-    private void removeDeadTanksFromSession(List<TankSnap> tankSnapshots) {
-        for (TankSnap snap: tankSnapshots) {
-            if (snap.getHealth() <= 0) {
-                remotePointService.killUser(snap.getUserId());
-            }
-        }
     }
 }
