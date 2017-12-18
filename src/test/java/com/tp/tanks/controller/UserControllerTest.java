@@ -74,10 +74,20 @@ public class UserControllerTest {
 
         ResponseEntity<User> responseUser = signUp(user);
         assertEquals(HttpStatus.CREATED, responseUser.getStatusCode());
+    }
+
+
+    @Test
+    public void testSignUpAndLogout() {
+        final User user = UserFactory.create();
+
+        ResponseEntity<User> responseUser = signUp(user);
+        assertEquals(HttpStatus.CREATED, responseUser.getStatusCode());
 
         responseUser = logout(getCookie(responseUser));
         assertEquals(HttpStatus.OK, responseUser.getStatusCode());
     }
+
 
     @Test
     public void testSignUpConflict() {
@@ -101,22 +111,25 @@ public class UserControllerTest {
         logout(getCookie(responseUser));
 
         responseUser = signIn(firstUser);
-        responseUser = logout(getCookie(responseUser));
         assertEquals(HttpStatus.OK, responseUser.getStatusCode());
     }
+
 
     @Test
-    public void testLogout() {
-        final User user = UserFactory.create();
+    public void testSignInAndLogout() {
+        final User firstUser = UserFactory.create();
 
-        ResponseEntity<User> responseUser = signUp(user);
+        ResponseEntity<User> responseUser = signIn(firstUser);
+        assertEquals(HttpStatus.FORBIDDEN, responseUser.getStatusCode());
 
+        responseUser = signUp(firstUser);
+        logout(getCookie(responseUser));
+
+        responseUser = signIn(firstUser);
         responseUser = logout(getCookie(responseUser));
         assertEquals(HttpStatus.OK, responseUser.getStatusCode());
-
-        responseUser = logout(getCookie(responseUser));
-        assertEquals(HttpStatus.FORBIDDEN, responseUser.getStatusCode());
     }
+
 
     @Test
     public void testGetProfile() {
