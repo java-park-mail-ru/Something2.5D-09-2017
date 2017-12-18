@@ -29,16 +29,13 @@ public class UserController {
     @RequestMapping(value = "/signUp", method = RequestMethod.POST,
             consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> signUp(@RequestBody User user, HttpSession session) {
-        LOGGER.info("[signUp] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail());
-        LOGGER.debug("[signUp] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail());
+        LOGGER.info(" email = " + user.getEmail() + " flag = " + user.getMouseControlEnabled());
         final User saveUser = userService.save(user);
 
         if (saveUser == null) {
             LOGGER.error("[signUp] saveUser == null");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
-        LOGGER.debug("[signUp] OUTPUT: username = " + user.getUsername() + " email = " + user.getEmail());
 
         session.setAttribute("userId", saveUser.getId());
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
@@ -99,6 +96,36 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @CrossOrigin
+    @RequestMapping(value = "/updateMouseControlEnabled", method = RequestMethod.POST,
+            consumes = "application/json", produces = "application/json")
+    public ResponseEntity<User> updateMouseControlEnabled(@RequestBody User user, HttpSession session) {
+
+        LOGGER.info("try updateMouseControlEnabled() with flag = " + user.getMouseControlEnabled());
+
+        try {
+            final Object sessionObject = session.getAttribute("userId");
+
+            if (sessionObject == null) {
+                LOGGER.info("Can't find user in session");
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            final Long userId = (Long) sessionObject;
+            Boolean ok = userService.updateMouseControlEnabled(userId, user.getMouseControlEnabled());
+            if (!ok) {
+                LOGGER.info("Can't call updateMouseControlEnabled");
+                return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(user, HttpStatus.OK);
+
+        } catch (ClassCastException ex) {
+            LOGGER.error("[getProfile] ClassCastException exception" + ex);
+            session.removeAttribute("userId");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+   }
 
     @CrossOrigin
     @RequestMapping(value = "/index", method = RequestMethod.GET, produces = "application/json")

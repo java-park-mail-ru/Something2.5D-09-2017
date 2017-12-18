@@ -7,7 +7,6 @@ import com.tp.tanks.services.StatisticsService;
 import com.tp.tanks.websocket.Message;
 import com.tp.tanks.websocket.RemotePointService;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -17,9 +16,8 @@ public class MockRemotePointService extends RemotePointService {
 
     private ServerSnap sendingServerSnap;
 
-    @Autowired
-    public MockRemotePointService(StatisticsService statisticsService) {
-        super(new ObjectMapper(), statisticsService);
+    public MockRemotePointService() {
+        super(new ObjectMapper(), new StatisticsService());
     }
 
     @Override

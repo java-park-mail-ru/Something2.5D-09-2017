@@ -23,8 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("test")
 public class IntersectTest {
 
-    @Autowired
-    private MockRemotePointService mockRemotePointService;
+    private MockRemotePointService mockRemotePointService = new MockRemotePointService();
     private final WorldEngine engine = new WorldEngine(new World(), mockRemotePointService);
 
     private static final double STEP = 0.01;
