@@ -26,8 +26,16 @@ public class UserService {
     public User save(User user) {
 
         try {
+
+            final Boolean mouseControlEnabled;
+            if (user.getMouseControlEnabled() == null) {
+                mouseControlEnabled = false;
+            } else {
+                mouseControlEnabled = user.getMouseControlEnabled();
+            }
+
             return userRepository.create(user.getUsername(), user.getEmail(),
-                    cryptEncoder.encode(user.getPassword()), user.getMouseControlEnabled());
+                    cryptEncoder.encode(user.getPassword()), mouseControlEnabled);
         } catch (DuplicateKeyException err) {
             return null;
         }
