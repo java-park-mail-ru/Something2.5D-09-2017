@@ -56,4 +56,16 @@ public class UserService {
             return null;
         }
     }
+
+    public Boolean updateMouseControlEnabled(Long userId, Boolean mouseControlEnabled) {
+        if (userId == null || mouseControlEnabled == null) {
+            return false;
+        }
+        try {
+            userRepository.updateMouseControlEnabled(userId, mouseControlEnabled);
+            return true;
+        } catch (EmptyResultDataAccessException err) {
+            return false;
+        }
+    }
 }

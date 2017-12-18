@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.tp.tanks.factories.UserFactory;
 
+import javax.jws.soap.SOAPBinding;
 import javax.transaction.Transactional;
 
 import static org.junit.Assert.*;
@@ -92,6 +93,29 @@ public class UserServiceTest {
         assertEquals(savedUser.getUsername(), detectedUser.getUsername());
         assertEquals(savedUser.getEmail(), detectedUser.getEmail());
         assertEquals(savedUser.getPassword(), detectedUser.getPassword());
+        assertEquals(user.getMouseControlEnabled(), detectedUser.getMouseControlEnabled());
+    }
+
+    @Test
+    public void updateMouseControlEnabledTest() {
+        User user = UserFactory.create();
+        User savedUser = service.save(user);
+
+        service.updateMouseControlEnabled(savedUser.getId(), !user.getMouseControlEnabled());
+        User detectedUser = service.getById(savedUser.getId());
+
+        assertEquals(user.getMouseControlEnabled(), !detectedUser.getMouseControlEnabled());
+        assertNotEquals(user.getMouseControlEnabled(), detectedUser.getMouseControlEnabled());
+    }
+
+    @Test
+    public void noUpdateMouseControlEnabledTest() {
+        User user = UserFactory.create();
+        User savedUser = service.save(user);
+
+        service.updateMouseControlEnabled(savedUser.getId(), user.getMouseControlEnabled());
+        User detectedUser = service.getById(savedUser.getId());
+
         assertEquals(user.getMouseControlEnabled(), detectedUser.getMouseControlEnabled());
     }
 }

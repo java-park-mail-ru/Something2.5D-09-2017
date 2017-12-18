@@ -101,6 +101,35 @@ public class UserController {
     }
 
     @CrossOrigin
+    @RequestMapping(value = "/updateMouseControlEnabled", method = RequestMethod.POST,
+            consumes = "application/json", produces = "application/json")
+    public ResponseEntity<User> updateMouseControlEnabled(@RequestBody User user, HttpSession session) {
+
+        LOGGER.info("updateMouseControlEnabled");
+
+        try {
+            final Object sessionObject = session.getAttribute("userId");
+
+            if (sessionObject == null) {
+                LOGGER.debug("[getProfile] Can't find user in session");
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            final Long userId = (Long) sessionObject;
+            Boolean ok = userService.updateMouseControlEnabled(userId, user.getMouseControlEnabled());
+            if (!ok) {
+                return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(user, HttpStatus.OK);
+
+        } catch (ClassCastException ex) {
+            LOGGER.error("[getProfile] ClassCastException exception" + ex);
+            session.removeAttribute("userId");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+   }
+
+    @CrossOrigin
     @RequestMapping(value = "/index", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity index() {
 

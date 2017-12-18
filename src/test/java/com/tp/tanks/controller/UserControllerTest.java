@@ -68,6 +68,18 @@ public class UserControllerTest {
         return restTemplate.exchange("/api/profile", HttpMethod.GET, getEntity(cookie), User.class);
     }
 
+    private ResponseEntity<User> updateMouseControlEnabled(List<String> cookie, Boolean mouseControlEnabled){
+
+        final HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.put(HttpHeaders.COOKIE, cookie);
+
+        User body = new User();
+        body.setMouseControlEnabled(mouseControlEnabled);
+        HttpEntity httpEntity = new HttpEntity<User>(body, requestHeaders);
+
+        return restTemplate.exchange("/api/updateMouseControlEnabled", HttpMethod.POST, httpEntity, User.class);
+    }
+
     @Test
     public void testSignUp() {
         final User user = UserFactory.create();
@@ -147,4 +159,48 @@ public class UserControllerTest {
         responseUser = getProfile(getCookie(responseUser));
         assertEquals(HttpStatus.UNAUTHORIZED, responseUser.getStatusCode());
     }
+
+
+    @Test
+    public void updateMouseControlEnabledTest() {
+        final User user = UserFactory.create();
+
+        ResponseEntity<User> savedUserEntity = signUp(user);
+        ResponseEntity entity = updateMouseControlEnabled(getCookie(savedUserEntity), !user.getMouseControlEnabled());
+        ResponseEntity<User> detectedUserEntity = getProfile(getCookie(savedUserEntity));
+
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+        assertEquals(!user.getMouseControlEnabled(), detectedUserEntity.getBody().getMouseControlEnabled());
+    }
+
+    @Test
+    public void noUpdateMouseControlEnabledTest() {
+        final User user = UserFactory.create();
+
+        ResponseEntity<User> savedUserEntity = signUp(user);
+        ResponseEntity entity = updateMouseControlEnabled(getCookie(savedUserEntity), user.getMouseControlEnabled());
+        ResponseEntity<User> detectedUserEntity = getProfile(getCookie(savedUserEntity));
+
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+        assertEquals(user.getMouseControlEnabled(), detectedUserEntity.getBody().getMouseControlEnabled());
+    }
+
+
+    @Test
+    public void badRequestUpdateMouseControlEnabledTest() {
+        final User user = UserFactory.create();
+
+        ResponseEntity<User> savedUserEntity = signUp(user);
+        ResponseEntity entity = updateMouseControlEnabled(getCookie(savedUserEntity), null);
+
+        assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
+    }
+
+
+    @Test
+    public void unAuthorizedUpdateMouseControlEnabledTest() {
+
+        ResponseEntity entity = updateMouseControlEnabled(new ArrayList<>(), null);
+        assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());    }
+
 }

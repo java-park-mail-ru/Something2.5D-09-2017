@@ -55,4 +55,10 @@ public class UserRepository {
 
         return jdbcTemplate.queryForObject(sql, new Object[]{userId}, new UserMapper());
     }
+
+    public void updateMouseControlEnabled(Long userId, Boolean mouseControlEnabled) {
+
+        final String sql = "UPDATE user_tbl SET mouse_control_enabled = ? WHERE id = ?;";
+        this.jdbcTemplate.update(sql, mouseControlEnabled, userId);
+    }
 }
