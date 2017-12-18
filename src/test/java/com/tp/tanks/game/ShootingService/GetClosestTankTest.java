@@ -22,8 +22,7 @@ import java.util.ArrayList;
 @ActiveProfiles("test")
 public class GetClosestTankTest {
 
-    @Autowired
-    private MockRemotePointService mockRemotePointService;
+    private MockRemotePointService mockRemotePointService = new MockRemotePointService();
     private final WorldEngine worldEngine = new WorldEngine(new World(), mockRemotePointService);
 
     private static final double DELTA = 1e-15;
