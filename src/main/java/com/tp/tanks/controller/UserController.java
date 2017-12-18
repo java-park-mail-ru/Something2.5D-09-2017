@@ -29,16 +29,13 @@ public class UserController {
     @RequestMapping(value = "/signUp", method = RequestMethod.POST,
             consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> signUp(@RequestBody User user, HttpSession session) {
-        LOGGER.info("[signUp] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail() + " flag = " + user.getMouseControlEnabled());
-        LOGGER.debug("[signUp] INPUT:  username = " + user.getUsername() + " email = " + user.getEmail() + " flag = " + user.getMouseControlEnabled());
+        LOGGER.info(" email = " + user.getEmail() + " flag = " + user.getMouseControlEnabled());
         final User saveUser = userService.save(user);
 
         if (saveUser == null) {
             LOGGER.error("[signUp] saveUser == null");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
-        LOGGER.debug("[signUp] OUTPUT: username = " + user.getUsername() + " email = " + user.getEmail());
 
         session.setAttribute("userId", saveUser.getId());
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
