@@ -10,7 +10,8 @@ public class UserFactory {
         String email = Generators.generateString(7);
         email += "@mail.ru";
         final String password = Generators.generateString(10);
+        final Boolean mouseControlEnabled = Generators.generateBoolean();
 
-        return new User(id, username, email, password);
+        return new User(id, username, email, password, mouseControlEnabled);
     }
 }

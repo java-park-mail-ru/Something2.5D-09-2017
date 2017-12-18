@@ -26,7 +26,8 @@ public class UserService {
     public User save(User user) {
 
         try {
-            return userRepository.create(user.getUsername(), user.getEmail(), cryptEncoder.encode(user.getPassword()));
+            return userRepository.create(user.getUsername(), user.getEmail(),
+                    cryptEncoder.encode(user.getPassword()), user.getMouseControlEnabled());
         } catch (DuplicateKeyException err) {
             return null;
         }

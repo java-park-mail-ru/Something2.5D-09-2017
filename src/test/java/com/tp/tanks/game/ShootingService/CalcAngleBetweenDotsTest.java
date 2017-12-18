@@ -5,6 +5,7 @@ import com.tp.tanks.mechanics.base.Coordinate;
 import com.tp.tanks.mechanics.internal.WorldEngine;
 import com.tp.tanks.mechanics.world.World;
 import com.tp.tanks.mocks.MockRemotePointService;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class CalcAngleBetweenDotsTest {
 
     @Autowired
+    @NotNull
     private MockRemotePointService mockRemotePointService;
 
     private WorldEngine engine = new WorldEngine(new World(), mockRemotePointService);

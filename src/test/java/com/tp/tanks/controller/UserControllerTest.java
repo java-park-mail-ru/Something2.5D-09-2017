@@ -41,6 +41,7 @@ public class UserControllerTest {
         parts.put("username", user.getUsername());
         parts.put("email", user.getEmail());
         parts.put("password", user.getPassword());
+        parts.put("mouseControlEnabled", user.getMouseControlEnabled().toString());
         return parts;
     }
 
