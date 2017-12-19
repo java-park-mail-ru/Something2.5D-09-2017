@@ -27,6 +27,8 @@ public class TankSnap extends Message {
     @NotNull
     private Long userId;
 
+    @NotNull
+    private Integer kills;
 
     @NotNull
     public Coordinate getPlatform() {
@@ -87,6 +89,14 @@ public class TankSnap extends Message {
 
     public void setHealth(Integer health) {
         this.health = health;
+    }
+
+    public Integer getKills() {
+        return kills;
+    }
+
+    public void setKills(Integer kills) {
+        this.kills = kills;
     }
 
     public Line toLine() {

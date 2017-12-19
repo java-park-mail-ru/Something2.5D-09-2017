@@ -110,7 +110,7 @@ public class GameMechanicsImpl implements GameMechanics {
 
         engine.process(tankSnapshots, shootingLines);
 
-        serverSnapshotService.send(tankSnapshots);
+        serverSnapshotService.send(tankSnapshots, remotePointService.getTanksStats());
 
         long time = System.currentTimeMillis();
         if (time - lastStatisticSendTime > 2000) {

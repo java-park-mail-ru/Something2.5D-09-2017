@@ -3,6 +3,7 @@ package com.tp.tanks.mechanics.internal;
 import com.tp.tanks.mechanics.base.ServerSnap;
 import com.tp.tanks.mechanics.base.StatisticsSnap;
 import com.tp.tanks.mechanics.base.TankSnap;
+import com.tp.tanks.mechanics.world.Scores;
 import com.tp.tanks.mechanics.world.ScoresToSend;
 import com.tp.tanks.websocket.RemotePointService;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -27,13 +29,19 @@ public class ServerSnapshotService {
         this.remotePointService = remotePointService;
     }
 
-    public void send(List<TankSnap> tanks) {
+    public void send(List<TankSnap> tanks, Map<Long, Scores> tanksStats) {
 
         if (tanks.isEmpty()) {
             return;
         }
 
         final ServerSnap serverSnap = new ServerSnap();
+
+        tanks.parallelStream().map(t -> {
+            t.setKills(tanksStats.get(t.getUserId()).getKills());
+            return null;
+        });
+
         serverSnap.setTanks(tanks);
         serverSnap.setPlayers(remotePointService.getPlayers());
 
