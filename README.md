@@ -2,6 +2,9 @@
 
 [![Travis](https://api.travis-ci.org/java-park-mail-ru/Something2.5D-09-2017.svg?branch=developer&style=flat)]()
 
+### Game
+    https://tanks-backend.xyz
+
 ### Requirements
 * Docker
 * Docker Compose https://docs.docker.com/compose/install/
