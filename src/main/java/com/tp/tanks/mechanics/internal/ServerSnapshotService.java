@@ -41,7 +41,7 @@ public class ServerSnapshotService {
 
             try {
                 final Scores scores = tanksStats.get(snap.getUserId());
-                if (scores ==null) {
+                if (scores == null) {
                     snap.setKills(0);
                     continue;
                 }
