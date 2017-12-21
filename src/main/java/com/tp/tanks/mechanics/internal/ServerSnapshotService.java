@@ -37,10 +37,11 @@ public class ServerSnapshotService {
 
         final ServerSnap serverSnap = new ServerSnap();
 
-        tanks.parallelStream().map(t -> {
-            t.setKills(tanksStats.get(t.getUserId()).getKills());
-            return null;
-        });
+        for (TankSnap snap : tanks) {
+            final Integer kills = tanksStats.get(snap.getUserId()).getKills();
+            LOGGER.info("userID = " + snap.getUserId().toString() + "; kills = " + kills.toString());
+            snap.setKills(kills);
+        }
 
         serverSnap.setTanks(tanks);
         serverSnap.setPlayers(remotePointService.getPlayers());
