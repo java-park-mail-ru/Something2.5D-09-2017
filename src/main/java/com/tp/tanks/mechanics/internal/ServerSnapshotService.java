@@ -40,7 +40,12 @@ public class ServerSnapshotService {
         for (TankSnap snap : tanks) {
 
             try {
-                final Integer kills = tanksStats.get(snap.getUserId()).getKills();
+                final Scores scores = tanksStats.get(snap.getUserId());
+                if (scores ==null) {
+                    snap.setKills(0);
+                    continue;
+                }
+                final Integer kills = scores.getKills();
                 LOGGER.info("userID = " + snap.getUserId().toString() + "; kills = " + kills.toString());
                 snap.setKills(kills);
             } catch (NullPointerException err) {
