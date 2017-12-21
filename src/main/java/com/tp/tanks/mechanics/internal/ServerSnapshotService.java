@@ -38,9 +38,15 @@ public class ServerSnapshotService {
         final ServerSnap serverSnap = new ServerSnap();
 
         for (TankSnap snap : tanks) {
-            final Integer kills = tanksStats.get(snap.getUserId()).getKills();
-            LOGGER.info("userID = " + snap.getUserId().toString() + "; kills = " + kills.toString());
-            snap.setKills(kills);
+
+            try {
+                final Integer kills = tanksStats.get(snap.getUserId()).getKills();
+                LOGGER.info("userID = " + snap.getUserId().toString() + "; kills = " + kills.toString());
+                snap.setKills(kills);
+            } catch (NullPointerException err) {
+                LOGGER.error(err.toString());
+                snap.setKills(0);
+            }
         }
 
         serverSnap.setTanks(tanks);
