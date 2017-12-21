@@ -9,9 +9,11 @@ import java.util.Set;
 @SuppressWarnings({"NullableProblems"})
 public class ServerSnap extends Message {
 
-    @NotNull private List<TankSnap> tanks;
+    @NotNull
+    private List<TankSnap> tanks;
 
-    @NotNull private Set<Long> players;
+    @NotNull
+    private Set<Long> players;
 
     @NotNull
     public List<TankSnap> getTanks() {

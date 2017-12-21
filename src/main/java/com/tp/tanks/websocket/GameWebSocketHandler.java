@@ -1,10 +1,14 @@
 package com.tp.tanks.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tp.tanks.mechanics.internal.WorldSnapService;
+import com.tp.tanks.models.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -17,6 +21,7 @@ import java.io.IOException;
 import static org.springframework.web.socket.CloseStatus.SERVER_ERROR;
 
 
+@Component
 public class GameWebSocketHandler extends TextWebSocketHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameWebSocketHandler.class);
     private static final CloseStatus ACCESS_DENIED = new CloseStatus(4500, "Not logged in. Access denied");
@@ -32,7 +37,10 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
 
     private final ObjectMapper objectMapper;
 
+    @NotNull
+    private WorldSnapService worldSnapService;
 
+    @Autowired
     public GameWebSocketHandler(@NotNull MessageHandlerContainer messageHandlerContainer,
                                 @NotNull UserService userService,
                                 @NotNull RemotePointService remotePointService,
@@ -41,17 +49,28 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
         this.userService = userService;
         this.remotePointService = remotePointService;
         this.objectMapper = objectMapper;
+        this.worldSnapService = new WorldSnapService(remotePointService);
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocketSession) {
         final Long userId = (Long) webSocketSession.getAttributes().get("userId");
-        if (userId == null || userService.getById(userId) == null) {
-            LOGGER.warn("Can't get user by id = " + userId);
+        LOGGER.info("[GameWebSocketHandler: afterConnectionEstablished] userId: " + userId);
+
+        if (userId == null) {
+            LOGGER.warn("UserId is null");
             closeSessionSilently(webSocketSession, ACCESS_DENIED);
             return;
         }
-        remotePointService.registerUser(userId, webSocketSession);
+
+        User user = userService.getById(userId);
+        if (user == null) {
+            LOGGER.warn("Can't get user by uid = " + userId);
+            closeSessionSilently(webSocketSession, ACCESS_DENIED);
+            return;
+        }
+        remotePointService.registerUser(userId, user.getUsername(), webSocketSession);
+        worldSnapService.send(userId);
     }
 
     @Override
@@ -82,7 +101,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             //noinspection ConstantConditions
             messageHandlerContainer.handle(message, userId);
         } catch (HandleException e) {
-            LOGGER.error("Can't handle message of type " + message.getClass().getName() + " with content: " + text, e);
+            LOGGER.error("Can't process message of type " + message.getClass().getName() + " with content: " + text, e);
         }
     }
 
@@ -98,6 +117,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             LOGGER.warn("User disconnected but his session was not found (closeStatus=" + closeStatus + ')');
             return;
         }
+        remotePointService.saveStatistics(userId);
         remotePointService.removeUser(userId);
     }
 

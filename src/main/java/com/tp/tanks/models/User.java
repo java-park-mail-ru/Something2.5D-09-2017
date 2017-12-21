@@ -22,15 +22,18 @@ public class User {
 
     private String username;
 
+    private Boolean mouseControlEnabled;
+
     @JsonCreator
     public User() {
     }
 
-    public User(Long id, String username, String email, String password) {
+    public User(Long id, String username, String email, String password, Boolean mouseControlEnabled) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.mouseControlEnabled = mouseControlEnabled;
     }
 
     @SuppressWarnings("unused")
@@ -66,6 +69,14 @@ public class User {
     @JsonProperty
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getMouseControlEnabled() {
+        return mouseControlEnabled;
+    }
+
+    public void setMouseControlEnabled(Boolean mouseControlEnabled) {
+        this.mouseControlEnabled = mouseControlEnabled;
     }
 
     @Override

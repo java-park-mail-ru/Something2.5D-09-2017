@@ -1,6 +1,7 @@
 package com.tp.tanks.mechanics;
 
 import com.tp.tanks.mechanics.base.TankSnap;
+import com.tp.tanks.mechanics.requests.SpawnRequest;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -13,4 +14,5 @@ public interface GameMechanics {
 
     void gmStep(long frameTime);
 
+    void getNewSpawnPoint(@NotNull Long userId, SpawnRequest request);
 }

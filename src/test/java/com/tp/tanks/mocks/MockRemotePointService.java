@@ -2,18 +2,22 @@ package com.tp.tanks.mocks;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tp.tanks.mechanics.base.ServerSnap;
+import com.tp.tanks.mechanics.world.Scores;
+import com.tp.tanks.services.StatisticsService;
 import com.tp.tanks.websocket.Message;
 import com.tp.tanks.websocket.RemotePointService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class MockRemotePointService extends RemotePointService {
 
     private ServerSnap sendingServerSnap;
 
     public MockRemotePointService() {
-        super(new ObjectMapper());
+        super(new ObjectMapper(), new StatisticsService());
     }
 
     @Override
@@ -21,6 +25,11 @@ public class MockRemotePointService extends RemotePointService {
         if (message instanceof ServerSnap) {
             sendingServerSnap = (ServerSnap) message;
         }
+    }
+
+    public void pushUser(Long userId, String username) {
+        super.getPlayers().add(userId);
+        super.getTanksStats().put(userId, new Scores(username));
     }
 
     public ServerSnap getSendingServerSnap() {

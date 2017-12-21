@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.tp.tanks.mechanics.base.Line;
 import java.util.*;
 
 @Service
@@ -44,6 +45,28 @@ public class TankSnapshotService {
         }
 
         return lastSnapshots;
+    }
+
+    public List<Line> shootingLines() {
+        List<Line> lines = new ArrayList<>();
+
+        for (Map.Entry<Long, List<TankSnap>> entry : snapsMap.entrySet()) {
+            final List<TankSnap> snaps = entry.getValue();
+            if (snaps.isEmpty()) {
+                continue;
+            }
+
+            final TankSnap shootingSnap = snaps.parallelStream()
+                    .filter(snap -> snap.isShoot().equals(Boolean.valueOf(true)))
+                    .findAny()
+                    .orElse(null);
+
+            if (shootingSnap != null) {
+                lines.add(shootingSnap.toLine());
+            }
+        }
+
+        return lines;
     }
 
     public void clearForUser(Long userId) {

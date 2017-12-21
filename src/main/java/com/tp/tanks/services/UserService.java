@@ -26,7 +26,16 @@ public class UserService {
     public User save(User user) {
 
         try {
-            return userRepository.create(user.getUsername(), user.getEmail(), cryptEncoder.encode(user.getPassword()));
+
+            final Boolean mouseControlEnabled;
+            if (user.getMouseControlEnabled() == null) {
+                mouseControlEnabled = false;
+            } else {
+                mouseControlEnabled = user.getMouseControlEnabled();
+            }
+
+            return userRepository.create(user.getUsername(), user.getEmail(),
+                    cryptEncoder.encode(user.getPassword()), mouseControlEnabled);
         } catch (DuplicateKeyException err) {
             return null;
         }
@@ -53,6 +62,18 @@ public class UserService {
             return userRepository.getById(id);
         } catch (EmptyResultDataAccessException err) {
             return null;
+        }
+    }
+
+    public Boolean updateMouseControlEnabled(Long userId, Boolean mouseControlEnabled) {
+        if (userId == null || mouseControlEnabled == null) {
+            return false;
+        }
+        try {
+            userRepository.updateMouseControlEnabled(userId, mouseControlEnabled);
+            return true;
+        } catch (EmptyResultDataAccessException err) {
+            return false;
         }
     }
 }
